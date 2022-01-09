@@ -1,0 +1,100 @@
+{
+    "name": "Browser sample",
+    "author": "Kevin Luo",
+    "description": "A simple view to demonstrate TreeListView and WebView inside a SplitLayout",
+    "version":
+    {
+        "major": 0,
+        "minor": 0,
+        "build": 1,
+        "revision": 0
+    },
+    "createtime": "2021-10-24T21:16:00-0700",
+    "lastchangetime": "2021-10-24T21:16:00-0700",
+    "view":
+    {
+        "viewType": "SplitLayout",
+        "id": "f535783a-d8ae-47db-99d1-ca9669a297ec",
+        "caption":
+        {
+            "caption": "",
+            "visible": false
+        },
+        "orientation": "horizontal",
+        "fixedView": "view1",
+        "distance": 320,
+        "view1":
+        {
+            "viewType": "TreeListView",
+            "id": "44412b0e-a9ef-47ff-a915-bb9f063912fb",
+            "caption":
+            {
+                "caption": "Search engines",
+                "visible": true
+            },
+            "outputParams":
+            [
+                {
+                    "id":"7a7270d8-85be-4147-af41-d3e87608f222",
+                    "name":"URL"
+                }
+            ],
+            "columns": [
+                {
+                    "name": "Name",
+                    "width": 120,
+                    "alignment": "left",
+                    "visible": true
+                },
+                {
+                    "name": "URL",
+                    "width": 200,
+                    "alignment": "left"
+                }
+            ],
+            "childProperty": "children",
+            "dataSource":{
+                "type": "shell",
+                "shell": "PowerShell",
+                "showProgress": false,
+                "script": [
+                    "Get-Content '%%VIEW_PATH%%/data/browser-sample.json' | ConvertFrom-Json"
+                ]
+            }
+        },
+        "view2":
+        {
+            "viewType": "WebView",
+            "id": "e9a47037-a1d5-44a2-9a26-e68fda9abf3a",
+            "caption":
+            {
+                "caption": "{URL}",
+                "visible": true
+            },
+            "inputParams":
+            [
+                {
+                    "id": "cdf69587-9c8e-4b55-ba0d-df65b19f4330",
+                    "name": "URL"
+                }
+            ],
+            "contentType": "url",
+            "dataSource":{
+                "type": "shell",
+                "shell": "PowerShell",
+                "showProgress": false,
+                "script":
+                [
+                    "return '{URL}'"
+                ]
+            }
+        }
+    },
+    "dataflow":
+    [
+        {
+            "source": "7a7270d8-85be-4147-af41-d3e87608f222",
+            "target": "cdf69587-9c8e-4b55-ba0d-df65b19f4330"
+        }
+    ]
+}

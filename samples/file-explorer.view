@@ -1,0 +1,312 @@
+{
+    "name": "File Explorer View",
+    "author": "Kevin Luo",
+    "description": "A sample view to demonstrate the capabilities of LeaveScriptBehind",
+    "version":
+    {
+        "major": 0,
+        "minor": 0,
+        "build": 1,
+        "revision": 0
+    },
+    "createtime": "2021-10-17T10:36:00-0700",
+    "lastchangetime": "2021-10-17T10:36:00-0700",
+    "view":
+    {
+        "viewType": "SplitLayout",
+        "id": "f535783a-d8ae-47db-99d1-ca9669a297ec",
+        "caption":
+        {
+            "caption": "",
+            "visible": false
+        },
+        "orientation": "horizontal",
+        "fixedView": "view1",
+        "distance": 280,
+        "view1":
+        {
+            "viewType": "SplitLayout",
+            "id": "44412b0e-a9ef-47ff-a915-bb9f063912fb",
+            "caption":
+            {
+                "caption": "",
+                "visible": false
+            },
+            "orientation": "vertical",
+            "fixedView": "view1",
+            "distance": 260,
+            "view1":
+            {
+                "viewType": "ListView",
+                "id": "bc563b68-bf94-4806-855d-0a07f001ad51",
+                "caption":
+                {
+                    "caption": "Drives",
+                    "visible": true
+                },
+                "dataSource":{
+                    "type": "shell",
+                    "shell": "PowerShell",
+                    "sources": [],
+                    "script": [
+                        "$query = 'SELECT * from win32_logicaldisk'",
+                        "Get-WmiObject -Query $query | Select-Object -Property @('DeviceID', 'VolumeName', 'Size', 'Freespace')"
+                    ]
+                },
+                "inputParams": [],
+                "outputParams": [
+                    {
+                        "id": "35a9527e-bc13-4023-a9aa-334e540958b7",
+                        "name": "Drive",
+                        "activation": "default"
+                    }
+                ],
+                "whenToLoadData": "Default",
+                "sortable": false,
+                "supportMultiSelect": false,
+                "status":{
+                    "visible": true,
+	                "singleItemCountPrompt":"There is %%ITEM_COUNT%% drive on the machine, and ",
+	                "multipleItemCountPrompt":"There are %%ITEM_COUNT%% drives on the machine, and ",
+	                "noSelectionPrompt":"no drive is currently selected.",
+	                "currentSelectionPrompt":"drive %%ITEM_INDEX%% is currently selected.",
+	                "singleSelectionPrompt":"there is %%ITEM_COUNT%% drive currently selected.",
+	                "multipleSelectionPrompt":"there are %%ITEM_COUNT%% drives currently selected."
+                },
+                "filter": {
+                    "visible": false
+                },
+                "columns": [
+                    {
+                        "name": "DeviceID",
+                        "displayName": "Drive",
+                        "width": 40,
+                        "alignment": "left",
+                        "visible": true
+                    },
+                    {
+                        "name": "VolumeName",
+                        "displayName": "Label",
+                        "width": 80,
+                        "alignment": "left"
+                    },
+                    {
+                        "name": "Size",
+                        "width": 100,
+                        "alignment": "right",
+                        "format": "%'lld"
+                    },
+                    {
+                        "name": "Freespace",
+                        "width": 100,
+                        "alignment": "right",
+                        "format": "%'lld"
+                    }
+                ],
+                "rowColors": []
+            },
+            "view2":
+            {
+                "viewType": "TreeView",
+                "id": "00aa9ad2-15d4-4368-b2cd-12afb389ee55",
+                "caption":
+                {
+                    "caption": "Folders on {Drive}",
+                    "visible": true
+                },
+                "dataSource":{
+                    "type": "shell",
+                    "shell": "PowerShell",
+                    "sources": [],
+                    "script": [
+                        "if (-not [String]::IsNullOrEmpty('{Drive}'))",
+                        "{",
+                            "$folders = Get-ChildItem '{Drive}\\' | Where-Object { $_.Attributes -eq 'Directory' } | Select-Object -Property @('Name')",
+                            "return New-Object PSObject -Property @{ Name='{Drive}'; Child=$folders; }",
+                        "}"
+                    ]
+                },
+                "inputParams": [
+                    {
+                        "id": "743a4047-3539-441e-ab8d-9f6da3c7914d",
+                        "name": "Drive"
+                    }
+                ],
+                "outputParams": [
+                    {
+                        "id":"a02b668e-3550-4421-8e1d-9a4cdd740ac5",
+                        "name":"__path__",
+                        "activation":"default"
+                    }
+                ],
+                "labelProperty": "Name",
+                "childProperty": "Child"
+            }
+        },
+        "view2":
+        {
+            "viewType": "SplitLayout",
+            "id": "e9a47037-a1d5-44a2-9a26-e68fda9abf3a",
+            "caption":
+            {
+                "caption": "",
+                "visible": false
+            },
+            "orientation": "vertical",
+            "fixedView": "none",
+            "ratio": 0.35,
+            "view1":
+            {
+                "viewType": "ListView",
+                "id": "a1f7ce3a-7c5e-4765-95e6-147049163135",
+                "caption": {
+                    "caption": "Files under {path}",
+                    "visible": true
+                },
+                "contextMenu": {
+                    "copy": true,
+                    "refresh": true,
+                    "children": [
+                        {
+                            "type":"menuItem",
+                            "text":"Hello world!",
+                            "script":
+                            {
+                                "shell": "PowerShell"
+                            }
+                        }
+                    ]
+                },
+                "dataSource":{
+                    "type": "shell",
+                    "shell": "PowerShell",
+                    "sources": [],
+                    "script": [
+                        "if (-not [String]::IsNullOrEmpty('{path}'))",
+                        "{",
+                            "Get-ChildItem '{path}' | Where-Object { $_.Attributes -ne 'Directory' } | Select-Object -Property @('Name', 'Mode', 'Length', 'CreationTime', 'LastWriteTime')",
+                        "}"
+                    ]
+                },
+                "inputParams": [
+                    {
+                        "id": "837825a3-9853-4318-8211-b0c4b50e5967",
+                        "name": "path"
+                    }
+                ],
+                "outputParams": [
+                    {
+                        "id":"ba4d8c36-fae9-469b-a24c-45c9c1e402ed",
+                        "name":"name",
+                        "activation":"doubleclick"
+                    }
+                ],
+                "whenToLoadData": "Default",
+                "sortable": true,
+                "supportMultiSelect": true,
+                "status":{
+                    "visible": true,
+	                "singleItemCountPrompt":"There is %%ITEM_COUNT%% item in the list, and ",
+	                "multipleItemCountPrompt":"There are %%ITEM_COUNT%% items in the list, and ",
+	                "noSelectionPrompt":"no item is currently selected.",
+	                "currentSelectionPrompt":"item %%ITEM_INDEX%% is currently selected.",
+	                "singleSelectionPrompt":"there is %%ITEM_COUNT%% item currently selected.",
+	                "multipleSelectionPrompt":"there are %%ITEM_COUNT%% items currently selected."
+                },
+                "filter": {
+                    "visible": true,
+                    "prompt": "Filter:",
+                    "placeholder": "Type here to filter in the file list"
+                },
+                "columns": [
+                    {
+                        "name": "Name",
+                        "width": 160,
+                        "alignment": "left",
+                        "visible": true
+                    },
+                    {
+                        "name": "LastWriteTime",
+                        "displayName": "Last Write Time",
+                        "width": 220,
+                        "alignment": "right"
+                    },
+                    {
+                        "name": "Mode",
+                        "width": 60,
+                        "alignment": "right"
+                    },
+                    {
+                        "name": "Length",
+                        "width": 100,
+                        "alignment": "right"
+                    },
+                    {
+                        "name": "CreationTime",
+                        "displayName": "Creation Time",
+                        "width": 220,
+                        "alignment": "right"
+                    }
+                ],
+                "rowColors": []
+            },
+            "view2":
+            {
+                "viewType": "TextView",
+                "id": "77962981-c306-460a-a878-dec857d11bf3",
+                "caption":
+                {
+                    "caption": "Content of {path}{name}",
+                    "visible": true
+                },
+                "inputParams": [
+                    {
+                        "id": "cdf69587-9c8e-4b55-ba0d-df65b19f4330",
+                        "name": "name"
+                    },
+                    {
+                        "id": "a1cfcb16-b339-4408-9a9c-a51cfe80b394",
+                        "name": "path"
+                    }
+                ],
+                "outputParams": [],
+                "dataSource":{
+                    "type": "shell",
+                    "shell": "PowerShell",
+                    "sources": [],
+                    "script": [
+                        "if (-not [String]::IsNullOrEmpty('{path}') -and -not [String]::IsNullOrEmpty('{name}'))",
+                        "{",
+                            "$filePath = '{path}{name}'",
+                            "Get-Content $filePath",
+                        "}"
+                    ]
+                },
+                "whenToLoadData": "Default",
+                "readOnly": false,
+                "content":""
+            }
+        }
+    },
+    "dataflow":
+    [
+        {
+            "source": "35a9527e-bc13-4023-a9aa-334e540958b7",
+            "target": "743a4047-3539-441e-ab8d-9f6da3c7914d"
+        },
+        {
+            "source": "a02b668e-3550-4421-8e1d-9a4cdd740ac5",
+            "target": "837825a3-9853-4318-8211-b0c4b50e5967"
+        },
+        {
+            "source": "ba4d8c36-fae9-469b-a24c-45c9c1e402ed",
+            "target": "cdf69587-9c8e-4b55-ba0d-df65b19f4330"
+        },
+        {
+            "source": "a02b668e-3550-4421-8e1d-9a4cdd740ac5",
+            "target": "a1cfcb16-b339-4408-9a9c-a51cfe80b394"
+        }
+    ],
+    "dataprocessing": [],
+    "viewlauncher": []
+}

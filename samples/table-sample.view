@@ -1,0 +1,198 @@
+{
+    "name": "A sample view using TableLayout",
+    "author": "Kevin Luo",
+    "description": "A simple view to start with TabLayout",
+    "version":
+    {
+        "major": 0,
+        "minor": 0,
+        "build": 1,
+        "revision": 0
+    },
+    "createtime": "2021-09-09T01:23:45-0700",
+    "lastchangetime": "2021-09-09T01:23:45-0700",
+    "view":
+    {
+        "viewType": "TableLayout",
+        "id": "f535783a-d8ae-47db-99d1-ca9669a297ec",
+        "caption":
+        {
+            "caption": "",
+            "visible": false
+        },
+        "inputParams": [],
+        "outputParams": [],
+        "rows":
+        [
+            {
+                "sizeType": "absolute",
+                "height": 300
+            },
+            {
+                "sizeType": "percentage",
+                "height": 100
+            },
+            {
+                "sizeType": "absolute",
+                "height": 80
+            }
+        ],
+        "cols":
+        [
+            {
+                "sizeType": "absolute",
+                "width": 400
+            },
+            {
+                "sizeType": "percentage",
+                "width": 100
+            }
+        ],
+        "cells":
+        [
+            {
+                "row": 0,
+                "col": 0,
+                "rowSpan": 2,
+                "view":
+                { 
+                    "viewType": "PropertyGrid",
+                    "id": "44412b0e-a9ef-47ff-a915-bb9f063912fb",
+                    "caption":
+                    {
+                        "caption": "Sample property grid",
+                        "visible": true
+                    },
+                    "properties":
+                    [
+                        {
+                            "label": "String",
+                            "description": "This is a sample description for help information",
+                            "category": "Primitives",
+                            "defaultValue": "something here",
+                            "valueType": "String"
+                        },
+                        {
+                            "label": "Integer",
+                            "description": "This is help information for sample integer input",
+                            "category": "Primitives",
+                            "defaultValue": "150",
+                            "valueType": "String"
+                        },
+                        {
+                            "label": "Simple file",
+                            "category": "Files",
+                            "valueType": "File"
+                        },
+                        {
+                            "label": "Image file",
+                            "category": "Files",
+                            "valueType": "ImageFile"
+                        }
+                    ]
+                }
+            },
+            {
+                "row": 2,
+                "col": 0,
+                "view":
+                {
+                    "viewType": "ButtonGroup",
+                    "id": "51b2d859-2ec6-468e-813a-ed389af6b1d6",
+                    "autoFlow": true,
+                    "buttonPerRow": 2,
+                    "buttons":
+                    [
+                        {
+                            "viewType": "Button",
+                            "id": "53d9c308-e1a3-4016-b811-52e74b63c0d8",
+                            "label": "First button",
+                            "description": "This is help text for the first button"
+                        },
+                        {
+                            "viewType": "Button",
+                            "id": "5f99e1d2-7567-4165-a025-7051bad3dafd",
+                            "label": "Second button",
+                            "description": "This is help text for the second button"
+                        },
+                        {
+                            "viewType": "Button",
+                            "id": "e31839d6-36db-4958-ab69-9d5e783173c7",
+                            "label": "Give it a pretty long name for the third button",
+                            "description": "This is help text for the third button"
+                        },
+                        {
+                            "viewType": "Button",
+                            "id": "0e27519f-0a85-4efc-baeb-8f6e73c6c151",
+                            "label": "OK",
+                            "description": "This is help text for OK button"
+                        }
+                    ]
+                }
+            },
+            {
+                "row": 0,
+                "col": 1,
+                "view":
+                {
+                    "viewType": "ListView",
+                    "id": "a1f7ce3a-7c5e-4765-95e6-147049163135",
+                    "caption": {
+                        "caption": "ListView",
+                        "visible": true
+                    },
+                    "inputParams": [],
+                    "outputParams": [],
+                    "whenToLoadData": "Default",
+                    "sortable": true,
+                    "supportMultiSelect": false,
+                    "showStatusBar": true,
+                    "filter": {},
+                    "columns": [
+                        {
+                            "name": "Name",
+                            "width": 120,
+                            "alignment": "left",
+                            "visible": true
+                        },
+                        {
+                            "name": "createTime",
+                            "displayName": "Create time",
+                            "width": 180,
+                            "alignment": "right"
+                        },
+                        {
+                            "name": "Description",
+                            "width": -1,
+                            "alignment": "left"
+                        }
+                    ],
+                    "rowColors": []
+                }
+            },
+            {
+                "row": 1,
+                "col": 1,
+                "rowSpan": 2,
+                "view":
+                {
+                    "viewType": "TextView",
+                    "id": "77962981-c306-460a-a878-dec857d11bf3",
+                    "caption":
+                    {
+                        "caption": "TextView",
+                        "visible": true
+                    },
+                    "inputParams": [],
+                    "outputParams": [],
+                    "whenToLoadData": "Default",
+                    "readOnly": false,
+                    "content":"Sample content for TextView"
+                }
+            }
+        ]
+    },
+    "dataflow": [],
+    "dataprocessing": [],
+    "viewlauncher": []
+}

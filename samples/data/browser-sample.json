@@ -1,0 +1,32 @@
+[
+    {
+        "Name": "Bing",
+        "URL": "https://www.bing.com",
+        "children":
+        [
+            {
+                "Name": "Image search",
+                "URL": "https://www.bing.com/images"
+            },
+            {
+                "Name": "Bing Maps",
+                "URL": "https://www.bing.com/maps"
+            }
+        ]
+    },
+    {
+        "Name": "Google",
+        "URL": "https://www.google.com",
+        "children": []
+    },
+    {
+        "Name": "Yahoo",
+        "URL": "https://www.yahoo.com",
+        "children": []
+    },
+    {
+        "Name": "BaiDu",
+        "URL": "https://www.baidu.com",
+        "children": []
+    }
+]

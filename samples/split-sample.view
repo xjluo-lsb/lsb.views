@@ -1,0 +1,274 @@
+{
+    "name": "SplitLayout view sample",
+    "author": "Kevin Luo",
+    "description": "A simple view to start with",
+    "version":
+    {
+        "major": 0,
+        "minor": 0,
+        "build": 1,
+        "revision": 0
+    },
+    "createtime": "2021-08-30T01:23:45-0700",
+    "lastchangetime": "2021-08-30T01:23:45-0700",
+    // Start of the main view
+    "view":
+    {
+        "viewType": "SplitLayout",
+        "id": "f535783a-d8ae-47db-99d1-ca9669a297ec",
+        "caption":
+        {
+            "caption": "",
+            "visible": false
+        },
+        "orientation": "horizontal",
+        "fixedView": "view1",
+        "distance": 280,
+        "view1":
+        {
+            "viewType": "PropertyGrid",
+            "id": "44412b0e-a9ef-47ff-a915-bb9f063912fb",
+            "caption":
+            {
+                "caption": "Sample property grid",
+                "visible": true
+            },
+            "outputParams":
+            [
+                {
+                    "id":"7a7270d8-85be-4147-af41-d3e87608f222",
+                    "name":"stringValue"
+                },
+                {
+                    "id":"3a06bfd0-dac5-4bbd-8435-bb1b508dd978",
+                    "name":"intValue"
+                },
+                {
+                    "id":"87470081-1148-4d44-95a9-7fcb1962df03",
+                    "name": "fileName"
+                },
+                {
+                    "id":"6477b5ce-96af-4594-ac6b-c981864b2664",
+                    "name": "imageFile"
+                },
+                {
+                    "id":"7f8bbfc4-e0e2-4a95-8186-e28caac1526f",
+                    "name": "folder"
+                }
+            ],
+            "properties":
+            [
+                {
+                    "name": "stringValue",
+                    "label": "String",
+                    "description": "This is a sample description for help information",
+                    "category": "Primitives",
+                    "defaultValue": "something here",
+                    "valueType": "String"
+                },
+                {
+                    "name": "intValue",
+                    "label": "Integer",
+                    "description": "This is help information for sample integer input",
+                    "category": "Primitives",
+                    "defaultValue": "150",
+                    "valueType": "String"
+                },
+                {
+                    "name": "fileName",
+                    "label": "Simple file",
+                    "category": "Files",
+                    "valueType": "File"
+                },
+                {
+                    "name": "imageFile",
+                    "label": "Image file",
+                    "category": "Files",
+                    "valueType": "ImageFile"
+                },
+                {
+                    "name": "folder",
+                    "label": "Select a folder",
+                    "category": "Folder",
+                    "valueType": "Folder"
+                }
+            ]
+        },
+        "view2":
+        {
+            "viewType": "SplitLayout",
+            "id": "e9a47037-a1d5-44a2-9a26-e68fda9abf3a",
+            "caption":
+            {
+                "caption": "",
+                "visible": false
+            },
+            "orientation": "vertical",
+            "fixedView": "none",
+            "ratio": 0.35,
+            "view1":
+            {
+                "viewType": "ListView",
+                "id": "a1f7ce3a-7c5e-4765-95e6-147049163135",
+                "caption": {
+                    "caption": "Folders and files under {path}",
+                    "visible": true
+                },
+                "contextMenu": {
+                    "copy": true,
+                    "refresh": true,
+                    "children": [
+                        {
+                            "type":"menuItem",
+                            "text":"Hello world!",
+                            "script":
+                            {
+                                "shell": "PowerShell"
+                            }
+                        }
+                    ]
+                },
+                "dataSource":{
+                    "type": "shell",
+                    "shell": "PowerShell",
+                    "script": [
+                        "Get-ChildItem '{path}' | Select-Object -Property @('Name', 'Mode', 'Length', 'CreationTime', 'LastWriteTime')"
+                    ]
+                },
+                "inputParams": [
+                    {
+                        "id": "837825a3-9853-4318-8211-b0c4b50e5967",
+                        "name": "path"
+                    }
+                ],
+                "outputParams": [
+                    {
+                        "id":"23e7cb0e-7411-45dd-9a78-dc510253b9a9",
+                        "name":"#",
+                        "activation":"default"
+                    },
+                    {
+                        "id":"ba4d8c36-fae9-469b-a24c-45c9c1e402ed",
+                        "name":"name",
+                        "activation":"doubleclick"
+                    }
+                ],
+                "whenToLoadData": "Default",
+                "sortable": true,
+                "supportMultiSelect": true,
+                "status":{
+                    "visible": true,
+	                "singleItemCountPrompt":"There is %%ITEM_COUNT%% item in the list, and ",
+	                "multipleItemCountPrompt":"There are %%ITEM_COUNT%% items in the list, and ",
+	                "noSelectionPrompt":"no item is currently selected.",
+	                "currentSelectionPrompt":"item %%ITEM_INDEX%% is currently selected.",
+	                "singleSelectionPrompt":"there is %%ITEM_COUNT%% item currently selected.",
+	                "multipleSelectionPrompt":"there are %%ITEM_COUNT%% items currently selected."
+                },
+                "filter": {
+                    "visible": true,
+                    "prompt": "Filter:",
+                    "placeholder": "Type here to filter in the file list"
+                },
+                "columns": [
+                    {
+                        "name": "Name",
+                        "width": 160,
+                        "alignment": "left",
+                        "visible": true
+                    },
+                    {
+                        "name": "LastWriteTime",
+                        "displayName": "Last Write Time",
+                        "width": 220,
+                        "alignment": "right"
+                    },
+                    {
+                        "name": "Mode",
+                        "width": 60,
+                        "alignment": "right"
+                    },
+                    {
+                        "name": "Length",
+                        "width": 100,
+                        "alignment": "right"
+                    },
+                    {
+                        "name": "CreationTime",
+                        "displayName": "Creation Time",
+                        "width": 220,
+                        "alignment": "right"
+                    }
+                ],
+                "rowColors": []
+            },
+            "view2":
+            {
+                "viewType": "TextView",
+                "id": "77962981-c306-460a-a878-dec857d11bf3",
+                "caption":
+                {
+                    "caption": "{name}",
+                    "visible": true
+                },
+                "inputParams": [
+                    {
+                        "id": "cdf69587-9c8e-4b55-ba0d-df65b19f4330",
+                        "name": "name"
+                    },
+                    {
+                        "id": "a1cfcb16-b339-4408-9a9c-a51cfe80b394",
+                        "name": "value1"
+                    },
+                    {
+                        "id": "251531e3-915d-4947-bb75-5e125c9ca5f4",
+                        "name": "value2"
+                    },
+                    {
+                        "id": "b448e0c8-924e-4b15-b1ad-4efff6735357",
+                        "name": "value3"
+                    },
+                    {
+                        "id": "7c30ad26-117e-4648-b607-be9c384b824d",
+                        "name": "value4"
+                    }
+                ],
+                "outputParams": [],
+                "whenToLoadData": "Default",
+                "readOnly": false,
+                "content":"Value 1: {value1}\nValue 2: {value2}\nValue 3: {value3}\nValue 4: {value4}"
+            }
+        }
+    },
+    "dataflow":
+    [
+        {
+            "source": "ba4d8c36-fae9-469b-a24c-45c9c1e402ed",
+            "target": "cdf69587-9c8e-4b55-ba0d-df65b19f4330"
+        },
+
+        {
+            "source": "7a7270d8-85be-4147-af41-d3e87608f222",
+            "target": "a1cfcb16-b339-4408-9a9c-a51cfe80b394"
+        },
+        {
+            "source": "3a06bfd0-dac5-4bbd-8435-bb1b508dd978",
+            "target": "251531e3-915d-4947-bb75-5e125c9ca5f4"
+        },
+        {
+            "source": "87470081-1148-4d44-95a9-7fcb1962df03",
+            "target": "b448e0c8-924e-4b15-b1ad-4efff6735357"
+        },
+        {
+            "source": "6477b5ce-96af-4594-ac6b-c981864b2664",
+            "target": "7c30ad26-117e-4648-b607-be9c384b824d"
+        },
+        // Passing selected folder from PropertyGrid to ListView
+        {
+            "source": "7f8bbfc4-e0e2-4a95-8186-e28caac1526f",
+            "target": "837825a3-9853-4318-8211-b0c4b50e5967"
+        }
+    ],
+    "dataprocessing": [],
+    "viewlauncher": []
+}
