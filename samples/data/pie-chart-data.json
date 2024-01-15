@@ -1,7 +1,0 @@
-{
-    "Red": { "value": 300, "color": "#F7464A" },
-    "Green": { "v": 50, "c": "#46BFBD" },
-    "Yellow": { "value": 100, "color": "#FDB45C" },
-    "Grey": { "value": 40, "color": "#949FB1" },
-    "Dark Grey": { "value": 120, "color": "#4D5360" }
-}

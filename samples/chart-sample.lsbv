@@ -1,0 +1,491 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LsbView xmlns="https://github.com/xjluo-lsb/lsb.views"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="https://github.com/xjluo-lsb/lsb.views LsbViewSchema.xsd"
+         
+  name="Chart view sample"
+  author="Kevin Luo"
+  createTime="2021-12-05T10:31:45Z"
+  lastChangeTime="2023-08-28T22:00:00.000Z">
+
+  <description>A view that demonstrates different types of charts supported by LSB</description>
+  <version major="0" minor="1" build="1" revision="0" />
+
+  <view>
+  <tabLayout id="6c646fc7-6fbe-442f-bc1e-c21d6c747141" multiLine="false" tabPosition="Bottom">
+    <caption visible="false"></caption>
+    <pages>
+      <page title="Bar &amp; Column">
+        <tableLayout id="e851796e-deb6-474a-9136-de4157650e67">
+          <caption visible="false"></caption>
+          <rows>
+            <row sizeType="percentage" height="50"/>
+            <row sizeType="percentage" height="50"/>
+          </rows>
+          <columns>
+            <column sizeType="percentage" width="50"/>
+            <column sizeType="percentage" width="50"/>
+          </columns>
+          <cells>
+            <cell row="0" col="0">
+              <chartView id="07bbe232-6fed-47f5-8baa-620ee54e382c" chartType="BarChart" loadDataAt="Creating">
+                <caption visible="true">Bar chart</caption>
+                <data showProgress="false">
+                  <script type="lua">
+<![CDATA[
+return {
+    labels = { "January", "February", "March", "April", "May", "June", "July" },
+    dataset_1 = { 3, 2.5, 1.2, 3, 4, 5, 1 },
+    dataset_2 = { 1, 1.33, 2.5, 2, 3, 1.8, 0.4 },
+    dataset_3 = { 2.3, 0.5, 1.5, 4, 1, 0.5, 0.4 }
+}
+]]>
+                  </script>
+                </data>
+                <xAxis name="time" displayName="Timestamp" isDateTime="true"/>
+                <colors>
+                  <color lineColor="#7FFFD4" borderColor="#FFFFFF" fillColor="rgba(127,255,212,0.45)" />
+                  <color lineColor="#A9A9A9" borderColor="#FFFFFF" fillColor="rgba(169,169,169,0.6)" />
+                  <color lineColor="#FF7F50" borderColor="#FFFFFF" fillColor="rgba(255,127,80,0.38)" />
+                </colors>
+              </chartView>
+            </cell>
+            <cell row="0" col="1">
+              <chartView id="0c432e16-9ffd-4bbe-9bb5-b0ec915b9136" chartType="StackedBarChart" loadDataAt="Creating">
+                <caption visible="true">Stacked bar chart</caption>
+                <data showProgress="false">
+                  <script type="lua">
+<![CDATA[
+return {
+    labels = { "January", "February", "March", "April", "May", "June", "July" },
+    dataset_1 = { 3, 2.5, 1.2, 3, 4, 5, 1 },
+    dataset_2 = { 1, 1.33, 2.5, 2, 3, 1.8, 0.4 },
+    dataset_3 = { 2.3, 0.5, 1.5, 4, 1, 0.5, 0.4 }
+}
+]]>
+                  </script>
+                </data>
+                <xAxis name="time" displayName="Timestamp" isDateTime="true"/>
+                <colors>
+                  <color lineColor="#7FFFD4" borderColor="#FFFFFF" fillColor="rgba(127,255,212,0.45)" />
+                  <color lineColor="#A9A9A9" borderColor="#FFFFFF" fillColor="rgba(169,169,169,0.6)" />
+                  <color lineColor="#FF7F50" borderColor="#FFFFFF" fillColor="rgba(255,127,80,0.38)" />
+                </colors>
+              </chartView>
+            </cell>
+            <cell row="1" col="0">
+              <chartView id="ed6e47ff-9bdc-4c45-81bf-914729ce818a" chartType="ColumnChart" loadDataAt="Creating">
+                <caption visible="true">Column chart</caption>
+                <data showProgress="false">
+                  <script type="lua">
+<![CDATA[
+return {
+    labels = { "January", "February", "March", "April", "May", "June", "July" },
+    dataset_1 = { 3, 2.5, 1.2, 3, 4, 5, 1 },
+    dataset_2 = { 1, 1.33, 2.5, 2, 3, 1.8, 0.4 },
+    dataset_3 = { 2.3, 0.5, 1.5, 4, 1, 0.5, 0.4 }
+}
+]]>
+                  </script>
+                </data>
+                <xAxis name="time" displayName="Timestamp" isDateTime="true"/>
+                <colors>
+                  <color lineColor="#7FFFD4" borderColor="#FFFFFF" fillColor="rgba(127,255,212,0.45)" />
+                  <color lineColor="#A9A9A9" borderColor="#FFFFFF" fillColor="rgba(169,169,169,0.6)" />
+                  <color lineColor="#FF7F50" borderColor="#FFFFFF" fillColor="rgba(255,127,80,0.38)" />
+                </colors>
+              </chartView>
+            </cell>
+            <cell row="1" col="1">
+              <chartView id="01e65f38-73cc-47b3-9b83-68ed64a7558c" chartType="StackedColumnChart" loadDataAt="Creating">
+                <caption visible="true">Stacked column chart</caption>
+                <data showProgress="false">
+                  <script type="lua">
+<![CDATA[
+return {
+    labels = { "January", "February", "March", "April", "May", "June", "July" },
+    dataset_1 = { 3, 2.5, 1.2, 3, 4, 5, 1 },
+    dataset_2 = { 1, 1.33, 2.5, 2, 3, 1.8, 0.4 },
+    dataset_3 = { 2.3, 0.5, 1.5, 4, 1, 0.5, 0.4 }
+}
+]]>
+                  </script>
+                </data>
+                <xAxis name="time" displayName="Timestamp" isDateTime="true"/>
+                <colors>
+                  <color lineColor="#7FFFD4" borderColor="#FFFFFF" fillColor="rgba(127,255,212,0.45)" />
+                  <color lineColor="#A9A9A9" borderColor="#FFFFFF" fillColor="rgba(169,169,169,0.6)" />
+                  <color lineColor="#FF7F50" borderColor="#FFFFFF" fillColor="rgba(255,127,80,0.38)" />
+                </colors>
+              </chartView>
+            </cell>
+          </cells>
+        </tableLayout>
+      </page>
+      <page title="Data in range">
+        <tableLayout id="9ba207f6-d130-4e22-bff3-fbdfd713ebb7">
+          <caption visible="false"></caption>
+          <rows>
+            <row sizeType="percentage" height="50" />
+            <row sizeType="percentage" height="50" />
+          </rows>
+          <columns>
+            <column sizeType="percentage" width="50" />
+            <column sizeType="percentage" width="50" />
+          </columns>
+          <cells>
+            <cell row="0" col="0">
+              <chartView id="f4f20aff-891d-4a62-b1ed-176b15ab9767" chartType="CandlestickChart" loadDataAt="Creating">
+                <caption visible="true">Candlestick chart</caption>
+                <data showProgress="false">
+                  <script type="lua">
+<![CDATA[
+return {
+    { label = "02/02", open = 6, high = 10, low = 5, close = 8 },
+    { label = "03/02", o = 7,    h = 7.5,   l = 6,   c = 6.2 },
+    { label = "04/02", o = 5,    h = 6,     l = 3,   c = 4 },
+    { label = "05/02", o = 3.5,  h = 4.2,   l = 3.2, c = 3.5 },
+    { label = "06/02", o = 4,    h = 7,     l = 4,   c = 5 },
+    { label = "07/02", o = 4.5,  h = 6,     l = 4,   c = 6 },
+    { label = "08/02", o = 5,    h = 7,     l = 4.5, c = 7 },
+    { label = "09/02", o = 7,    h = 8,     l = 5,   c = 7.5 },
+    { label = "10/02", o = 7.2,  h = 8,     l = 6,   c = 6.5 }
+}
+]]>
+                  </script>
+                </data>
+                <xAxis name="time" displayName="Timestamp" isDateTime="true"/>
+              </chartView>
+            </cell>
+            <cell row="1" col="0">
+              <chartView id="f333d2dc-3e51-40c6-82b2-8c97e23db408" chartType="OhlcChart" loadDataAt="Creating">
+                <caption visible="true">OHLC chart</caption>
+                <data showProgress="false">
+                  <script type="lua">
+<![CDATA[
+return {
+    { label = "02/02", open = 6, high = 10, low = 5, close = 8 },
+    { label = "03/02", o = 7,    h = 7.5,   l = 6,   c = 6.2 },
+    { label = "04/02", o = 5,    h = 6,     l = 3,   c = 4 },
+    { label = "05/02", o = 3.5,  h = 4.2,   l = 3.2, c = 3.5 },
+    { label = "06/02", o = 4,    h = 7,     l = 4,   c = 5 },
+    { label = "07/02", o = 4.5,  h = 6,     l = 4,   c = 6 },
+    { label = "08/02", o = 5,    h = 7,     l = 4.5, c = 7 },
+    { label = "09/02", o = 7,    h = 8,     l = 5,   c = 7.5 },
+    { label = "10/02", o = 7.2,  h = 8,     l = 6,   c = 6.5 }
+}
+]]>
+                  </script>
+                </data>
+                <xAxis name="time" displayName="Timestamp" isDateTime="true"/>
+              </chartView>
+            </cell>
+            <cell row="0" col="1">
+              <chartView id="1e6b0623-d8d7-426b-88f1-3dd28a2f4e18" chartType="BoxPlot" loadDataAt="Creating">
+                <caption visible="true">Box plot</caption>
+                <data showProgress="false">
+                  <script type="lua">
+<![CDATA[
+return {
+    A1 = { 0.22, -0.87, -2.39, -1.79, 0.37, -1.54, 1.28, -0.31, -0.74, 1.72, 0.38, -0.17, -0.62, -1.10, 0.30, 0.15, 2.30, 0.19, -0.50, -0.09 },
+    A2 = { -5.13, -2.19, -2.43, -3.83, 0.50, -3.25, 4.32, 1.63, 5.18, -0.43, 7.11, 4.87, -3.10, -5.81, 3.76, 6.31, 2.58, 0.07, 5.76, 3.50 }
+}
+]]>
+                  </script>
+                </data>
+                <xAxis name="time" displayName="Timestamp" isDateTime="true"/>
+              </chartView>
+            </cell>
+            <cell row="1" col="1">
+              <chartView id="394fcf65-4dba-4d4d-8686-511835829e4e" chartType="Histogram" loadDataAt="Creating">
+                <caption visible="true">Histogram</caption>
+                <data showProgress="false">
+                  <script type="lua">
+<![CDATA[
+return {
+    histogram = { 6.81,3.46,7.06,0.93,7.8,0.23,2.45,9.74,8.97,3.24,1.79,6.36,2.53,4.22,6.93,6.82,1.15,5.08,0.68,0.91,1.29,3.66,2.57,8.52,3.87,3.62,6.31,4.37,3.02,6.46,3.21,5.25,0.08,4.74,8.88,6.32,4.71,1.32,6.65,2.49,2.48,3.34,5.13,8.21,7.16,9.92,7.06,9.82,5.03,7,2.86,5.73,9.02,0.84,7.76,5.3,1.07,9.71,3.41,2.11,3.37,5.46,0.04,1.02,0.91,7.22,9.08,0.16,5.3,7.82,6.04,3.59,0.06,8.48,6.4,6.74,6.95,3.4,6.3,4.58,4.5,6.39,2.59,0.02,8.4,7.2,3.96,9.62,4.82,5.72,1.73,1.5,5.37,6.32,3.6,0.44,1.5,8.24,2.61,6.94,4.55,3.25,1.54,1.85,7.84,3.67,5.07,1.51,8.01,6,7.19,8.7,5.25,0.98,1.02,4.14,8.15,0.49,8.76,6.17,5.75,4.3,1.13,7.02,9.69,7.22,9.62,7.31,1.17,0.08,3.84,8.17,4.35,7.09,1.36,1.62,2.78,2.93,6.25,2.03,7.39,4.7,5.17,2.39,9.59,9.58,9.99,3.12,7.54,3.17,8.51,7.34,5.77,9.67,4.38,7.65,3.44,6.53,4.72,5.88,4.54,5.77,4.57,3.46,8.14,9.29,0.11,9.71,5.54,2.25,1.46,9.98,1.03,4.48,9.85,5.07,1.09,0.86,2.07,3.73,0.17,6.34,0.63,7.08,9.2,6.7,7.67,1.14,4.79,0.16,4.56,0.17,8.36,6.76,0.22,8.06,8.23,0.14,9.22,6.86,4.97,5.73,8.98,1.51,3.44,5.36,8.2,7.22,7.67,5.47,3.51,7.15,9.58,1.02,6.25,2.36,8.54,6.87,4.55,8.51,3.87,8.57,6.06,8.31,3.51,0.57,7.54,3.23,0.28,1.46,0.64,4.65,1.09,2.66,8.02,0.19,1.05,5.87,2.1,9.6,1.55,5.54,0.86,6.41,4.93,6.62,5.64,2.74,1.27,4.28,8.36,6.5,1.65,1.42,1.15,9.27,8.54,5.8,8.69,3.54,3.56,7.06,9.44,3.53,8.73,3.92,3.88,6.28,1.13,0.71,5.64,6.63,9.21,2.81,1.12,5.74,3.71,9.1,3.56,4.07,2.65,8.21,5.95,8.44,1.33,7.84,1.46,2.27,8,7.13,1.73,1.35,5.82,6.7,9.12,4.97,7.38,4.97,3.48,9.09,2.21,7.02,5.85,3.89,9.95,6.94,0.68,8.61,8.23,6.09,1.71,5.99,5.67,6.15,2.89,1.22,6.53,0.52,4.6,0.66,8.72,6.08,7.39,5.63,5.3,3.6,4.12,1.95,2.79,0.89,8.65,0.58,5.17,8.58,6.13,0.5,8.47,1.42,0.81,1.83,9.43,8.8,4.89,7.93,9.92,3.82,8.82,6.18,7.96,9.15,7.35,6.85,4.17,7.44,8.97,2.38,2.87,7,8.64,0.11,6.92,5.54,0.78,5.14,0.03,0.95,4.2,8.76,2.52,6.29,2.04,6.7,3.23,2.32,9.8,7.48,7.87,9.58,5.46,1.83,9.61,1.79,3.87,5.54,9.04,8.45,5.47,9.52,2.5,7.55,4.26,2.24,1.16,0.58,3.74,8.69,0.61,2.94,0.82,8.78,6.23,6.04,3.48,1.69,6.68,8.74,1.69,0.59,4.42,1.59,1.88,4.98,7.13,6.57,3.4,5.57,9.02,8.75,7.06,3.13,1.24,8.67,3.26,8.53,7.86,1.01,6.88,6.62,8.08,8.57,0.11,3.47,9.7,7.62,2.81,9.07,6.39,7.37,8.37,6.44,2.83,5.75,4.71,8.77,5.1,1.72,1.78,9.33,4.08,9.05,6.75,6.68,2.73,8.84,6.17,1.24,6.57,5.68,2.49,6.17,7.48,1.46,1.74,1.29,4.53,0.89,7.48,6.32,2.74,2.65,5.22,0.62,2.9,7.29,4.15,5.78,8.94,4.08,6.73,1.51,4.02,7.18,4.52,8.74,9.38,8.95,7.65,4.48,0.44,7.76,8.22,7.35,2.01,6.12,8.89,2.32,8.15,3.31,6.34,4.55,8.89,8.78,5,2.05,8.41,5.58,8.03,6.49,3.6,7.83,3.9,3.48,3.75,0.54,8.09,5.64,4.69,8.52,4.51,8.93,7.38,4.7,6.55,8.93,2.42,1.3,9.81,8.71,6.83,7.31,4.89,8.02,7.68,1.53,5.4,6.44,5.29,1.72,2.88,3.55,3.05,8.22,7.67,7.02,3.33,9.76,6.28,3.15,4.91,1.35,0.25,5.56,6.06,5.47,5.54,6.04,8.63,9.16,1.83,7.55,3.29,7.91,0.82,5.75,3.47,2.67,1.13,5.08,9.51,0.85,9.28,6.27,2.47,7.22,6.08,9.89,1.75,6.44,4.69,3.44,8.02,8.24,7.8,2.65,0.85,6.38,8.57,7.72,9.89,2.64,4.13,9.47,4.9,4.03,4.58,6.71,0.11,3.53,8.68,3.74,1.8,8.34,4.7,6.87,6,6.1,0.97,0.83,7.24,2.82,1.47,9.97,9.57,8.13,1.06,8.43,8.75,4.11,3.53,2.52,9.92,1.34,3.47,7.11,7.49,9.63,0.4,2.25,8.86,4.47,6.74,5.4,3.73,9.46,3.55,2.9,8.54,0.24,5.02,5.56,7.03,0.37,4.16,2.7,8.27,6.49,6.78,0.1,4.39,1.2,2.04,6.92,8.13,8.35,7.7,4.3,1.32,4.69,6.73,2.4,4.6,0.07,8.01,6.93,9.14,3.16,3.9,4.79,4.61,6.73,8.41,4.75,0.23,3.23,4.43,8.66,6.89,0.19,5.58,4.93,6.34,9.22,5.24,7.03,7.45,6.45,8.34,2.09,2.9,3.95,5.13,4.3,9.52,4.3,2.82,4.87,6.09,7.53,8.52,6.7,1.45,0.71,0.71,6.99,7.44,9.22,6.13,5.37,7.07,5.93,7.46,5.94,5.54,0.97,4.43,3.73,3.08,2.81,6.66,8.68,5.45,1.71,8.47,0.11,3.63,8.59,2.22,3.83,6.12,8.87,6.34,7.94,0.53,4.86,5.55,0.75,4.05,6.33,1.79,0.61,2.18,8.42,3.97,5.88,4.71,2.1,1.33,4.5,6.34,3.96,6.93,8.95,6.57,9.87,6.99,6.57,8.29,1.95,7.4,4.62,5.29,7.08,5.3,9.97,1.6,7.29,2.35,0.33,8.15,1.46,4.02,7.28,7.46,6.93,7.6,9.03,3.57,6.87,1.1,1.05,2.85,8.58,8.52,8.3,1.65,5.53,2.67,9.38,2.4,2.36,5.47,5.7,4.27,4.13,6.18,6.44,5.59,8.74,7.75,2.82,1.87,8.21,6.05,6.33,4.3,9.83,7.29,1.87,4.8,5.34,4.17,0.74,7.09,9.27,3.17,9.16,8.16,9.23,5.4,5.34,0.14,5.65,5.95,3.34,3.12,3.86,8.29,4.41,8.8,3.7,5.26,4.2,0.94,0,7.37,5.7,3.38,2.08,8.64,2.14,0.44,1.29,8.46,2.79,5.48,7.5,5.28,4.16,8.23,1.12,9.32,3.48,1.73,3.13,1.46,3.38,7.23,9.35,5.11,9.11,6.45,2.89,4.91,5.67,1.69,3.72,3.24,7.91,5.32,5.36,0.96,9.68,9.2,5.49,0.21,1.98,4.97,2.53,9.2,9.13,3.38,8.87,5.98,7.33,8.52,6.54,5.68,4.41,3.16,7.87,8.12,8.88,5.95,7.86,4.93,7.84,7.19,7.12,2.33,9.49,4.69,6.48,6.56,5.52,0.36,2.91,7.03,7.9,9.98,0.98,6.38,9.16,3.13,0.35,3.42,4.36,0.4,6.52,7.17,6.3,5.81,1.88,1.45,1.8,5.72,4.11,0.47,8.56,5.71,6.11,3.35,2.61,9.08,6.24,4.19,8.77,7.55,3.82,3.93,1.57,2.24,3.7,0.66,2.53,7.52,1.53,6.33,0.54,7.06,3.12,1.04,8.68,6.85,4.58,4.66,7.69,6.97,4.3,8.59,8.68,7.23,5.08,4.93,6.32,0.13,7.73,8.9,2.91,5.27,0.9,0.67,2.57,4.11,9.71,9.91,9.51,5.75,9.04,2.34,2.78,3.62,0.67,5.87,3.56,5.62,7.14,2.71,6.55,0.01,7.4,6.8,2.54,0.27,7.22,0.91,4.8,8.53,9.72,2.73,8.35 }
+}
+]]>
+                  </script>
+                </data>
+                <xAxis name="time" displayName="Timestamp" isDateTime="true" />
+                <colors>
+                  <color borderColor="rgba(250,20,20,0.9)" fillColor="rgba(250,20,20,0.47)" lineColor="#FFFFFF" />
+                  <color borderColor="rgba(20,20,20,0.7)" fillColor="rgba(20,20,20,0.345)" lineColor="#FFFFFF" />
+                  <color borderColor="rgba(20,250,20,0.9)" fillColor="rgba(20,250,20,0.47)" lineColor="#FFFFFF" />
+                </colors>
+              </chartView>
+            </cell>
+          </cells>
+        </tableLayout>
+      </page>
+      <page title="Pie / Doughnut / Bubble">
+        <tableLayout id="d4c55bc5-1186-47a1-94f4-04b097e86291">
+          <rows>
+            <row sizeType="percentage" height="50" />
+            <row sizeType="percentage" height="50" />
+          </rows>
+          <columns>
+            <column sizeType="percentage" width="50" />
+            <column sizeType="percentage" width="50" />
+          </columns>
+          <cells>
+            <cell row="0" col="0">
+              <chartView id="6e7e0e67-0a62-46b5-bb66-e2c553ad5a8a" chartType="PieChart" showLegend="true" loadDataAt="Creating">
+                <caption visible="true">Pie chart</caption>
+                <data showProgress="false">
+                  <script type="lua">
+<![CDATA[
+return {
+    Red = { value = 300, color = "#F7464A" },
+    Green = { v = 50, c = "#46BFBD" },
+    Yellow = { value = 100, color = "#FDB45C" },
+    Grey = { value = 40, color = "#949FB1" },
+    DarkGrey = { value = 120, color = "#4D5360" }
+}
+]]>
+                  </script>
+                </data>
+                <xAxis name="time" displayName="Timestamp" isDateTime="true" />
+              </chartView>
+            </cell>
+            <cell row="1" col="0">
+              <chartView id="54abbffb-4814-46b2-818b-c5bf70d062f3" chartType="DoughnutChart" showLegend="true" loadDataAt="Creating">
+                <caption visible="true">Doughnut chart</caption>
+                <data showProgress="false">
+                  <script type="lua">
+<![CDATA[
+return {
+    Red = { value = 300, color = "#F7464A" },
+    Green = { v = 50, c = "#46BFBD" },
+    Yellow = { value = 100, color = "#FDB45C" },
+    Grey = { value = 40, color = "#949FB1" },
+    DarkGrey = { value = 120, color = "#4D5360" }
+}
+]]>
+                  </script>
+                </data>
+                <xAxis name="time" displayName="Timestamp" isDateTime="true" />
+              </chartView>
+            </cell>
+            <cell row="0" col="1">
+              <chartView id="42a28593-abf5-4bb5-99d0-44e0316676fd" chartType="PolarAreaChart" loadDataAt="Creating">
+                <caption visible="true">Polar area chart</caption>
+                <data showProgress="false">
+                  <script type="lua">
+<![CDATA[
+return {
+    Red = { value = 300, color = "#F7464A" },
+    Green = { v = 50, c = "#46BFBD" },
+    Yellow = { value = 100, color = "#FDB45C" },
+    Grey = { value = 40, color = "#949FB1" },
+    DarkGrey = { value = 120, color = "#4D5360" }
+}
+]]>
+                  </script>
+                </data>
+                <xAxis name="time" displayName="Timestamp" isDateTime="true" />
+              </chartView>
+            </cell>
+            <cell row="1" col="1">
+              <chartView id="7a5e9ae2-e4a1-41ba-b709-7ec8d63e3d56" chartType="BubbleChart" loadDataAt="Creating">
+                <caption visible="true">Bubble chart</caption>
+                <data showProgress="false">
+                  <script type="lua">
+<![CDATA[
+return {
+    dataset_1 =
+    {
+        { x = -0.2, y = 3.5, r = 1 },
+        { x = 0.5,  y = 2.5, r = 1 },
+        { x = 1.2,  y = 0.1, r = 1 },
+        { x = 1.5,  y = 1.6, r = 2 },
+        { x = 2,    y = 1.8, r = 2 },
+        { x = 2.2,  y = 2.1, r = 3 },
+        { x = 2.7,  y = 2,   r = 3 }
+    },
+    dataset_2 =
+    {
+        { x = -0.3, y = 6.5,  r = 0.5 },
+        { x = 0.2,  y = -1.5, r = 0.5 },
+        { x = 1.6,  y = 0.7,  r = 1 },
+        { x = 1.5,  y = 4.1,  r = 1 },
+        { x = 1.8,  y = 2.7,  r = 2 },
+        { x = 2.1,  y = 2,    r = 2 },
+        { x = 2.3,  y = 6,    r = 5 }
+    }
+}
+]]>
+                  </script>
+                </data>
+                <xAxis name="time" displayName="Timestamp" isDateTime="true" />
+                <colors>
+                  <color borderColor="#FFFFFF" fillColor="rgba(250,20,20,0.47)" lineColor="rgba(250,20,20,0.23)" />
+                  <color borderColor="#FFFFFF" fillColor="rgba(20,20,20,0.345)" lineColor="rgba(20,20,20,0.17)" />
+                </colors>
+              </chartView>
+            </cell>
+          </cells>
+        </tableLayout>
+      </page>
+      <page title="Scatter / Line / Area">
+        <tableLayout id="f12014e6-6054-4569-b27f-8d45cbca3b59">
+          <rows>
+            <row sizeType="percentage" height="50" />
+            <row sizeType="percentage" height="50" />
+          </rows>
+          <columns>
+            <column sizeType="percentage" width="50" />
+            <column sizeType="percentage" width="50" />
+          </columns>
+          <cells>
+            <cell row="0" col="0">
+              <chartView id="df8124a0-0591-4f04-a627-5e86f19ffe02" chartType="ScatterPlot" loadDataAt="Creating">
+                <caption visible="true">Scatter plot</caption>
+                <data showProgress="false">
+                  <script type="lua">
+<![CDATA[
+return {
+    Series_1 =
+    {
+        { x = -0.2, y = 3.5 },
+        { x = 0.5,  y = 2.5 },
+        { x = 1.2,  y = 0.1 },
+        { x = 1.5,  y = 1.6 },
+        { x = 2,    y = 1.8 },
+        { x = 2.2,  y = 2.1 },
+        { x = 2.7,  y = 2 }
+        
+    },
+    Series_2 =
+    {
+        { x = -0.3, y = 6.5 },
+        { x = 0.2,  y = -1.5 },
+        { x = 1.6,  y = 0.7 },
+        { x = 1.5,  y = 4.1 },
+        { x = 1.8,  y = 2.7 },
+        { x = 2.1,  y = 2 },
+        { x = 2.3,  y = 6 }
+    }
+}
+]]>
+                  </script>
+                </data>
+                <xAxis name="time" displayName="Timestamp" isDateTime="true" />
+                <colors>
+                  <color borderColor="#FFFFFF" fillColor="rgba(250,20,20,0.47)" lineColor="rgba(250,20,20,0.23)" />
+                  <color borderColor="#FFFFFF" fillColor="rgba(20,20,20,0.345)" lineColor="rgba(20,20,20,0.17)" />
+                </colors>
+              </chartView>
+            </cell>
+            <cell row="1" col="0">
+              <chartView id="bc169cc9-cdae-445c-9167-526ed79ab4ed" chartType="Math2dPlot" loadDataAt="Creating">
+                <caption visible="true">Math2D plot</caption>
+                <data showProgress="false">
+                  <script type="lua">
+<![CDATA[
+return {
+    Series_1 =
+    {
+        { x = -0.2, y = 3.5 },
+        { x = 0.5,  y = 2.5 },
+        { x = 1.2,  y = 0.1 },
+        { x = 1.5,  y = 1.6 },
+        { x = 2,    y = 1.8 },
+        { x = 2.2,  y = 2.1 },
+        { x = 2.7,  y = 2 }
+        
+    },
+    Series_2 =
+    {
+        { x = -0.3, y = 6.5 },
+        { x = 0.2,  y = -1.5 },
+        { x = 1.6,  y = 0.7 },
+        { x = 1.5,  y = 4.1 },
+        { x = 1.8,  y = 2.7 },
+        { x = 2.1,  y = 2 },
+        { x = 2.3,  y = 6 }
+    }
+}
+]]>
+                  </script>
+                </data>
+                <xAxis name="time" displayName="Timestamp" isDateTime="true" />
+                <colors>
+                  <color borderColor="#FFFFFF" fillColor="rgba(250,20,20,0.47)" lineColor="rgba(250,20,20,0.9)" />
+                  <color borderColor="#FFFFFF" fillColor="rgba(20,20,20,0.345)" lineColor="rgba(20,20,20,0.7)" />
+                </colors>
+              </chartView>
+            </cell>
+            <cell row="0" col="1">
+              <chartView id="6c908cbe-0801-45ce-a92e-222b62854ed6" chartType="LineChart" loadDataAt="Creating">
+                <caption visible="true">Line chart</caption>
+                <data showProgress="false">
+                  <script type="lua">
+<![CDATA[
+return {
+    labels = { "January", "February", "March", "April", "May", "June", "July" },
+    dataset_1 = { 3, 2.5, 1.2, 3, 4, 5, 1 },
+    dataset_2 = { 1, 1.33, 2.5, 2, 3, 1.8, 0.4 },
+    dataset_3 = { 2.3, 0.5, 1.5, 4, 1, 0.5, 0.4 }
+}
+]]>
+                  </script>
+                </data>
+                <xAxis name="time" displayName="Timestamp" isDateTime="true" />
+                <colors>
+                  <color borderColor="rgba(250,20,20,0.9)" fillColor="rgba(250,20,20,0.47)" lineColor="#FFFFFF" />
+                  <color borderColor="rgba(20,20,20,0.7)" fillColor="rgba(20,20,20,0.345)" lineColor="#FFFFFF" />
+                  <color borderColor="rgba(20,250,20,0.9)" fillColor="rgba(20,250,20,0.47)" lineColor="#FFFFFF" />
+                </colors>
+              </chartView>
+            </cell>
+            <cell row="1" col="1">
+              <chartView id="3ca40a1f-e291-466a-b760-c7ffc0a219b7" chartType="AreaChart" loadDataAt="Creating">
+                <caption visible="true">Area chart</caption>
+                <data showProgress="false">
+                  <script type="lua">
+<![CDATA[
+return {
+    Area_1 =
+    {
+        { x = 3,   y = 3 },
+        { x = 3.5, y = 4 },
+        { x = 6,   y = 2 },
+        { x = 7,   y = -1 },
+        { x = 5,   y = 0 },
+        { x = 4.5, y = 1.7 }
+    },
+    Area_2 =
+    {
+        { x = -0.3, y = 6.5 },
+        { x = 0.2,  y = -1.5 },
+        { x = 1.6,  y = 0.7 },
+        { x = 1.5,  y = 4.1 },
+        { x = 1.8,  y = 2.7 },
+        { x = 2.1,  y = 2 },
+        { x = 2.3,  y = 6 }
+    }
+}
+]]>
+                  </script>
+                </data>
+                <xAxis name="time" displayName="Timestamp" isDateTime="true" />
+                <colors>
+                  <color borderColor="rgba(250,20,20,0.9)" fillColor="rgba(250,20,20,0.47)" lineColor="#FFFFFF" />
+                  <color borderColor="rgba(20,20,20,0.7)" fillColor="rgba(20,20,20,0.345)" lineColor="#FFFFFF" />
+                  <color borderColor="rgba(20,250,20,0.9)" fillColor="rgba(20,250,20,0.47)" lineColor="#FFFFFF" />
+                </colors>
+              </chartView>
+            </cell>
+          </cells>
+        </tableLayout>
+      </page>
+    </pages>
+  </tabLayout>
+  </view>
+
+  <dataFlow>
+  </dataFlow>
+</LsbView>

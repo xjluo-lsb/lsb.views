@@ -1,0 +1,1238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Copyright (C) xjluo@hotmail.com, 2023 -
+
+This is the schema file for LSB view files. It defines the enumeration types, structure types, etc. used
+in the LSB view files. It also defines the file structure of the view files using the types defined.
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="https://github.com/xjluo-lsb/lsb.views"
+  xmlns="https://github.com/xjluo-lsb/lsb.views"
+  elementFormDefault="qualified">
+
+  <!-- Following are enumeration types -->
+
+  <xs:simpleType name="LoadDataAt" final="restriction">
+    <xs:annotation>
+      <xs:documentation>
+        This is the enumeration type of when to load data for a view control.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Default" />
+      <xs:enumeration value="Creating" />
+      <xs:enumeration value="Visualizing" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="TrimSpace" final="restriction">
+    <xs:annotation>
+      <xs:documentation>
+        This is the enumeration type of how to trim spaces in a string value.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="None" />
+      <xs:enumeration value="Left" />
+      <xs:enumeration value="Right" />
+      <xs:enumeration value="Both" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Direction" final="restriction">
+    <xs:annotation>
+      <xs:documentation>
+        This is the enumeration type of the parameter direction.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Input" />
+      <xs:enumeration value="Output" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="TriggerFlags" final="restriction">
+    <xs:annotation>
+      <xs:documentation>
+        This is the enumeration type of the TriggerFlags used in the InputParameter.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Default" />
+      <xs:enumeration value="IsNull" />
+      <xs:enumeration value="IsEmpty" />
+      <xs:enumeration value="IsWhiteSpace" />
+      <xs:enumeration value="IsTrue" />
+      <xs:enumeration value="IsFalse" />
+      <xs:enumeration value="IsZero" />
+      <xs:enumeration value="IsPositive" />
+      <xs:enumeration value="IsNegative" />
+      <xs:enumeration value="IsMatched" />
+      <xs:enumeration value="IsChanged" />
+      <xs:enumeration value="IsTrigger" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="OperationType" final="restriction">
+    <xs:annotation>
+      <xs:documentation>
+        This is the enumeration type for the OperationType used in the OutputParameter.
+        As for the actual value, Default is equvilent to Selection and Activation is equvilent to DoubleClick.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Default" />
+      <xs:enumeration value="Selection" />
+      <xs:enumeration value="Activation" />
+      <xs:enumeration value="DoubleClick" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Orientation" final="restriction">
+    <xs:annotation>
+      <xs:documentation>
+        This is the enumeration type of the splitter direction in the SplitLayout.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Horizontal" />
+      <xs:enumeration value="Vertical" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="TabPosition" final="restriction">
+    <xs:annotation>
+      <xs:documentation>
+        This is the enumeration type of the tab position in the TabLayout.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Top" />
+      <xs:enumeration value="Bottom" />
+      <xs:enumeration value="Left" />
+      <xs:enumeration value="Right" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="FixedView" final="restriction">
+    <xs:annotation>
+      <xs:documentation>
+        This is the enumeration type of the fixed view in the SplitLayout control.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="None" />
+      <xs:enumeration value="Left" />
+      <xs:enumeration value="Right" />
+      <xs:enumeration value="Top" />
+      <xs:enumeration value="Bottom" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="MenuItemType" final="restriction">
+    <xs:annotation>
+      <xs:documentation>
+        This is the enumeration type of menu item types used in ContextMenuItem.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="MenuItem" />
+      <xs:enumeration value="Separator" />
+      <xs:enumeration value="SubMenu" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="HttpMethod" final="restriction">
+    <xs:annotation>
+      <xs:documentation>
+        This is the enumeration type of HTTP methods for WebData.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Get" />
+      <xs:enumeration value="Post" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="HorizontalAlignment" final="restriction">
+    <xs:annotation>
+      <xs:documentation>
+        This is the enumeration type for horizontal alignment in the Column setting.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Center" />
+      <xs:enumeration value="Left" />
+      <xs:enumeration value="Right" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="VerticalAlignment" final="restriction">
+    <xs:annotation>
+      <xs:documentation>
+        This is the enumeration type for vertical alignment which is currently not used.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Center" />
+      <xs:enumeration value="Top" />
+      <xs:enumeration value="Bottom" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="SizeType" final="restriction">
+    <xs:annotation>
+      <xs:documentation>
+        This is the enumeration type of size types used in Column setting.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="absolute" />
+      <xs:enumeration value="percentage" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="ChartType" final="restriction">
+    <xs:annotation>
+      <xs:documentation>
+        This is the enumeration type of chart types supported in ChartView.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="BarChart" />
+      <xs:enumeration value="StackedBarChart" />
+      <xs:enumeration value="ColumnChart" />
+      <xs:enumeration value="StackedColumnChart" />
+      <xs:enumeration value="BoxPlot" />
+      <xs:enumeration value="CandlestickChart" />
+      <xs:enumeration value="OhlcChart" />
+      <xs:enumeration value="PieChart" />
+      <xs:enumeration value="DoughnutChart" />
+      <xs:enumeration value="PolarAreaChart" />
+      <xs:enumeration value="BubbleChart" />
+      <xs:enumeration value="ScatterPlot" />
+      <xs:enumeration value="Math2dPlot" />
+      <xs:enumeration value="LineChart" />
+      <xs:enumeration value="AreaChart" />
+      <xs:enumeration value="Histogram" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="DockStyle" final="restriction">
+    <xs:annotation>
+      <xs:documentation>
+        This is the enumeration type of how the button is aligned.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="None" />
+      <xs:enumeration value="Left" />
+      <xs:enumeration value="Top" />
+      <xs:enumeration value="Right" />
+      <xs:enumeration value="Bottom" />
+      <xs:enumeration value="Fill" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="PropertyValueType" final="restriction">
+    <xs:annotation>
+      <xs:documentation>
+        This is the enumeration type of the supported value types in PropertyInput.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Boolean" />
+      <xs:enumeration value="Flags" />
+      <xs:enumeration value="Float" />
+      <xs:enumeration value="Integer" />
+      <xs:enumeration value="UnsignedInteger" />
+      <xs:enumeration value="String" />
+      <xs:enumeration value="Password" />
+      <xs:enumeration value="ArrayString" />
+      <xs:enumeration value="LongString" />
+      <xs:enumeration value="Enumeration" />
+      <xs:enumeration value="MultiChoice" />
+      <xs:enumeration value="Date" />
+      <xs:enumeration value="Font" />
+      <xs:enumeration value="Cursor" />
+      <xs:enumeration value="Color" />
+      <xs:enumeration value="SystemColor" />
+      <xs:enumeration value="File" />
+      <xs:enumeration value="ImageFile" />
+      <xs:enumeration value="Folder" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="ContentType" final="restriction">
+    <xs:annotation>
+      <xs:documentation>
+        This is the enumeration type of what type of content is to be displayed in WebView.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Url" />
+      <xs:enumeration value="Content" />
+      <xs:enumeration value="Files" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="LineType" final="restriction">
+    <xs:annotation>
+      <xs:documentation>
+        This is the enumeration type for the chart line types.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Straight" />
+      <xs:enumeration value="Stepped" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="WhenToNotify" final="restriction">
+    <xs:annotation>
+      <xs:documentation>
+        This is the enumeration type for when to notify text change in TextInput control
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Enter" />
+      <xs:enumeration value="TextChange" />
+      <xs:enumeration value="Both" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="ExecuteAt" final="restriction">
+    <xs:annotation>
+      <xs:documentation>
+        This is the enumeration type for when to execute the script defined in Procedure
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="ParameterChanging" />
+      <xs:enumeration value="OneShotInitializing" />
+      <xs:enumeration value="TimerTicking" />
+      <xs:enumeration value="TimerStartAndTicking" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- Following types are non-structure types derived from primitive types -->
+
+  <!-- UUID type definition -->
+  <xs:simpleType name="UUID">
+    <xs:annotation>
+      <xs:documentation>
+        The UUID defines a 16-byte unique ID.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:pattern value="([0-9]|[a-f]|[A-F]){8}-([0-9]|[a-f]|[A-F]){4}-([0-9]|[a-f]|[A-F]){4}-([0-9]|[a-f]|[A-F]){4}-([0-9]|[a-f]|[A-F]){12}" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="CssColor">
+    <xs:annotation>
+      <xs:documentation>
+        The is the schema for color in CSS format, rgb(r,g,b) or rgba(r,g,b,a)
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:pattern value="(rgb\(\d{1,3},\d{1,3},\d{1,3}\))|(rgba\(\d{1,3},\d{1,3},\d{1,3},(0(\.\d*)?|1(\.0*)?)\))" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="HtmlColor">
+    <xs:annotation>
+      <xs:documentation>
+        The is the schema for color in HTML format, #rrggbb
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:pattern value="#[a-fA-F0-9]{6}" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="Color">
+    <xs:annotation>
+      <xs:documentation>
+        The is the schema for color in HTML format or CSS format
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:pattern value="(#[a-fA-F0-9]{6})|(rgb\(\d{1,3},\d{1,3},\d{1,3}\))|(rgba\(\d{1,3},\d{1,3},\d{1,3},(0(\.\d*)?|1(\.0*)?)\))" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- Following are structure types -->
+
+  <xs:complexType name="Version">
+    <xs:annotation>
+      <xs:documentation>
+        This is the structure that defined version information for a LSB view.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="major" type="xs:nonNegativeInteger" use="required" />
+    <xs:attribute name="minor" type="xs:nonNegativeInteger" use="required" />
+    <xs:attribute name="build" type="xs:nonNegativeInteger" use="optional" default="0" />
+    <xs:attribute name="revision" type="xs:nonNegativeInteger" use="optional" default="0" />
+  </xs:complexType>
+
+  <xs:complexType name="ViewCaption">
+    <xs:annotation>
+      <xs:documentation>
+        This is the structure that defines the caption for a LSB view.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="visible" type="xs:boolean" use="optional" default="true" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:complexType name="Parameter">
+    <xs:annotation>
+      <xs:documentation>
+        The is the schema for the base Parameter class which will be inherited by InputParam and OutputParam.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="id" type="UUID" use="required" />
+    <xs:attribute name="name" type="xs:string" use="required" />
+  </xs:complexType>
+
+  <xs:complexType name="InputParam">
+    <xs:annotation>
+      <xs:documentation>
+        This is the schema for InputParam class.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="Parameter">
+        <xs:attribute name="valuePattern" type="xs:string" use="optional" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="InputParamSet">
+    <xs:annotation>
+      <xs:documentation>
+        This is the schema for InputParamSet which contains a set of input parameters.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="param" type="InputParam" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="OutputParam">
+    <xs:annotation>
+      <xs:documentation>
+        This is the schema for OutputParam class.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="Parameter">
+        <xs:attribute name="activation" type="OperationType" use="optional" default="Default" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="OutputParamSet">
+    <xs:annotation>
+      <xs:documentation>
+        This is the schema for OutputParamSet which contains a set of output parameters.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="param" type="OutputParam" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ContextMenuItem">
+    <xs:annotation>
+      <xs:documentation>
+        This the schema for single context menu item class ContentMenuItem.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="outputParams" type="OutputParamSet" minOccurs="0" maxOccurs="1" />
+      <xs:element name="dataSource" type="ChoiceOfData" minOccurs="0" maxOccurs="1" />
+      <xs:element name="menuItem" type="ContextMenuItem" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+    <xs:attribute name="type" type="MenuItemType" use="required" />
+    <xs:attribute name="text" type="xs:string" use="optional" />
+  </xs:complexType>
+
+  <xs:complexType name="ContextMenu">
+    <xs:annotation>
+      <xs:documentation>
+        This is the schema for ContextMenu which might contain one to more menu items.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="item" type="ContextMenuItem" minOccurs="1" maxOccurs="unbounded" />
+    </xs:sequence>
+    <xs:attribute name="copy" type="xs:boolean" use="optional" default="false" />
+    <xs:attribute name="refresh" type="xs:boolean" use="optional" default="false" />
+  </xs:complexType>
+
+  <xs:complexType name="WebData">
+    <xs:annotation>
+      <xs:documentation>
+        This is to define the configuration for downloading data from remote URL through HTTP Web request.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:all>
+      <xs:element name="url" type="xs:string" minOccurs="1" maxOccurs="1" />
+      <!-- Payload is only used for post requests -->
+      <xs:element name="payload" type="xs:string" minOccurs="0" maxOccurs="1" />
+    </xs:all>
+    <xs:attribute name="method" type="HttpMethod" use="optional" default="Get" />
+    <xs:attribute name="contentType" type="xs:string" use="optional" />
+  </xs:complexType>
+
+  <xs:complexType name="CsvData">
+    <xs:annotation>
+      <xs:documentation>
+        This is to define the configuration for downloading CSV data from remote URL through HTTP Web request.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="WebData">
+        <xs:attribute name="delimeter" type="xs:string" use="optional" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="JsonData">
+    <xs:annotation>
+      <xs:documentation>
+        This is to define the configuration for download JSON data from remote URL through HTTP Web request.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="WebData">
+        <!-- This is the path to the data to be returned in a complicated JSON object or an JSON array -->
+        <xs:attribute name="path" type="xs:string" use="optional" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="SqlData">
+    <xs:annotation>
+      <xs:documentation>
+        This is to define the configuration for retrieving data through SQL query.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="server" type="xs:string" use="required" />
+    <xs:attribute name="database" type="xs:string" use="required" />
+    <xs:attribute name="user" type="xs:string" use="optional" />
+  </xs:complexType>
+
+  <xs:complexType name="ScriptData">
+    <xs:annotation>
+      <xs:documentation>
+        This is to define the configuration for retrieving data through execution of script.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <!-- This is the type of the script. The script should be content of the element. -->
+        <xs:attribute name="type" type="xs:string" use="required" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:complexType name="ChoiceOfData">
+    <xs:annotation>
+      <xs:documentation>
+        This is the schema for the union of all supported data sources, only one of them can be used.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:choice>
+      <xs:element name="csv" type="CsvData" />
+      <xs:element name="json" type="JsonData" />
+      <xs:element name="sql" type="SqlData" />
+      <xs:element name="script" type="ScriptData" />
+    </xs:choice>
+    <xs:attribute name="showProgress" type="xs:boolean" use="optional" default="false" />
+  </xs:complexType>
+
+  <xs:complexType name="DataFlow">
+    <xs:annotation>
+      <xs:documentation>
+        Contains a group of parameter mappings that define how the parameters are mapped from one (the output parameter
+        of a control) to another (the input parameter of another control).
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="mapping" minOccurs="0" maxOccurs="unbounded">
+        <xs:complexType>
+          <xs:attribute name="source" type="UUID" use="required" />
+          <xs:attribute name="target" type="UUID" use="required" />
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:group name="ComponentElements">
+    <xs:annotation>
+      <xs:documentation>
+        This is the schema for elements in ComponentDefinition which is base for all view definitions.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="input" type="InputParamSet" minOccurs="0" maxOccurs="1" />
+      <xs:element name="output" type="OutputParamSet" minOccurs="0" maxOccurs="1" />
+      <xs:element name="condition" type="xs:string" minOccurs="0" maxOccurs="1" />
+      <xs:element name="data" type="ChoiceOfData" minOccurs="0" maxOccurs="1" />
+    </xs:sequence>
+  </xs:group>
+
+  <xs:attributeGroup name="ComponentAttributes">
+    <xs:annotation>
+      <xs:documentation>
+        This is the schema for attributes in ComponentDefinition.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="id" type="UUID" use="required" />
+  </xs:attributeGroup>
+
+  <xs:group name="ViewElements">
+    <xs:annotation>
+      <xs:documentation>
+        This is the schema for elements in ViewDefinition.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="caption" type="ViewCaption" minOccurs="0" maxOccurs="1" />
+      <xs:group ref="ComponentElements" />
+      <xs:element name="contextMenu" type="ContextMenu" minOccurs="0" maxOccurs="1" />
+    </xs:sequence>
+  </xs:group>
+
+  <xs:attributeGroup name="ViewAttributes">
+    <xs:annotation>
+      <xs:documentation>
+        This is the schema for attributes in ViewDefinition.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:attributeGroup ref="ComponentAttributes" />
+    <xs:attribute name="loadDataAt" type="LoadDataAt" use="optional" default="Default" />
+  </xs:attributeGroup>
+  
+  <xs:complexType name="Column">
+    <xs:annotation>
+      <xs:documentation>
+        This is the class for defining the columns in ListView.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="name" type="xs:string" use="required" />
+    <xs:attribute name="displayName" type="xs:string" use="optional" />
+    <xs:attribute name="width" type="xs:int" use="optional" />
+    <xs:attribute name="align" type="HorizontalAlignment" use="optional" default="Left" />
+    <xs:attribute name="visible" type="xs:boolean" use="optional" default="true" />
+  </xs:complexType>
+
+  <xs:complexType name="ColumnSet">
+    <xs:annotation>
+      <xs:documentation>
+        This is the schema for column set definition for ListView.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="column" type="Column" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ChoiceOfView">
+    <xs:annotation>
+      <xs:documentation>
+        This is the schema for the union of all supported view controls, only one View control can be selected.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:choice>
+      <xs:element name="splitLayout" type="SplitLayout" />
+      <xs:element name="tabLayout" type="TabLayout" />
+      <xs:element name="tableLayout" type="TableLayout" />
+      <xs:element name="buttonGroup" type="ButtonGroup" />
+
+      <xs:element name="chartView" type="ChartView" />
+      <xs:element name="listView" type="ListView" />
+      <xs:element name="textView" type="TextView" />
+      <xs:element name="treeListView" type="TreeListView" />
+      <xs:element name="treeView" type="TreeView" />
+      <xs:element name="webView" type="WebView" />
+
+      <xs:element name="button" type="Button" />
+      <xs:element name="propertyInput" type="PropertyInput" />
+      <xs:element name="textInput" type="TextInput" />
+      <xs:element name="comboBox" type="ComboBox" />
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="ButtonGroup">
+    <xs:annotation>
+      <xs:documentation>
+        This is the schema for the ButtonGroup layout control that contains a set of Buttons.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:group ref="ViewElements" />
+      <xs:element name="buttons">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="button" type="Button" minOccurs="1" maxOccurs="unbounded" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attributeGroup ref="ViewAttributes" />
+    <xs:attribute name="autoFlow" type="xs:boolean" use="optional" default="true" />
+    <xs:attribute name="buttonsPerRow" type="xs:nonNegativeInteger" use="optional" default="0" />
+  </xs:complexType>
+
+  <xs:complexType name="SplitLayout">
+    <xs:annotation>
+      <xs:documentation>
+        This is the schema for SplitLayout control.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:group ref="ViewElements" />
+      <xs:choice>
+        <xs:sequence>
+          <xs:element name="left" type="ChoiceOfView" minOccurs="1" maxOccurs="1" />
+          <xs:element name="right" type="ChoiceOfView" minOccurs="1" maxOccurs="1" />
+        </xs:sequence>
+        <xs:sequence>
+          <xs:element name="top" type="ChoiceOfView" minOccurs="1" maxOccurs="1" />
+          <xs:element name="bottom" type="ChoiceOfView" minOccurs="1" maxOccurs="1" />
+        </xs:sequence>
+      </xs:choice>
+    </xs:sequence>
+    <xs:attributeGroup ref="ViewAttributes" />
+    <xs:attribute name="orientation" type="Orientation" use="optional" default="Horizontal" />
+    <xs:attribute name="fixedView" type="FixedView" use="required" />
+    <xs:attribute name="ratio" type="xs:double" use="optional" default="0.0" />
+    <xs:attribute name="size" type="xs:nonNegativeInteger" use="optional" default="0" />
+  </xs:complexType>
+
+  <xs:complexType name="TabPage">
+    <xs:annotation>
+      <xs:documentation>
+        This is the schema for page definition for the TabLayout control.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="ChoiceOfView">
+        <xs:attribute name="title" type="xs:string" use="required" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="TabLayout">
+    <xs:annotation>
+      <xs:documentation>
+        This is the schema for TabLayout control.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:group ref="ViewElements" />
+      <xs:element name="pages">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="page" type="TabPage" minOccurs="1" maxOccurs="unbounded" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attributeGroup ref="ViewAttributes" />
+    <xs:attribute name="multiLine" type="xs:boolean" use="optional" default="false" />
+    <xs:attribute name="tabPosition" type="TabPosition" use="optional" default="Top" />
+  </xs:complexType>
+
+  <xs:complexType name="TableCell">
+    <xs:annotation>
+      <xs:documentation>
+        This is the schema for Cell in the TableLayout control.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="ChoiceOfView">
+        <xs:attribute name="row" type="xs:unsignedInt" use="required" />
+        <xs:attribute name="col" type="xs:unsignedInt" use="required" />
+        <xs:attribute name="rowSpan" type="xs:unsignedInt" use="optional" default="1" />
+        <xs:attribute name="colSpan" type="xs:unsignedInt" use="optional" default="1" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="TableRow">
+    <xs:annotation>
+      <xs:documentation>
+        This is the schema for single table row definition in the TableLayout control.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="sizeType" type="SizeType" use="required" />
+    <xs:attribute name="height" type="xs:float" use="required" />
+  </xs:complexType>
+
+  <xs:complexType name="TableColumn">
+    <xs:annotation>
+      <xs:documentation>
+        This is the schema for single table column definition in the TableLayout control.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="sizeType" type="SizeType" use="required" />
+    <xs:attribute name="width" type="xs:float" use="required" />
+  </xs:complexType>
+
+  <xs:complexType name="TableLayout">
+    <xs:annotation>
+      <xs:documentation>
+        This is the schema for the TableLayout control.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:group ref="ViewElements" />
+      <xs:element name="rows" minOccurs="1" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="row" type="TableRow" minOccurs="1" maxOccurs="unbounded" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="columns" minOccurs="1" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="column" type="TableColumn" minOccurs="1" maxOccurs="unbounded" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="cells" minOccurs="1" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="cell" type="TableCell" minOccurs="1" maxOccurs="unbounded" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attributeGroup ref="ViewAttributes" />
+  </xs:complexType>
+
+  <xs:complexType name="XAxisColumn">
+    <xs:annotation>
+      <xs:documentation>
+        This is the schema for X axis data column definition.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="name" type="xs:string" use="required" />
+    <xs:attribute name="displayName" type="xs:string" use="optional" />
+    <xs:attribute name="isDateTime" type="xs:boolean" use="optional" default="false" />
+  </xs:complexType>
+
+  <xs:complexType name="ColorSetting">
+    <xs:annotation>
+      <xs:documentation>
+        This is the schema for color settubg for ChartView definition.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="fillColor" type="Color" use="optional" />
+    <xs:attribute name="borderColor" type="Color" use="optional" />
+    <xs:attribute name="lineColor" type="Color" use="required" />
+  </xs:complexType>
+
+  <xs:complexType name="ChartView">
+    <xs:annotation>
+      <xs:documentation>
+        This is the schema for the ChartView for rendering charts based on data provided.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:group ref="ViewElements" />
+      <xs:element name="xAxis" type="XAxisColumn" minOccurs="1" maxOccurs="1" />
+      <xs:element name="colors" minOccurs="0" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="color" type="ColorSetting" minOccurs="1" maxOccurs="unbounded" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attributeGroup ref="ViewAttributes" />
+    <xs:attribute name="chartType" type="ChartType" use="required" />
+    <xs:attribute name="showLegend" type="xs:boolean" use="optional" default="true" />
+    <xs:attribute name="lineType" type="LineType" use="optional" default="Straight" />
+    <xs:attribute name="background" type="HtmlColor" use="optional" default="#FFFFFF" />
+  </xs:complexType>
+
+  <xs:complexType name="RowColor">
+    <xs:annotation>
+      <xs:documentation>
+        This is the schema for RowColor class that defines the color and font to be used for a specific ListView rows
+        that has the column value(s) meet the predefined condition.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="condition" type="xs:string" use="required" />
+    <xs:attribute name="foreColor" type="HtmlColor" use="optional" />
+    <xs:attribute name="backColor" type="HtmlColor" use="optional" />
+    <xs:attribute name="fontInfo" type="xs:string" use="optional" />
+  </xs:complexType>
+
+  <xs:complexType name="ListViewFilter">
+    <xs:annotation>
+      <xs:documentation>
+        This is the schema that defined the filter content for the ListView control.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="visible" type="xs:boolean" use="optional" default="true" />
+    <xs:attribute name="prompt" type="xs:string" use="optional" />
+    <xs:attribute name="placeholder" type="xs:string" use="optional" />
+  </xs:complexType>
+
+  <xs:complexType name="ListViewStatus">
+    <xs:annotation>
+      <xs:documentation>
+        This is the schema that defined the status bar content for the ListView control.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="visible" type="xs:boolean" use="optional" default="true" />
+    <xs:attribute name="singleItemCountPrompt" type="xs:string" use="optional" />
+    <xs:attribute name="multipleItemCountPrompt" type="xs:string" use="optional" />
+    <xs:attribute name="noSelectionPrompt" type="xs:string" use="optional" />
+    <xs:attribute name="currentSelectionPrompt" type="xs:string" use="optional" />
+    <xs:attribute name="singleSelectionPrompt" type="xs:string" use="optional" />
+    <xs:attribute name="multipleSelectionPrompt" type="xs:string" use="optional" />
+  </xs:complexType>
+
+  <xs:complexType name="ListView">
+    <xs:annotation>
+      <xs:documentation>
+        This is the schema for ListView control.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:group ref="ViewElements" />
+      <xs:element name="filter" type="ListViewFilter" minOccurs="0" maxOccurs="1" />
+      <xs:element name="status" type="ListViewStatus" minOccurs="0" maxOccurs="1" />
+      <xs:element name="columns" type="ColumnSet" minOccurs="1" maxOccurs="1" />
+      <xs:element name="rowColors" minOccurs="0" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="row" type="RowColor" minOccurs="0" maxOccurs="unbounded" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attributeGroup ref="ViewAttributes" />
+    <xs:attribute name="sortable" type="xs:boolean" use="optional" default="false" />
+    <xs:attribute name="multiSelect" type="xs:boolean" use="optional" default="false" />
+  </xs:complexType>
+
+  <xs:complexType name="TextView">
+    <xs:annotation>
+      <xs:documentation>
+        This is the schema for the TextView control which is used for dislpaying multiple lines of text.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:group ref="ViewElements" />
+      <xs:element name="content" type="xs:string" minOccurs="0" maxOccurs="1" />
+    </xs:sequence>
+    <xs:attributeGroup ref="ViewAttributes" />
+    <xs:attribute name="noWrap" type="xs:boolean" use="optional" default="false" />
+    <xs:attribute name="multiline" type="xs:boolean" use="optional" default="true" />
+    <xs:attribute name="readOnly" type="xs:boolean" use="optional" default="false" />
+  </xs:complexType>
+
+  <xs:complexType name="TreeView">
+    <xs:annotation>
+      <xs:documentation>
+        This is the schema for the TreeView control to display data in tree hierachy.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:group ref="ViewElements" />
+      <xs:element name="nodeColors" minOccurs="0" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="node" type="RowColor" minOccurs="0" maxOccurs="unbounded" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attributeGroup ref="ViewAttributes" />
+    <xs:attribute name="labelProperty" type="xs:string" use="optional" default="name" />
+    <xs:attribute name="childProperty" type="xs:string" use="required" />
+  </xs:complexType>
+
+  <xs:complexType name="TreeListView">
+    <xs:annotation>
+      <xs:documentation>
+        This is the schema for the TreeListView control for displaying multiple columns of data in tree hierachy.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:group ref="ViewElements" />
+      <xs:element name="columns" type="ColumnSet" minOccurs="1" maxOccurs="1" />
+    </xs:sequence>
+    <xs:attributeGroup ref="ViewAttributes" />
+    <xs:attribute name="childProperty" type="xs:string" use="required" />
+    <xs:attribute name="expandLevel" type="xs:int" use="optional" default="0" />
+  </xs:complexType>
+
+  <xs:complexType name="HighlightSetting">
+    <xs:annotation>
+      <xs:documentation>
+        This is the schema for highlight settings used in the WevView to highlight text.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="name" type="xs:string" use="required" />
+    <xs:attribute name="pattern" type="xs:string" use="required" />
+    <xs:attribute name="backColor" type="HtmlColor" use="optional" />
+    <xs:attribute name="foreColor" type="HtmlColor" use="optional" />
+  </xs:complexType>
+
+  <xs:complexType name="FileList">
+    <xs:annotation>
+      <xs:documentation>
+        This is the schema for list of files
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="file" type="xs:string" minOccurs="1" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="WebView">
+    <xs:annotation>
+      <xs:documentation>
+        This is the schema for WebView control for rendering data in HTML page.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:group ref="ViewElements" />
+      <!-- For content type Url, the url of the web page will be read from the data source -->
+      <!-- For content type Content, the content of the web page will be read from the data source -->
+      <!-- Following items are for WebView in content type of Files -->
+      <xs:element name="styles" type="FileList" minOccurs="0" maxOccurs="1" />
+      <xs:element name="scripts" type="FileList" minOccurs="0" maxOccurs="1" />
+      <xs:element name="body" type="xs:string" minOccurs="0" maxOccurs="1" />
+
+      <xs:element name="highlights" minOccurs="0" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="highlight" type="HighlightSetting" minOccurs="0" maxOccurs="unbounded" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attributeGroup ref="ViewAttributes" />
+    <xs:attribute name="contentType" type="ContentType" use="required" />
+    <xs:attribute name="selectToHighlight" type="xs:boolean" use="optional" default="false" />
+  </xs:complexType>
+
+  <xs:complexType name="Prompt">
+    <xs:annotation>
+      <xs:documentation>
+        This is the schema for Prompt setting.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="visible" type="xs:boolean" use="optional" default="true" />
+        <xs:attribute name="exclusive" type="xs:boolean" use="optional" default="true" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:complexType name="Option">
+    <xs:annotation>
+      <xs:documentation>
+        This is the schema for option in the OptionList.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="group" type="xs:string" use="optional" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  
+  <xs:complexType name="OptionList">
+    <xs:annotation>
+      <xs:documentation>
+        This is the schema for OptionList that could be used in either ComboBox or PropertyInput.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="option" type="Option" minOccurs="1" maxOccurs="unbounded" />
+    </xs:sequence>
+    <!-- Not supported yet
+    <xs:attribute name="grouped" type="xs:boolean" use="optional" default="false" />
+    <xs:attribute name="multiSelect" type="xs:boolean" use="optional" default="false" />
+    -->
+  </xs:complexType>
+
+  <xs:complexType name="ComboBox">
+    <xs:annotation>
+      <xs:documentation>
+        This is schema for the ComboBox control which supports selecting value from a predefined list.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:group ref="ViewElements" />
+      <xs:group ref="ViewElements" />
+      <xs:element name="prompt" type="Prompt" minOccurs="0" maxOccurs="1" />
+      <xs:element name="options" type="OptionList" minOccurs="0" maxOccurs="1" />
+    </xs:sequence>
+    <xs:attributeGroup ref="ViewAttributes" />
+    <xs:attribute name="selectOnly" type="xs:boolean" use="optional" default="false" />
+    <xs:attribute name="sorted" type="xs:boolean" use="optional" default="false" />
+    <xs:attribute name="trimSpace" type="TrimSpace" use="optional" default="None" />
+    <xs:attribute name="defaultValue" type="xs:string" use="optional" default="" />
+  </xs:complexType>
+
+  <xs:complexType name="TextInput">
+    <xs:annotation>
+      <xs:documentation>
+        This is schema for TextInput control.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:group ref="ViewElements" />
+      <xs:element name="prompt" type="Prompt" minOccurs="0" maxOccurs="1" />
+      <xs:element name="content" type="xs:string" minOccurs="0" maxOccurs="1" />
+    </xs:sequence>
+    <xs:attributeGroup ref="ViewAttributes" />
+    <xs:attribute name="defaultValue" type="xs:string" use="optional" default="" />
+    <xs:attribute name="trimSpace" type="TrimSpace" use="optional" default="None" />
+    <xs:attribute name="multiline" type="xs:boolean" use="optional" default="false" />
+    <xs:attribute name="whenToNotify" type="WhenToNotify" use="optional" default="Enter" />
+  </xs:complexType>
+
+  <xs:complexType name="Button">
+    <xs:annotation>
+      <xs:documentation>
+        This is schema for Button control.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:group ref="ViewElements" />
+    </xs:sequence>
+    <xs:attributeGroup ref="ViewAttributes" />
+    <xs:attribute name="dock" type="DockStyle" use="optional" default="None" />
+    <xs:attribute name="label" type="xs:string" use="required" />
+    <xs:attribute name="description" type="xs:string" use="optional" />
+  </xs:complexType>
+
+  <xs:complexType name="PropertyField">
+    <xs:annotation>
+      <xs:documentation>
+        This is the schema for PropertyField that will be used in the PropertyInput for property definition.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:all>
+      <xs:element name="options" type="OptionList" minOccurs="0" maxOccurs="1" />
+    </xs:all>
+    <xs:attribute name="name" type="xs:string" use="required" />
+    <xs:attribute name="type" type="PropertyValueType" use="required" />
+    <xs:attribute name="label" type="xs:string" use="optional" />
+    <xs:attribute name="category" type="xs:string" use="optional" />
+    <xs:attribute name="description" type="xs:string" use="optional" />
+    <xs:attribute name="default" type="xs:string" use="optional" />
+    <xs:attribute name="fileTypes" type="xs:string" use="optional" />
+    <xs:attribute name="initialPath" type="xs:string" use="optional" />
+  </xs:complexType>
+
+  <xs:complexType name="PropertyInput">
+    <xs:annotation>
+      <xs:documentation>
+        This is schem for the PropertyInput control.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:group ref="ViewElements" />
+      <xs:element name="properties" minOccurs="1" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="property" type="PropertyField" minOccurs="1" maxOccurs="unbounded" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attributeGroup ref="ViewAttributes" />
+    <xs:attribute name="trimSpace" type="TrimSpace" use="optional" default="None" />
+  </xs:complexType>
+
+  <xs:complexType name="Procedure">
+    <xs:annotation>
+      <xs:documentation>
+        This is schema for the Procedure component.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:group ref="ComponentElements" />
+    </xs:sequence>
+    <xs:attributeGroup ref="ComponentAttributes" />
+    <xs:attribute name="name" type="xs:string" use="optional" />
+    <xs:attribute name="executeAt" type="ExecuteAt" use="optional" default="ParameterChanging" />
+    <xs:attribute name="timerInterval" type="xs:string" use="optional" />
+  </xs:complexType>
+
+  <xs:complexType name="ViewLauncher">
+    <xs:annotation>
+      <xs:documentation>
+        This is the schema for ViewLauncher component.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:group ref="ComponentElements" />
+      <xs:element name="connection" type="DataFlow" minOccurs="1" maxOccurs="1" />
+    </xs:sequence>
+    <xs:attributeGroup ref="ComponentAttributes" />
+    <xs:attribute name="repository" type="xs:string" use="required" />
+    <xs:attribute name="view" type="xs:string" use="required" />
+  </xs:complexType>
+
+  <xs:element name="LsbView">
+    <xs:annotation>
+      <xs:documentation>
+        Schema for the LsbView definition in XML.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:all>
+        <xs:element name="description" type="xs:string" minOccurs="0" maxOccurs="1" />
+        <xs:element name="version" type="Version" minOccurs="1" maxOccurs="1" />
+        <xs:element name="modules" minOccurs="0" maxOccurs="1">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="module" type="xs:string" minOccurs="1" maxOccurs="unbounded" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="view" type="ChoiceOfView" minOccurs="1" maxOccurs="1" />
+        <xs:element name="procedures" minOccurs="0" maxOccurs="1">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="procedure" type="Procedure" minOccurs="0" maxOccurs="unbounded" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="launchers" minOccurs="0" maxOccurs="1">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="launcher" type="ViewLauncher" minOccurs="0" maxOccurs="unbounded" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="dataFlow" type="DataFlow" minOccurs="0" maxOccurs="1" />
+      </xs:all>
+      <xs:attribute name="name" type="xs:string" use="required" />
+      <xs:attribute name="author" type="xs:string" use="required" />
+      <xs:attribute name="createTime" type="xs:dateTime" use="required" />
+      <xs:attribute name="lastChangeTime" type="xs:dateTime" use="required" />
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
