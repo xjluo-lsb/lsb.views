@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<LsbView xmlns="https://lsb/LsbView"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="https://lsb/LsbView LsbViewSchema.xsd"
+
+  name="Demonstrate TreeView and WebView (show page with URL)"
+  author="Kevin Luo"
+  createTime="2023-11-26T00:55:28z"
+  lastChangeTime="2023-11-26T00:55:28z">
+
+  <description>A sample view that demonstrates tree view and using WebView to display web page with specified URL</description>
+  <version major="0" minor="0" build="1" revision="0" />
+
+  <view>
+    <splitLayout id="a420f7c9-beb2-48b3-9b4a-58c114d257de" orientation="Horizontal" size="280" fixedView="Left">
+      <left>
+        <treeListView id="51ebc512-d2ed-4381-806c-bd8be8c3ba90" childProperty="children" loadDataAt="Creating">
+          <caption visible="true">Web site list</caption>
+          <input />
+          <output>
+            <param id="ec69540e-ed45-49ca-b13d-645894827c05" name="Name"/>
+            <param id="0b1196a2-2953-427f-9e2a-99ba1b510b12" name="URL"/>
+          </output>
+          <data showProgress="false">
+            <script type="lua">
+<![CDATA[
+return
+{
+    { Name = "Bing", URL = "https://www.bing.com", children =
+        {
+            { Name = "Image search", URL = "https://www.bing.com/images" },
+            { Name = "Bing Maps", URL = "https://www.bing.com/maps" }
+        }
+    },
+    { Name = "Google", URL = "https://www.google.com", children = {} },
+    { Name = "Yahoo", URL = "https://www.yahoo.com", children = {} },
+    { Name = "BaiDu", URL = "https://www.baidu.com", children = {} }
+}
+]]>
+            </script>
+          </data>
+          <columns>
+            <column name="Name" width="120"/>
+            <column name="URL" width="260"/>
+          </columns>
+        </treeListView>
+      </left>
+      <right>
+        <webView id="243bac14-603b-4127-b1ea-038c7e3fb66d" contentType="Url">
+          <caption visible="true">Accessing {Name}</caption>
+          <input>
+            <param id="98fd4496-b48b-461e-be0f-e03d04356570" name="Name"/>
+            <param id="aecdbb60-23f6-4f56-8944-e7692120ee2b" name="URL"/>
+          </input>
+          <data showProgress="false">
+            <script type="lua">
+<![CDATA[
+return "{URL}"
+]]>
+            </script>
+          </data>
+        </webView>
+      </right>
+    </splitLayout>
+  </view>
+
+  <dataFlow>
+    <mapping source="ec69540e-ed45-49ca-b13d-645894827c05" target="98fd4496-b48b-461e-be0f-e03d04356570"/>
+    <mapping source="0b1196a2-2953-427f-9e2a-99ba1b510b12" target="aecdbb60-23f6-4f56-8944-e7692120ee2b"/>
+  </dataFlow>
+</LsbView>
