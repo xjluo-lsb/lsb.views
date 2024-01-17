@@ -1,0 +1,206 @@
+<?xml version="1.0"?>
+<LsbView xmlns="https://lsb/LsbView"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="https://lsb/LsbView LsbViewSchema.xsd"
+         
+  name="Graphviz demo view"
+  author="Kevin Luo"
+  createTime="2023-11-23T00:00:00Z"
+  lastChangeTime="2023-11-23T00:00:00.000Z">
+
+  <description>A sample view that demostrates Graphviz file creation/editing, open/save file and preview the result.</description>
+  <version major="0" minor="9" build="0" revision="0" />
+
+  <view>
+    <tableLayout id="9948ab12-48c0-4932-b732-a664fb277464">
+      <rows>
+        <row height="24" sizeType="absolute"/>
+        <row height="100" sizeType="percentage"/>
+      </rows>
+      <columns>
+        <column width="80" sizeType="absolute"/>
+        <column width="80" sizeType="absolute"/>
+        <column width="100" sizeType="percentage"/>
+        <column width="80" sizeType="absolute"/>
+      </columns>
+      <cells>
+        <cell row="0" col="0">
+          <button id="0b644835-43af-46fd-9025-963991fcde31" label="New">
+            <output>
+              <param id="23907bcf-3a6b-4aca-b772-a4d666b9611e" name="fileName"/>
+              <param id="d9fc6386-804f-44ed-a646-87abb3f790b7" name="content"/>
+            </output>
+            <data showProgress="false">
+              <script type="lua">
+<![CDATA[
+return {
+  content = [[
+digraph
+{
+    node1 -> node2
+}
+]],
+  fileName = ""
+}
+]]>
+              </script>
+            </data>
+          </button>
+        </cell>
+        <cell row="0" col="1">
+            <button id="a1755647-74ab-4007-b82c-c675ab4b2782" label="Open">
+            <output>
+              <param id="e9f78f4d-d27e-4e31-9424-4d9d867edd24" name="filePath"/>
+              <param id="d6be94e1-b541-4579-b625-ee93101ab233" name="fileContent"/>
+            </output>
+            <data showProgress="false">
+              <script type="lua">
+<![CDATA[
+local filePath = lsb.openFile("Open file", "Open GraphViz file (*.dot;*.gv)|*.dot;*.gv")
+if (filePath ~= nil and filePath ~= '') then
+  local fileHandle = io.open(filePath, "rb")    -- r read mode and b binary mode
+  if (fileHandle ~= nil) then
+    local fileContent = fileHandle:read("*a")   -- *a or *all reads the whole file
+    fileHandle:close()
+    return { filePath = filePath, fileContent = fileContent }
+  end
+end
+
+return nil
+]]>
+              </script>
+            </data>
+          </button>
+        </cell>
+        <cell row="0" col="2">
+          <textView id="8c48b147-066f-42a4-a056-2ca9c1822780" multiline="false" readOnly="true">
+            <input>
+              <param id="2bc53506-b2f7-48f8-a034-ba24292799b5" name="fileName"/>
+            </input>
+            <data showProgress="false">
+              <script type="lua">
+<![CDATA[
+return [[{fileName}]]
+]]>
+              </script>
+            </data>
+          </textView>
+        </cell>
+        <cell row="0" col="3">
+          <button id="10b022df-a7fd-46d1-b025-01c182a3211a" label="Save">
+            <input>
+              <param id="c5fe276a-6124-4e0a-b79d-719e89720e5d" name="content"/>
+            </input>
+            <output />
+            <condition>
+<![CDATA[
+return not content.IsEmpty
+]]>
+              </condition>
+            <data showProgress="false">
+              <script type="lua">
+<![CDATA[
+local content = [[{content}]]
+local filePath = lsb.saveFile("Save file", "Save GraphViz file (*.dot;*.gv)|*.dot;*.gv")
+if (filePath ~= nil and filePath ~= '') then
+  local fileHandle = io.open(filePath, "w")     -- w write mode
+  if (fileHandle ~= nil) then
+    fileHandle:write(content)
+    fileHandle:close()
+  end
+end
+]]>
+              </script>
+            </data>
+          </button>
+        </cell>
+        <cell row="1" col="0" rowSpan="1" colSpan="4">
+          <splitLayout id="bbb3e408-e77f-4bba-89a3-1ad3f0a2515c" ratio="0.5" fixedView="None" orientation="Horizontal">
+            <left>
+              <textInput id="016fa52f-7ff2-44b6-af53-b262176ef5da" trimSpace="None" multiline="true" whenToNotify="TextChange">
+                <caption visible="true">Editor for GraphViz document</caption>
+                <input>
+                  <param id="bf64d7e8-b88f-4eba-adaf-12b9e3b907aa" name="content"/>
+                </input>
+                <output>
+                  <param id="034e0e46-4695-47bf-aa2a-209e844584b0" name="*"/>
+                </output>
+                <data showProgress="false">
+                  <script type="lua">
+<![CDATA[
+return [[{content}]]
+]]>
+                  </script>
+                </data>
+              </textInput>
+            </left>
+            <right>
+              <webView id="285cf94f-6888-453e-ad01-a923417f6401" contentType="Url">
+                <caption visible="true">Preview of the GraphViz graph</caption>
+                <input>
+                  <param id="64b6d2da-154c-4c7b-9466-7b1c52bd2d44" name="fileName"/>
+                </input>
+                <data showProgress="false">
+                  <script type="lua">
+<![CDATA[
+return "file://{fileName}"
+]]>
+                  </script>
+                </data>
+              </webView>
+            </right>
+          </splitLayout>
+        </cell>
+      </cells>
+    </tableLayout>
+  </view>
+
+  <procedures>
+    <procedure id="ba0528fb-b23e-450b-882a-223904af496f" name="Convert GraphViz to SVG">
+      <input>
+        <param id="a07225cd-c321-4981-8beb-1a0939ea8227" name="source"/>
+      </input>
+      <output>
+        <param id="b747fcbe-6f96-40c8-861e-68a3a2d3875a" name="*"/>
+      </output>
+      <data showProgress="false">
+        <script type="lua">
+<![CDATA[
+local content = [[{source}]]
+local sourceFile = lsb.getTempFile("intermediate.dot")
+local targetFile = lsb.getTempFile("result.svg")
+local file = io.open(sourceFile, "w")
+if file then
+  file:write(content)
+  file:close()
+end
+
+local command = "dot -Tsvg " .. sourceFile .. " -o " .. targetFile
+os.execute(command)
+return targetFile:gsub("\\", "/")
+]]>
+        </script>
+      </data>
+    </procedure>
+  </procedures>
+  
+  <dataFlow>
+    <!-- New button to file name and content -->
+    <mapping source="23907bcf-3a6b-4aca-b772-a4d666b9611e" target="2bc53506-b2f7-48f8-a034-ba24292799b5" />
+    <mapping source="d9fc6386-804f-44ed-a646-87abb3f790b7" target="bf64d7e8-b88f-4eba-adaf-12b9e3b907aa" />
+    
+    <!-- Open button to file name and content -->
+    <mapping source="e9f78f4d-d27e-4e31-9424-4d9d867edd24" target="2bc53506-b2f7-48f8-a034-ba24292799b5" />
+    <mapping source="d6be94e1-b541-4579-b625-ee93101ab233" target="bf64d7e8-b88f-4eba-adaf-12b9e3b907aa" />
+
+    <!-- Content editor to procedure on converting dot to svg -->
+    <mapping source="034e0e46-4695-47bf-aa2a-209e844584b0" target="a07225cd-c321-4981-8beb-1a0939ea8227" />
+    <!-- Procedure for converting to web view to show svg content -->
+    <mapping source="b747fcbe-6f96-40c8-861e-68a3a2d3875a" target="64b6d2da-154c-4c7b-9466-7b1c52bd2d44" />
+
+    <!-- Content editor to save button -->
+    <mapping source="034e0e46-4695-47bf-aa2a-209e844584b0" target="c5fe276a-6124-4e0a-b79d-719e89720e5d" />
+  </dataFlow>
+  
+</LsbView>
+ 
