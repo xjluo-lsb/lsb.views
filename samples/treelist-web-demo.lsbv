@@ -32,7 +32,12 @@ return
             { Name = "Bing Maps", URL = "https://www.bing.com/maps" }
         }
     },
-    { Name = "Google", URL = "https://www.google.com", children = {} },
+    { Name = "Google", URL = "https://www.google.com", children =
+        {
+            { Name = "Images", URL = "https://www.google.com/imghp" },
+            { Name = "Maps", URL = "https://maps.google.com" }
+        }
+    },
     { Name = "Yahoo", URL = "https://www.yahoo.com", children = {} },
     { Name = "BaiDu", URL = "https://www.baidu.com", children = {} }
 }
