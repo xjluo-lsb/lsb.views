@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <LsbView xmlns="https://lsb/LsbView"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="https://lsb/LsbView LsbViewSchema.xsd"
+  xsi:schemaLocation="https://lsb/LsbView ..\LsbViewSchema.xsd"
          
   name="Graphviz demo view"
   author="Kevin Luo"

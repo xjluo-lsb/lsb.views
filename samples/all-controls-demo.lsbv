@@ -2,7 +2,7 @@
 
 <LsbView xmlns="https://github.com/xjluo-lsb/lsb.views"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="https://github.com/xjluo-lsb/lsb.views LsbViewSchema.xsd"
+  xsi:schemaLocation="https://github.com/xjluo-lsb/lsb.views ..\LsbViewSchema.xsd"
          
   name="All controls view"
   author="Kevin Luo"
