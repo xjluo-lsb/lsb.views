@@ -129,19 +129,6 @@ in the LSB view files. It also defines the file structure of the view files usin
     </xs:restriction>
   </xs:simpleType>
 
-  <xs:simpleType name="MenuItemType" final="restriction">
-    <xs:annotation>
-      <xs:documentation>
-        This is the enumeration type of menu item types used in ContextMenuItem.
-      </xs:documentation>
-    </xs:annotation>
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="MenuItem" />
-      <xs:enumeration value="Separator" />
-      <xs:enumeration value="SubMenu" />
-    </xs:restriction>
-  </xs:simpleType>
-
   <xs:simpleType name="HttpMethod" final="restriction">
     <xs:annotation>
       <xs:documentation>
@@ -450,6 +437,131 @@ in the LSB view files. It also defines the file structure of the view files usin
   <xs:complexType name="ContextMenuItem">
     <xs:annotation>
       <xs:documentation>
+        This is the schema for the regular menu item that implements certain functionality
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="output" type="OutputParamSet" minOccurs="0" maxOccurs="1" />
+      <xs:element name="data" type="ChoiceOfData" minOccurs="0" maxOccurs="1" />
+    </xs:sequence>
+    <xs:attribute name="text" type="xs:string" use="required" />
+  </xs:complexType>
+
+  <xs:complexType name="ContextMenuSeparator">
+    <xs:annotation>
+      <xs:documentation>
+        This is the schema for the separator in the menu
+      </xs:documentation>
+    </xs:annotation>
+  </xs:complexType>
+
+  <xs:complexType name="ChoiceOfMenuItem">
+    <xs:annotation>
+      <xs:documentation>
+        This is the schema for the union of all supported context menu items
+      </xs:documentation>
+    </xs:annotation>
+    <xs:choice minOccurs="1" maxOccurs="unbounded">
+      <xs:element name="menuItem" type="ContextMenuItem" />
+      <xs:element name="separator" type="ContextMenuSeparator" />
+      <xs:element name="subMenu" type="ChoiceOfMenuItem" />
+    </xs:choice>
+    <xs:attribute name="text" type="xs:string" use="required" />
+  </xs:complexType>
+
+  <xs:complexType name="ContextMenu">
+    <xs:annotation>
+      <xs:documentation>
+        This is the schema for ContextMenu which might contain one to more menu items.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:choice minOccurs="1" maxOccurs="unbounded">
+        <xs:element name="menuItem" type="ContextMenuItem" />
+        <xs:element name="separator" type="ContextMenuSeparator" />
+        <xs:element name="subMenu" type="ChoiceOfMenuItem" />
+      </xs:choice>
+    </xs:sequence>
+    <xs:attribute name="copy" type="xs:boolean" use="optional" default="false" />
+    <xs:attribute name="refresh" type="xs:boolean" use="optional" default="false" />
+  </xs:complexType>
+
+  <!--
+  <xs:element name="ContextMenuItemBaseElement" type="ContextMenuItemBase" abstract="true"/>
+  <xs:complexType name="ContextMenuItemBase" abstract="true">
+    <xs:annotation>
+      <xs:documentation>
+        This is the schema for the base class for all possible menu items
+      </xs:documentation>
+    </xs:annotation>
+  </xs:complexType>
+
+  <xs:element name="menuItem" type="ContextMenuItem" substitutionGroup="ContextMenuItemBaseElement" />
+  <xs:complexType name="ContextMenuItem">
+    <xs:annotation>
+      <xs:documentation>
+        This is the schema for the regular menu item that implements certain functionality
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="ContextMenuItemBase">
+        <xs:sequence>
+          <xs:element name="output" type="OutputParamSet" minOccurs="0" maxOccurs="1" />
+          <xs:element name="data" type="ChoiceOfData" minOccurs="0" maxOccurs="1" />
+        </xs:sequence>
+        <xs:attribute name="text" type="xs:string" use="required" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="separator" type="ContextMenuSeparator" substitutionGroup="ContextMenuItemBaseElement" />
+  <xs:complexType name="ContextMenuSeparator">
+    <xs:annotation>
+      <xs:documentation>
+        This is the schema for the separator in the menu
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="ContextMenuItemBase">
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:element name="subMenu" type="ContextSubMenu" substitutionGroup="ContextMenuItemBaseElement" />
+  <xs:complexType name="ContextSubMenu">
+    <xs:annotation>
+      <xs:documentation>
+        This is the schema for the sub menu in the context menu
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="ContextMenuItemBase">
+        <xs:sequence>
+          <xs:element ref="ContextMenuItemBaseElement" minOccurs="1" maxOccurs="unbounded" />
+        </xs:sequence>
+        <xs:attribute name="text" type="xs:string" use="required" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="ContextMenu">
+    <xs:annotation>
+      <xs:documentation>
+        This is the schema for ContextMenu which might contain one to more menu items.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element ref="ContextMenuItemBaseElement" minOccurs="1" maxOccurs="unbounded" />
+    </xs:sequence>
+    <xs:attribute name="copy" type="xs:boolean" use="optional" default="false" />
+    <xs:attribute name="refresh" type="xs:boolean" use="optional" default="false" />
+  </xs:complexType>
+  -->
+  
+  <!--
+  <xs:complexType name="ContextMenuItem">
+    <xs:annotation>
+      <xs:documentation>
         This the schema for single context menu item class ContentMenuItem.
       </xs:documentation>
     </xs:annotation>
@@ -474,6 +586,7 @@ in the LSB view files. It also defines the file structure of the view files usin
     <xs:attribute name="copy" type="xs:boolean" use="optional" default="false" />
     <xs:attribute name="refresh" type="xs:boolean" use="optional" default="false" />
   </xs:complexType>
+  -->
 
   <xs:complexType name="WebData">
     <xs:annotation>

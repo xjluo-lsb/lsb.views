@@ -73,6 +73,41 @@ A second line here.]] }
 ]]>
               </script>
             </data>
+            <contextMenu refresh="true">
+              <menuItem text="Menu item 1">
+                <data>
+                  <script type="lua">
+<![CDATA[]]>
+                  </script>
+                </data>
+              </menuItem>
+              <menuItem text="Menu item 2">
+                <data>
+                  <script type="lua">
+<![CDATA[]]>
+                  </script>
+                </data>
+              </menuItem>
+              <separator />
+              <subMenu text="Child menu">
+                <separator/>
+                <menuItem text="Menu item 1-1">
+                  <data>
+                    <script type="lua">
+<![CDATA[]]>
+                    </script>
+                  </data>
+                </menuItem>
+                <separator />
+                <menuItem text="Menu item 1-2">
+                  <data>
+                    <script type="lua">
+<![CDATA[]]>
+                    </script>
+                  </data>
+                </menuItem>
+              </subMenu>
+            </contextMenu>
             <filter visible="true" prompt="Filter:" placeholder="Type here to filter in the ListView" />
             <status visible="true"
               singleItemCountPrompt="There is %%ITEM_COUNT%% item in the list"
