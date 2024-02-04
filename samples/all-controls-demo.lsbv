@@ -90,7 +90,6 @@ A second line here.]] }
               </menuItem>
               <separator />
               <subMenu text="Child menu">
-                <separator/>
                 <menuItem text="Menu item 1-1">
                   <data>
                     <script type="lua">
