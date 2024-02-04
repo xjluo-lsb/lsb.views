@@ -73,18 +73,18 @@ A second line here.]] }
 ]]>
               </script>
             </data>
-            <contextMenu refresh="true">
+            <contextMenu copy="true" refresh="true">
               <menuItem text="Menu item 1">
                 <data>
                   <script type="lua">
-<![CDATA[]]>
+<![CDATA[return "Text from menu item 1"]]>
                   </script>
                 </data>
               </menuItem>
               <menuItem text="Menu item 2">
                 <data>
                   <script type="lua">
-<![CDATA[]]>
+<![CDATA[return "Text from menu item 2"]]>
                   </script>
                 </data>
               </menuItem>
@@ -94,7 +94,7 @@ A second line here.]] }
                 <menuItem text="Menu item 1-1">
                   <data>
                     <script type="lua">
-<![CDATA[]]>
+<![CDATA[return "Text from menu item 1-1"]]>
                     </script>
                   </data>
                 </menuItem>
@@ -102,7 +102,7 @@ A second line here.]] }
                 <menuItem text="Menu item 1-2">
                   <data>
                     <script type="lua">
-<![CDATA[]]>
+<![CDATA[return "Text from menu item 1-2"]]>
                     </script>
                   </data>
                 </menuItem>
