@@ -1,0 +1,142 @@
+<?xml version="1.0"?>
+
+<LsbView xmlns="https://github.com/xjluo-lsb/lsb.views"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="https://github.com/xjluo-lsb/lsb.views ..\LsbViewSchema.xsd"
+
+  name="A sample view using TableLayout"
+  author="Kevin Luo"
+  createTime="2021-09-09T01:23:45z"
+  lastChangeTime="2023-09-10T10:14:45z">
+
+  <description>A sample view that demonstrates the TableLayout, ButtonGroup, and Launcher.</description>
+  <version major="0" minor="0" build="1" revision="0" />
+
+  <view>
+    <tableLayout id="f535783a-d8ae-47db-99d1-ca9669a297ec">
+      <rows>
+        <row sizeType="absolute" height="300"/>
+        <row sizeType="percentage" height="100"/>
+        <row sizeType="absolute" height="80"/>
+      </rows>
+      <columns>
+        <column sizeType="absolute" width="400"/>
+        <column sizeType="percentage" width="100"/>
+      </columns>
+      <cells>
+        <cell row="0" col="0" rowSpan="2" colSpan="1">
+          <propertyInput id="44412b0e-a9ef-47ff-a915-bb9f063912fb">
+            <caption visible="true">Sample property grid</caption>
+            <properties>
+              <property name="String" label="String value" type="String" category="Primitives" description="This is a sample description for help information" default="something here" />
+              <property name="Integer" label="Integer value" type="Integer" category="Primitives" description="This is help information for sample integer input" default="150" />
+              <property name="File" label="File value" type="File" category="Files" description="This is the description for file value" />
+              <property name="Image" label="Image value" type="ImageFile" category="Files" description="This is the description for image file" />
+            </properties>
+          </propertyInput>
+        </cell>
+        <cell row="2" col="0">
+          <buttonGroup id="51b2d859-2ec6-468e-813a-ed389af6b1d6" autoFlow="true" buttonsPerRow="2">
+            <buttons>
+              <button id="53d9c308-e1a3-4016-b811-52e74b63c0d8" label="Button to launch view" description="This is help text for the first button that lauches a view">
+                <output>
+                  <param id="b0fa8eec-ea44-45ab-83b0-129a10b2c0e6" name="*"/>
+                </output>
+                <data>
+                  <script type="lua">
+<![CDATA[return "ready"]]>
+                  </script>
+                </data>
+              </button>
+              <button id="5f99e1d2-7567-4165-a025-7051bad3dafd" label="Second button" description="This is help text for the second button">
+                <data showProgress="false">
+                  <script type="lua">
+<![CDATA[
+print "Output from second button"
+return 0
+]]>
+                  </script>
+                </data>
+              </button>
+              <button id="e31839d6-36db-4958-ab69-9d5e783173c7" label="Give it a pretty long name for the third button" description="This is help text for the third button">
+              </button>
+              <button id="0e27519f-0a85-4efc-baeb-8f6e73c6c151" label="OK" description="This is help text for OK button">
+              </button>
+            </buttons>
+          </buttonGroup>
+        </cell>
+        <cell row="0" col="1">
+          <listView id="a1f7ce3a-7c5e-4765-95e6-147049163135" sortable="true" multiSelect="false" loadDataAt="Creating">
+            <caption visible="true">ListView</caption>
+            <data showProgress="false">
+              <script type="lua">
+<![CDATA[
+return {
+    { Name = "Item 1", CreateTime = "2021-01-01T00:00:00", Description = "Description for item 1" },
+    { Name = "Item 2", CreateTime = "2022-02-01T00:00:00", Description = "Description for item 2" },
+    { Name = "Item 3", CreateTime = "2023-03-01T00:00:00", Description = "Description for item 3" },
+}
+]]>
+              </script>
+            </data>
+            <contextMenu>
+              <menuItem text="Menu item 1">
+                <data showProgress="true">
+                  <script type="lua">
+<![CDATA[
+return 1
+]]>
+                  </script>
+                </data>
+              </menuItem>
+              <separator/>
+              <subMenu text="Sub menu">
+                <menuItem text="Menu item 2">
+                  <data showProgress="true">
+                    <script type="lua">
+<![CDATA[
+return 2
+]]>
+                    </script>
+                  </data>
+                </menuItem>
+              </subMenu>
+            </contextMenu>
+            <filter visible="true" prompt="Filter:" placeholder="Type filter here" />
+            <columns>
+              <column name="Name" width="120" align="Left" visible="true"/>
+              <column name="CreateTime" displayName="Create time" width="150" align="Right"/>
+              <column name="Description" width="320" align="Left"/>
+            </columns>
+            <rowColors></rowColors>
+          </listView>
+        </cell>
+        <cell row="1" col="1" rowSpan="2" colSpan="1">
+          <textView id="77962981-c306-460a-a878-dec857d11bf3" readOnly="false">
+            <caption visible="true">TextView</caption>
+            <content>
+<![CDATA[
+Sample content for TextView
+]]>
+            </content>
+          </textView>
+        </cell>
+      </cells>
+    </tableLayout>
+  </view>
+
+  <launchers>
+    <launcher id="70235826-d322-40cc-9231-42c2e6bf8560" repository="DefaultViews" view="chart-sample.lsbv" >
+      <input>
+        <param id="d8763834-70ff-41bf-949c-e65a291e2361" name="ready"/>
+      </input>
+      <connection>
+      </connection>
+    </launcher>
+  </launchers>
+  
+  <dataFlow>
+    <mapping source="b0fa8eec-ea44-45ab-83b0-129a10b2c0e6" target="d8763834-70ff-41bf-949c-e65a291e2361"/>
+  </dataFlow>
+  
+</LsbView>
