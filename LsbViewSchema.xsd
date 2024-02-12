@@ -363,6 +363,12 @@ in the LSB view files. It also defines the file structure of the view files usin
     <xs:attribute name="revision" type="xs:nonNegativeInteger" use="optional" default="0" />
   </xs:complexType>
 
+  <xs:simpleType name="OS">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="((Any|Windows|Linux|MacOS);)*(Any|Windows|Linux|MacOS)"/>
+    </xs:restriction>
+  </xs:simpleType>
+  
   <xs:complexType name="ViewCaption">
     <xs:annotation>
       <xs:documentation>
@@ -1223,6 +1229,7 @@ in the LSB view files. It also defines the file structure of the view files usin
             </xs:sequence>
           </xs:complexType>
         </xs:element>
+        <xs:element name="os" type="OS" minOccurs="0" maxOccurs="1" />
         <xs:element name="view" type="ChoiceOfView" minOccurs="1" maxOccurs="1" />
         <xs:element name="procedures" minOccurs="0" maxOccurs="1">
           <xs:complexType>
