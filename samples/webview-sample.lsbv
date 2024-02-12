@@ -1,0 +1,175 @@
+<?xml version="1.0"?>
+
+<LsbView xmlns="https://github.com/xjluo-lsb/lsb.views"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="https://github.com/xjluo-lsb/lsb.views ..\LsbViewSchema.xsd"
+
+  name="Demonstrate the WebView example"
+  author="Kevin Luo"
+  createTime="2021-12-12T20:55:28z"
+  lastChangeTime="2023-09-09T23:07:45z">
+
+  <description>A sample view to demonstrate WebView on the support library functionality tests and the parameter operation capability</description>
+  <version major="0" minor="0" build="1" revision="0" />
+  <os>Any</os>
+
+  <view>
+    <splitLayout id="c5e33d43-fe6c-4511-9989-c5f46154ed34" orientation="Horizontal" size="300" fixedView="Right">
+      <left>
+        <splitLayout id="c38801db-d578-4489-a20d-cfda47ff13d1" orientation="Vertical" size="300" fixedView="Top">
+          <top>
+            <webView id="35a1b0a3-8f69-44d9-bc55-9fde3dbc7872" contentType="Content" loadDataAt="Creating">
+              <caption visible="true">WebView with content built from script</caption>
+              <input />
+              <output>
+                <param id="8ffca3b1-295b-442d-ae0b-0a13364f65ef" name="SimpleValue"/>
+                <param id="4cdf11e5-0fb5-40dd-814a-19c6fc543020" name="ComplexValue"/>
+                <param id="b6f95eff-6959-415c-ab60-402f87671ecc" name="DataReady"/>
+              </output>
+              <data showProgress="false">
+                <script type="lua">
+                  <![CDATA[
+return [=[
+<h3>Section 1</h3>
+<div>
+content for section 1 
+<button onclick='onClick1()'>Click on me</button><br/>
+<button onClick='onClick2()'>Click for multiple fields</button><br/>
+Count = <span id='count'>?</span>
+</div>
+
+<br/><hr/>
+
+<h3>Section 2</h3>
+<div>
+content for section 2 
+<button onclick='onClick3()'>Click on me</button>
+
+</div>
+
+<script>
+var count = 0;
+function onClick1()
+{
+    if (lsb == null)
+    {
+        alert("lsb is null");
+    }
+    else if (lsb.sendValue == null)
+    {
+        alert("lsb.sendValue is null");
+    }
+    else if (count > 0)
+    {
+        lsb.sendValue("SimpleValue", "This have been {0} clicks on the button.".format(count + 1));
+        count ++;
+    }
+    else
+    {
+        lsb.showMessage("This is the first click and it triggers this message dialog.\nStarting from next click, it will send value out.");
+        count = 1;
+    }
+    
+    document.getElementById('count').innerHTML = count;
+}
+
+function onClick2()
+{
+    lsb.sendObject({
+        SimpleValue: count + 1,
+        ComplexValue: "{ a: 1, b: 'string' }"
+    });
+    
+    if (count > 0) count ++;
+    document.getElementById('count').innerHTML = count;
+}
+
+function onClick3()
+{
+    lsb.sendData({
+        BooleanValue: true,
+        NumberValue: (count + 1) * (count + 1),
+        StringValue: "{ a: " + count + ", b: 'string' }"
+    });
+    
+    if (count > 0) count ++;
+    document.getElementById('count').innerHTML = count;
+
+    lsb.sendValue("DataReady", true);
+}
+
+</script>
+]=]
+]]>
+                </script>
+              </data>
+            </webView>
+          </top>
+          <bottom>
+            <webView id="d5ee4af8-1282-4d23-8ded-70d4a43cc91c" contentType="Files">
+              <caption visible="true">Web view built from files</caption>
+              <input />
+              <output />
+              <styles>
+                <file>{lsb.Libs}\css\lsb.css</file>
+              </styles>
+              <scripts>
+                <file>{lsb.Libs}\js\lsb.js</file>
+              </scripts>
+              <body>{lsb.Path}\webview-sample.html</body>
+            </webView>
+          </bottom>
+        </splitLayout>
+      </left>
+      <right>
+        <splitLayout id="0d0d0b69-be6d-4dd6-a0b8-2ecc73989d34" orientation="Vertical" ratio="0.4" fixedView="None">
+          <top>
+            <textView id="f50d65c0-e06e-4fd4-bb61-1b9d7ac2f046">
+              <caption visible="true">Show section 1 result come from WebView</caption>
+              <input>
+                <param id="1184df54-fdd4-400f-a7a9-a9876fd55f9f" name="SimpleValue"/>
+                <param id="9ad76209-0181-407c-9486-bfaac76c8cff" name="ComplexValue"/>
+              </input>
+              <data showProgress="false">
+                <script type="lua">
+                  <![CDATA[
+return [[
+Simple value = {SimpleValue}
+Complex value = {ComplexValue}
+]]
+]]>
+                </script>
+              </data>
+            </textView>
+          </top>
+          <bottom>
+            <textView id="6f53436e-4a0c-4b31-973f-7058426df395">
+              <caption visible="true">Show section 2 result come from WebView</caption>
+              <input>
+                <param id="3139098a-3881-4437-b584-f11487384573" name="DataReady"/>
+              </input>
+              <data showProgress="false">
+                <script type="lua">
+                  <![CDATA[
+return [[
+BooleanValue: ]] .. BooleanValue .. [[;
+NumberValue: ]] .. NumberValue .. [[;
+StringValue: ]] .. StringValue .. [[;
+]]
+]]>
+                </script>
+              </data>
+            </textView>
+          </bottom>
+        </splitLayout>
+      </right>
+    </splitLayout>
+  </view>
+
+  <dataFlow>
+    <mapping source="8ffca3b1-295b-442d-ae0b-0a13364f65ef" target="1184df54-fdd4-400f-a7a9-a9876fd55f9f"/>
+    <mapping source="4cdf11e5-0fb5-40dd-814a-19c6fc543020" target="9ad76209-0181-407c-9486-bfaac76c8cff"/>
+
+    <mapping source="b6f95eff-6959-415c-ab60-402f87671ecc" target="3139098a-3881-4437-b584-f11487384573"/>
+  </dataFlow>
+</LsbView>
