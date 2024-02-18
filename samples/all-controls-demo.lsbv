@@ -12,6 +12,12 @@
   <description>This view demostrates all the controls supported in the LSB. It requires pwsh to be configured to run the script.</description>
   <version major="0" minor="9" build="0" revision="0" />
   <os>Any</os>
+  <about type="Url">
+<![CDATA[
+https://www.wxwidgets.org
+]]>    
+  </about>
+
   <view>
   <splitLayout id="a8bd3ffa-35b5-4b85-8cf9-31b8038eec52" loadDataAt="Default" orientation="Horizontal" fixedView="None" ratio="0.36">
     <caption visible="false">This is the root SplitLayout</caption>

@@ -302,6 +302,19 @@ in the LSB view files. It also defines the file structure of the view files usin
     </xs:restriction>
   </xs:simpleType>
 
+  <xs:simpleType name="AboutDataType" final="restriction">
+    <xs:annotation>
+      <xs:documentation>
+        This is the enumeration type of content specified for about information
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="None" />
+      <xs:enumeration value="Content" />
+      <xs:enumeration value="Url" />
+    </xs:restriction>
+  </xs:simpleType>
+  
   <!-- Following types are non-structure types derived from primitive types -->
 
   <!-- UUID type definition -->
@@ -368,6 +381,20 @@ in the LSB view files. It also defines the file structure of the view files usin
       <xs:pattern value="((Any|Windows|Linux|MacOS);)*(Any|Windows|Linux|MacOS)"/>
     </xs:restriction>
   </xs:simpleType>
+
+  <xs:complexType name="About">
+    <xs:annotation>
+      <xs:documentation>
+        This is to define the content for about information for a LSB view.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <!-- This is the optional URL for the about content. It could also specified as content of the node. -->
+        <xs:attribute name="type" type="AboutDataType" use="required" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
   
   <xs:complexType name="ViewCaption">
     <xs:annotation>
@@ -1230,6 +1257,7 @@ in the LSB view files. It also defines the file structure of the view files usin
           </xs:complexType>
         </xs:element>
         <xs:element name="os" type="OS" minOccurs="0" maxOccurs="1" />
+        <xs:element name="about" type="About" minOccurs="0" maxOccurs="1" />
         <xs:element name="view" type="ChoiceOfView" minOccurs="1" maxOccurs="1" />
         <xs:element name="procedures" minOccurs="0" maxOccurs="1">
           <xs:complexType>
