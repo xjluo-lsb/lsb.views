@@ -1,0 +1,213 @@
+<?xml version="1.0"?>
+<LsbView xmlns="https://github.com/xjluo-lsb/lsb.views"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="https://github.com/xjluo-lsb/lsb.views ..\LsbViewSchema.xsd"
+
+  name="D3 view sample"
+  author="Kevin Luo"
+  createTime="2024-03-23T17:23:45z"
+  lastChangeTime="2024-03-23T17:12:45z">
+
+  <description>A sample view demonstrates using D3 library to visualize data.</description>
+  <version major="0" minor="0" build="1" revision="0" />
+    
+  <view>
+    <splitLayout
+      id="5f256f90-2429-4356-ab3f-9cb746e30145"
+      orientation="Horizontal"
+      fixedView="Left"
+      size="280">
+      <left>
+        <propertyInput id="fa660d96-5d2b-46a0-8cf9-41aa6ec8d110">
+          <caption visible="false">Parameters</caption>
+          <output>
+            <param id="7a7270d8-85be-4147-af41-d3e87608f222" name="randomSigma"/>
+            <param id="3a06bfd0-dac5-4bbd-8435-bb1b508dd978" name="xoffset"/>
+            <param id="161452d1-8a86-40ae-bd01-20c2421ae06c" name="yoffset"/>
+            <param id="87470081-1148-4d44-95a9-7fcb1962df03" name="pointCount"/>
+
+            <param id="39fe7122-5109-4fab-95aa-5a061a0c34b9" name="parentCount"/>
+            <param id="56b0fb38-2bae-42f6-84ea-e83228fbce20" name="childCount"/>
+            <param id="076382fd-b6e8-413f-b84a-42974f4c92fc" name="extraCount"/>
+          </output>
+          <properties>
+            <property name="randomSigma" label="Random StdDev" category="Scatterplot" type="Float" description="This is the seed for random numbers for Scatterplot" default="0.2" />
+            <property name="xoffset" label="Horizontal offset" category="Scatterplot" type="Float" description="This is the horizontal offset between the clusters" default="0.6" />
+            <property name="yoffset" label="Vertical offset" category="Scatterplot" type="Float" description="This is the vertical offset between the clusters" default="0.6" />
+            <property name="pointCount" label="Number of points" category="Scatterplot" type="Integer" description="This is the number of points in each cluster" default="300" />
+
+            <property name="parentCount" label="Parent node count" category="ForceGraph" type="UnsignedInteger" description="Number of vertices in the parent group" default="100" />
+            <property name="childCount" label="Child node count" category="ForceGraph" type="UnsignedInteger" description="Number of vertices in the child group" default="200" />
+            <property name="extraCount" label="Extra link count" category="ForceGraph" type="UnsignedInteger" description="Number of extra groups of links to connect vertices" default="10" />
+          </properties>
+        </propertyInput>
+      </left>
+      <right>
+        <tabLayout id="1074ec49-5cd1-4b57-80f6-a8ab5e52065b" tabPosition="Top">
+          <pages>
+            <page title="Scatterplot">
+              <webView id="ec8a532a-d2e6-4010-9b30-dd40aa29ae8d" contentType="Content" loadDataAt="Default">
+                <!-- Modified from D3 example at https://observablehq.com/@d3/scatterplot-tour -->
+                <input>
+                  <param id="a1cfcb16-b339-4408-9a9c-a51cfe80b394" name="randomSigma"/>
+                  <param id="251531e3-915d-4947-bb75-5e125c9ca5f4" name="xoffset"/>
+                  <param id="ad9d1da1-2369-4aaa-83d5-9325f9ddced5" name="yoffset"/>
+                  <param id="b448e0c8-924e-4b15-b1ad-4efff6735357" name="pointCount"/>
+                </input>
+                <data showProgress="false">
+                  <script type="lua">
+                    <![CDATA[
+return [[
+<svg id="container" style="margin:auto"></svg>
+<script type="text/javascript">
+const svg = d3.select('#container');
+const g = svg.append("g").attr("stroke-linecap", "round").attr("stroke-width", 5);
+var data = [];
+var color = null;
+
+window.onload = function(event)
+{
+  const sigma = {randomSigma};
+  const random = d3.randomNormal(0, sigma);
+  const xoffset = {xoffset};
+  const yoffset = {yoffset};
+  const xrange = sigma + xoffset + 0.5;
+  const yrange = sigma + yoffset + 0.5;
+  const count = {pointCount};
+
+  data = [].concat(
+    Array.from({length: count}, () => [(random() + xoffset) / xrange + 1, (random() - yoffset) / yrange + 1, 0]),
+    Array.from({length: count}, () => [(random() - xoffset) / xrange + 1, (random() - yoffset) / yrange + 1, 1]),
+    Array.from({length: count}, () => [(random() + xoffset) / xrange + 1, (random() + yoffset) / yrange + 1, 2]),
+    Array.from({length: count}, () => [(random() - xoffset) / xrange + 1, (random() + yoffset) / yrange + 1, 3])
+  );
+  color = d3.scaleOrdinal().domain(data.map(d => d[2])).range(d3.schemeCategory10);
+
+  window.onresize();
+}
+
+window.onresize = function(event)
+{
+  var graphWidth = document.documentElement.clientWidth - 20;
+  var graphHeight = document.documentElement.clientHeight - 20;
+  svg.style("width", graphWidth + "px").style("height", graphHeight + "px");
+  if (g && data.length > 0)
+  {
+    g.selectAll("path").data(data).join("path")
+      .attr("d", d => "M" + (d[0] * graphWidth / 2) + "," + (d[1] * graphHeight / 2) + "h0")
+      .attr("stroke", d => color(d[2]));
+  }
+};
+</script>
+]]
+                    ]]>
+                  </script>
+                </data>
+                <scripts>
+                  <file path="None">https://d3js.org/d3.v7.min.js</file>
+                </scripts>
+              </webView>
+            </page>
+            <page title="Disjoint force-directed graph">
+              <webView id="4c2af572-c01d-4bbe-8dbe-4794592acec5" contentType="Content">
+                <!-- Modified from D3 example at https://observablehq.com/@d3/disjoint-force-directed-graph/2 -->
+                <input>
+                  <param id="a60d3981-4e59-43c0-894b-6cd3cd4c39c9" name="parentCount"/>
+                  <param id="54620bb9-8401-47f7-927f-be033e863f8b" name="childCount"/>
+                  <param id="ad0ad3cd-6c00-4052-9cd2-9ca7addedf9c" name="extraCount"/>
+                </input>
+                <data showProgress="false">
+                  <script type="lua">
+                    <![CDATA[
+return [[
+<svg id="container" style="margin:auto; border: solid 1px #888;"></svg>
+<script type="text/javascript">
+const svg = d3.select('#container');
+const linkGroup = svg.append("g").attr("stroke", "#999").attr("stroke-opacity", 0.6);
+const nodeGroup = svg.append("g").attr("stroke", "#fff").attr("stroke-width", 1.5);
+const color = d3.scaleOrdinal(d3.schemeCategory10);
+
+const parentCount = {parentCount};
+const childCount = {childCount};
+const parentBase = 1000;
+const childBase = Math.floor((parentBase + parentCount) / parentBase + 1) * parentBase;
+const extraCount = {extraCount};
+
+window.onload = function()
+{
+  var data = GenerateDataForForceSimularion(parentBase, parentCount, childBase, childCount, extraCount);
+  simulation = d3.forceSimulation(data.nodes)
+    .force("link", d3.forceLink(data.links).id(d => d.id))
+    .force("charge", d3.forceManyBody())
+    .force("x", d3.forceX())
+    .force("y", d3.forceY());
+  var links = linkGroup.selectAll("line").data(data.links)
+    .join("line").attr("stroke-width", d => Math.sqrt(d.value));
+  var nodes = nodeGroup.selectAll("circle").data(data.nodes)
+    .join("circle").attr("r", 5).attr("fill", d => color(d.group));
+  nodes.append("title").text(d => d.id);
+  nodes.call(d3.drag()
+    .on("start", onForceSimulationDragStarted)
+    .on("drag", onForceSimulationDragged)
+    .on("end", onForceSimulationDragEnded));
+  
+  simulation.on("tick", () => {
+    links.attr("x1", d => d.source.x).attr("y1", d => d.source.y)
+         .attr("x2", d => d.target.x).attr("y2", d => d.target.y);
+    nodes.attr("cx", d => d.x).attr("cy", d => d.y);
+  });
+  
+  window.onresize();
+}
+
+window.onresize = function(event)
+{
+  var graphWidth = document.documentElement.clientWidth - 20;
+  var graphHeight = document.documentElement.clientHeight - 20;
+  svg.attr("width", graphWidth).attr("height", graphHeight)
+    .attr("viewBox", [- graphWidth / 2, - graphHeight / 2, graphWidth, graphHeight])
+}
+</script>
+]]
+                    ]]>
+                  </script>
+                </data>
+                <scripts>
+                  <file path="None">https://d3js.org/d3.v7.min.js</file>
+                  <file path="View">d3-sample-support.js</file>
+                </scripts>
+              </webView>
+            </page>
+            <page title="Example">
+              <webView id="b93df36a-d37b-45c4-82a4-77e7a8794a88" contentType="Url" loadDataAt="Visualizing">
+                <!-- https://observablehq.com/@d3/radial-tree/2 -->
+                <data showProgress="false">
+                  <script type="lua">
+                    <![CDATA[
+return [[file://D:/Temp/lsb/lsb.html]]
+                    ]]>
+                  </script>
+                </data>
+              </webView>
+            </page>
+          </pages>
+        </tabLayout>
+      </right>
+    </splitLayout>
+  </view>
+
+  <procedures />
+  <launchers />
+  
+  <dataFlow>
+    <mapping source="7a7270d8-85be-4147-af41-d3e87608f222" target="a1cfcb16-b339-4408-9a9c-a51cfe80b394"/>
+    <mapping source="3a06bfd0-dac5-4bbd-8435-bb1b508dd978" target="251531e3-915d-4947-bb75-5e125c9ca5f4"/>
+    <mapping source="161452d1-8a86-40ae-bd01-20c2421ae06c" target="ad9d1da1-2369-4aaa-83d5-9325f9ddced5"/>
+    <mapping source="87470081-1148-4d44-95a9-7fcb1962df03" target="b448e0c8-924e-4b15-b1ad-4efff6735357"/>
+
+    <mapping source="39fe7122-5109-4fab-95aa-5a061a0c34b9" target="a60d3981-4e59-43c0-894b-6cd3cd4c39c9"/>
+    <mapping source="56b0fb38-2bae-42f6-84ea-e83228fbce20" target="54620bb9-8401-47f7-927f-be033e863f8b"/>
+    <mapping source="076382fd-b6e8-413f-b84a-42974f4c92fc" target="ad0ad3cd-6c00-4052-9cd2-9ca7addedf9c"/>
+  </dataFlow>
+
+</LsbView>

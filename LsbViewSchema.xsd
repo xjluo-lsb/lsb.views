@@ -314,6 +314,21 @@ in the LSB view files. It also defines the file structure of the view files usin
       <xs:enumeration value="Url" />
     </xs:restriction>
   </xs:simpleType>
+
+  <xs:simpleType name="KnownPath" final="restriction">
+    <xs:annotation>
+      <xs:documentation>
+        This is the enumeration type for known paths for file references
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="None" />
+      <xs:enumeration value="View" />
+      <xs:enumeration value="Libs" />
+      <xs:enumeration value="Data" />
+      <xs:enumeration value="Temp" />
+    </xs:restriction>
+  </xs:simpleType>
   
   <!-- Following types are non-structure types derived from primitive types -->
 
@@ -1037,14 +1052,27 @@ in the LSB view files. It also defines the file structure of the view files usin
     <xs:attribute name="foreColor" type="HtmlColor" use="optional" />
   </xs:complexType>
 
-  <xs:complexType name="FileList">
+  <xs:complexType name="FileReference">
+    <xs:annotation>
+      <xs:documentation>
+        This is the schema for FileReference.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="path" type="KnownPath" use="required" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:complexType name="FileReferences">
     <xs:annotation>
       <xs:documentation>
         This is the schema for list of files
       </xs:documentation>
     </xs:annotation>
     <xs:sequence>
-      <xs:element name="file" type="xs:string" minOccurs="1" maxOccurs="unbounded" />
+      <xs:element name="file" type="FileReference" minOccurs="1" maxOccurs="unbounded" />
     </xs:sequence>
   </xs:complexType>
 
@@ -1059,9 +1087,9 @@ in the LSB view files. It also defines the file structure of the view files usin
       <!-- For content type Url, the url of the web page will be read from the data source -->
       <!-- For content type Content, the content of the web page will be read from the data source -->
       <!-- Following items are for WebView in content type of Files -->
-      <xs:element name="styles" type="FileList" minOccurs="0" maxOccurs="1" />
-      <xs:element name="scripts" type="FileList" minOccurs="0" maxOccurs="1" />
-      <xs:element name="body" type="xs:string" minOccurs="0" maxOccurs="1" />
+      <xs:element name="styles" type="FileReferences" minOccurs="0" maxOccurs="1" />
+      <xs:element name="scripts" type="FileReferences" minOccurs="0" maxOccurs="1" />
+      <xs:element name="body" type="FileReference" minOccurs="0" maxOccurs="1" />
 
       <xs:element name="highlights" minOccurs="0" maxOccurs="1">
         <xs:complexType>
@@ -1125,7 +1153,6 @@ in the LSB view files. It also defines the file structure of the view files usin
       </xs:documentation>
     </xs:annotation>
     <xs:sequence>
-      <xs:group ref="ViewElements" />
       <xs:group ref="ViewElements" />
       <xs:element name="prompt" type="Prompt" minOccurs="0" maxOccurs="1" />
       <xs:element name="options" type="OptionList" minOccurs="0" maxOccurs="1" />
