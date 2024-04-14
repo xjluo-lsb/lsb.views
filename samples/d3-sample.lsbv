@@ -29,6 +29,8 @@
             <param id="39fe7122-5109-4fab-95aa-5a061a0c34b9" name="parentCount"/>
             <param id="56b0fb38-2bae-42f6-84ea-e83228fbce20" name="childCount"/>
             <param id="076382fd-b6e8-413f-b84a-42974f4c92fc" name="extraCount"/>
+
+            <param id="9bd179e7-26ec-4ed8-b4b0-bef737203e14" name="colorScheme"/>
           </output>
           <properties>
             <property name="randomSigma" label="Random StdDev" category="Scatterplot" type="Float" description="This is the seed for random numbers for Scatterplot" default="0.2" />
@@ -36,9 +38,25 @@
             <property name="yoffset" label="Vertical offset" category="Scatterplot" type="Float" description="This is the vertical offset between the clusters" default="0.6" />
             <property name="pointCount" label="Number of points" category="Scatterplot" type="Integer" description="This is the number of points in each cluster" default="300" />
 
-            <property name="parentCount" label="Parent node count" category="ForceGraph" type="UnsignedInteger" description="Number of vertices in the parent group" default="100" />
-            <property name="childCount" label="Child node count" category="ForceGraph" type="UnsignedInteger" description="Number of vertices in the child group" default="200" />
-            <property name="extraCount" label="Extra link count" category="ForceGraph" type="UnsignedInteger" description="Number of extra groups of links to connect vertices" default="10" />
+            <property name="parentCount" label="Parent node count" category="Disjoint force-directed graph" type="UnsignedInteger" description="Number of vertices in the parent group" default="100" />
+            <property name="childCount" label="Child node count" category="Disjoint force-directed graph" type="UnsignedInteger" description="Number of vertices in the child group" default="200" />
+            <property name="extraCount" label="Extra link count" category="Disjoint force-directed graph" type="UnsignedInteger" description="Number of extra groups of links to connect vertices" default="10" />
+
+            <property name="colorScheme" label="Color scheme" category="Zoomable circle packing" type="Enumeration" description="The color scheme for the graph" default="schemePastel1">
+              <options>
+                <option>schemeCategory10</option>
+                <option>schemeAccent</option>
+                <option>schemeDark2</option>
+                <option>schemeObservable10</option>
+                <option>schemePaired</option>
+                <option>schemePastel1</option>
+                <option>schemePastel2</option>
+                <option>schemeSet1</option>
+                <option>schemeSet2</option>
+                <option>schemeSet3</option>
+                <option>schemeTableau10</option>
+              </options>
+            </property>
           </properties>
         </propertyInput>
       </left>
@@ -58,46 +76,48 @@
                   <script type="lua">
                     <![CDATA[
 return [[
-<svg id="container" style="margin:auto"></svg>
+<div style="display:block;">
+  <svg id="container" style="width: 100%; cursor: pointer;"></svg>
+</div>
 <script type="text/javascript">
 const svg = d3.select('#container');
+const borderDelta = document.documentElement.clientWidth - svg.node().clientWidth + 4;
+function getWidth() { return document.documentElement.clientWidth - borderDelta; }
+function getHeight() { return document.documentElement.clientHeight - borderDelta; }
+
 const g = svg.append("g").attr("stroke-linecap", "round").attr("stroke-width", 5);
 var data = [];
 var color = null;
 
-window.onload = function(event)
-{
-  const sigma = {randomSigma};
-  const random = d3.randomNormal(0, sigma);
-  const xoffset = {xoffset};
-  const yoffset = {yoffset};
-  const xrange = sigma + xoffset + 0.5;
-  const yrange = sigma + yoffset + 0.5;
-  const count = {pointCount};
-
-  data = [].concat(
-    Array.from({length: count}, () => [(random() + xoffset) / xrange + 1, (random() - yoffset) / yrange + 1, 0]),
-    Array.from({length: count}, () => [(random() - xoffset) / xrange + 1, (random() - yoffset) / yrange + 1, 1]),
-    Array.from({length: count}, () => [(random() + xoffset) / xrange + 1, (random() + yoffset) / yrange + 1, 2]),
-    Array.from({length: count}, () => [(random() - xoffset) / xrange + 1, (random() + yoffset) / yrange + 1, 3])
-  );
-  color = d3.scaleOrdinal().domain(data.map(d => d[2])).range(d3.schemeCategory10);
-
-  window.onresize();
-}
-
 window.onresize = function(event)
 {
-  var graphWidth = document.documentElement.clientWidth - 20;
-  var graphHeight = document.documentElement.clientHeight - 20;
-  svg.style("width", graphWidth + "px").style("height", graphHeight + "px");
-  if (g && data.length > 0)
+  var graphWidth = getWidth();
+  var graphHeight = getHeight();
+  svg.attr("width", graphWidth).attr("height", graphHeight)
+    .attr("viewBox", [- graphWidth / 2, - graphHeight / 2, graphWidth, graphHeight])
+  if (g && data && data.length > 0)
   {
     g.selectAll("path").data(data).join("path")
       .attr("d", d => "M" + (d[0] * graphWidth / 2) + "," + (d[1] * graphHeight / 2) + "h0")
       .attr("stroke", d => color(d[2]));
   }
 };
+
+const sigma = {randomSigma};
+const xoffset = {xoffset};
+const yoffset = {yoffset};
+const count = {pointCount};
+const random = d3.randomNormal(0, sigma);
+
+data = [].concat(
+  Array.from({length: count}, () => [random() + xoffset, random() - yoffset, 0]),
+  Array.from({length: count}, () => [random() - xoffset, random() - yoffset, 1]),
+  Array.from({length: count}, () => [random() + xoffset, random() + yoffset, 2]),
+  Array.from({length: count}, () => [random() - xoffset, random() + yoffset, 3])
+);
+color = d3.scaleOrdinal().domain(data.map(d => d[2])).range(d3.schemeCategory10);
+
+window.onresize();
 </script>
 ]]
                     ]]>
@@ -109,7 +129,7 @@ window.onresize = function(event)
               </webView>
             </page>
             <page title="Disjoint force-directed graph">
-              <webView id="4c2af572-c01d-4bbe-8dbe-4794592acec5" contentType="Content">
+              <webView id="4c2af572-c01d-4bbe-8dbe-4794592acec5" contentType="Content" loadDataAt="Default">
                 <!-- Modified from D3 example at https://observablehq.com/@d3/disjoint-force-directed-graph/2 -->
                 <input>
                   <param id="a60d3981-4e59-43c0-894b-6cd3cd4c39c9" name="parentCount"/>
@@ -120,53 +140,56 @@ window.onresize = function(event)
                   <script type="lua">
                     <![CDATA[
 return [[
-<svg id="container" style="margin:auto; border: solid 1px #888;"></svg>
+<div style="display:block;">
+  <svg id="container" style="width: 100%; cursor: pointer;"></svg>
+</div>
 <script type="text/javascript">
+const parentBase = 1000;
+const parentCount = {parentCount};
+const childCount = {childCount};
+const childBase = Math.floor((parentBase + parentCount) / parentBase + 1) * parentBase;
+const extraCount = {extraCount};
+
 const svg = d3.select('#container');
+const borderDelta = document.documentElement.clientWidth - svg.node().clientWidth + 4;
+function getWidth() { return document.documentElement.clientWidth - borderDelta; }
+function getHeight() { return document.documentElement.clientHeight - borderDelta; }
+
 const linkGroup = svg.append("g").attr("stroke", "#999").attr("stroke-opacity", 0.6);
 const nodeGroup = svg.append("g").attr("stroke", "#fff").attr("stroke-width", 1.5);
 const color = d3.scaleOrdinal(d3.schemeCategory10);
 
-const parentCount = {parentCount};
-const childCount = {childCount};
-const parentBase = 1000;
-const childBase = Math.floor((parentBase + parentCount) / parentBase + 1) * parentBase;
-const extraCount = {extraCount};
-
-window.onload = function()
-{
-  var data = GenerateDataForForceSimularion(parentBase, parentCount, childBase, childCount, extraCount);
-  simulation = d3.forceSimulation(data.nodes)
-    .force("link", d3.forceLink(data.links).id(d => d.id))
-    .force("charge", d3.forceManyBody())
-    .force("x", d3.forceX())
-    .force("y", d3.forceY());
-  var links = linkGroup.selectAll("line").data(data.links)
-    .join("line").attr("stroke-width", d => Math.sqrt(d.value));
-  var nodes = nodeGroup.selectAll("circle").data(data.nodes)
-    .join("circle").attr("r", 5).attr("fill", d => color(d.group));
-  nodes.append("title").text(d => d.id);
-  nodes.call(d3.drag()
-    .on("start", onForceSimulationDragStarted)
-    .on("drag", onForceSimulationDragged)
-    .on("end", onForceSimulationDragEnded));
-  
-  simulation.on("tick", () => {
-    links.attr("x1", d => d.source.x).attr("y1", d => d.source.y)
-         .attr("x2", d => d.target.x).attr("y2", d => d.target.y);
-    nodes.attr("cx", d => d.x).attr("cy", d => d.y);
-  });
-  
-  window.onresize();
-}
-
 window.onresize = function(event)
 {
-  var graphWidth = document.documentElement.clientWidth - 20;
-  var graphHeight = document.documentElement.clientHeight - 20;
+  var graphWidth = getWidth();
+  var graphHeight = getHeight();
   svg.attr("width", graphWidth).attr("height", graphHeight)
     .attr("viewBox", [- graphWidth / 2, - graphHeight / 2, graphWidth, graphHeight])
 }
+
+var data = GenerateDataForForceSimularion(parentBase, parentCount, childBase, childCount, extraCount);
+simulation = d3.forceSimulation(data.nodes)
+  .force("link", d3.forceLink(data.links).id(d => d.id))
+  .force("charge", d3.forceManyBody())
+  .force("x", d3.forceX())
+  .force("y", d3.forceY());
+var links = linkGroup.selectAll("line").data(data.links)
+  .join("line").attr("stroke-width", d => Math.sqrt(d.value));
+var nodes = nodeGroup.selectAll("circle").data(data.nodes)
+  .join("circle").attr("r", 5).attr("fill", d => color(d.group));
+nodes.append("title").text(d => d.id);
+nodes.call(d3.drag()
+  .on("start", onForceSimulationDragStarted)
+  .on("drag", onForceSimulationDragged)
+  .on("end", onForceSimulationDragEnded));
+  
+simulation.on("tick", () => {
+  links.attr("x1", d => d.source.x).attr("y1", d => d.source.y)
+        .attr("x2", d => d.target.x).attr("y2", d => d.target.y);
+  nodes.attr("cx", d => d.x).attr("cy", d => d.y);
+});
+  
+window.onresize();
 </script>
 ]]
                     ]]>
@@ -178,16 +201,101 @@ window.onresize = function(event)
                 </scripts>
               </webView>
             </page>
-            <page title="Example">
-              <webView id="b93df36a-d37b-45c4-82a4-77e7a8794a88" contentType="Url" loadDataAt="Visualizing">
-                <!-- https://observablehq.com/@d3/radial-tree/2 -->
+            <page title="Zoomable circle packing">
+              <webView id="b93df36a-d37b-45c4-82a4-77e7a8794a88" contentType="Content" loadDataAt="Visualizing">
+                <!-- Modified from D3 example at https://observablehq.com/@d3/zoomable-circle-packing?intent=fork -->
+                <input>
+                  <param id="43121e3c-98b7-4d3c-95e1-cf09f215eeb4" name="colorScheme"/>
+                </input>
                 <data showProgress="false">
                   <script type="lua">
                     <![CDATA[
-return [[file://D:/Temp/lsb/lsb.html]]
+return [[
+<div style="display:block;">
+  <svg id="container" style="width: 100%; cursor: pointer;"></svg>
+</div>
+
+<script type="text/javascript">
+const svg = d3.select('#container');
+const borderDelta = document.documentElement.clientWidth - svg.node().clientWidth + 4;
+function getWidth() { return document.documentElement.clientWidth - borderDelta; }
+function getHeight() { return document.documentElement.clientHeight - borderDelta; }
+function getColor(index)
+{
+  var schemes = [ d3.schemeCategory10, d3.schemeAccent, d3.schemeDark2, d3.schemeObservable10, d3.schemePaired,
+    d3.schemePastel1, d3.schemePastel2, d3.schemeSet1, d3.schemeSet2, d3.schemeSet3, d3.schemeTableau10 ];
+  return (index >= 0 && index < schemes.length) ? schemes[index] : schemes[0];
+}
+
+const color = d3.scaleOrdinal(getColor({colorScheme}));
+svg.attr("style", "background: " + color(0) + ";");
+svg.on("click", (event) => zoom(event, root));
+
+const pack = data => d3.pack().size([getWidth(), getHeight()]).padding(3)(d3.hierarchy(data).sum(d => d.value).sort((a, b) => b.value - a.value));
+const root = pack(data);
+const node = svg.append("g").selectAll("circle").data(root.descendants().slice(1))
+  .join("circle")
+    .attr("fill", d => d.children ? color(d.depth) : "white")
+    .attr("pointer-events", d => !d.children ? "none" : null)
+    .on("mouseover", function() { d3.select(this).attr("stroke", "#000"); })
+    .on("mouseout", function() { d3.select(this).attr("stroke", null); })
+    .on("click", (event, d) => focus !== d && (zoom(event, d), event.stopPropagation()));
+const label = svg.append("g").style("font", "10px sans-serif").attr("pointer-events", "none").attr("text-anchor", "middle")
+  .selectAll("text")
+  .data(root.descendants())
+  .join("text")
+    .style("fill-opacity", d => d.parent === root ? 1 : 0)
+    .style("display", d => d.parent === root ? "inline" : "none")
+    .text(d => d.data.name);
+
+window.onresize = function(event)
+{
+  var graphWidth = getWidth();
+  var graphHeight = getHeight();
+  svg.attr("width", graphWidth).attr("height", graphHeight)
+    .attr("viewBox", [- graphWidth / 2, - graphHeight / 2, graphWidth, graphHeight])
+  zoomTo([focus.x, focus.y, focus.r * 2]);
+}
+
+let focus = root;
+let view;
+
+function zoomTo(v)
+{
+  const k = getWidth() / v[2];
+  view = v;
+
+  label.attr("transform", d => `translate(${(d.x - v[0]) * k},${(d.y - v[1]) * k})`);
+  node.attr("transform", d => `translate(${(d.x - v[0]) * k},${(d.y - v[1]) * k})`);
+  node.attr("r", d => d.r * k);
+}
+
+function zoom(event, d)
+{
+  focus = d;
+  const transition = svg.transition()
+    .duration(event.altKey ? 7500 : 750)
+    .tween("zoom", d => {
+      const i = d3.interpolateZoom(view, [focus.x, focus.y, focus.r * 2]);
+      return t => zoomTo(i(t));
+    });
+  label.filter(function(d) { return d.parent === focus || this.style.display === "inline"; })
+    .transition(transition)
+      .style("fill-opacity", d => d.parent === focus ? 1 : 0)
+      .on("start", function(d) { if (d.parent === focus) this.style.display = "inline"; })
+      .on("end", function(d) { if (d.parent !== focus) this.style.display = "none"; });
+}
+
+window.onresize();
+</script>
+]]
                     ]]>
                   </script>
                 </data>
+                <scripts>
+                  <file path="None">https://d3js.org/d3.v7.min.js</file>
+                  <file path="View">d3-zoomable-circle.js</file>
+                </scripts>
               </webView>
             </page>
           </pages>
@@ -208,6 +316,8 @@ return [[file://D:/Temp/lsb/lsb.html]]
     <mapping source="39fe7122-5109-4fab-95aa-5a061a0c34b9" target="a60d3981-4e59-43c0-894b-6cd3cd4c39c9"/>
     <mapping source="56b0fb38-2bae-42f6-84ea-e83228fbce20" target="54620bb9-8401-47f7-927f-be033e863f8b"/>
     <mapping source="076382fd-b6e8-413f-b84a-42974f4c92fc" target="ad0ad3cd-6c00-4052-9cd2-9ca7addedf9c"/>
+
+    <mapping source="9bd179e7-26ec-4ed8-b4b0-bef737203e14" target="43121e3c-98b7-4d3c-95e1-cf09f215eeb4"/>
   </dataFlow>
 
 </LsbView>

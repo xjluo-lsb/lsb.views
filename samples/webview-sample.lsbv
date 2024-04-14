@@ -111,12 +111,12 @@ function onClick3()
               <input />
               <output />
               <styles>
-                <file>{lsb.Libs}\css\lsb.css</file>
+                <file path="Libs">css\lsb.css</file>
               </styles>
               <scripts>
-                <file>{lsb.Libs}\js\lsb.js</file>
+                <file path="Libs">js\lsb.js</file>
               </scripts>
-              <body>{lsb.Path}\webview-sample.html</body>
+              <body path="View">webview-sample.html</body>
             </webView>
           </bottom>
         </splitLayout>
