@@ -113,9 +113,6 @@ function onClick3()
               <styles>
                 <file path="Libs">css\lsb.css</file>
               </styles>
-              <scripts>
-                <file path="Libs">js\lsb.js</file>
-              </scripts>
               <body path="View">webview-sample.html</body>
             </webView>
           </bottom>

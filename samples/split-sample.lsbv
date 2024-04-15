@@ -33,10 +33,43 @@
           </output>
           <properties>
             <property name="stringValue" label="Input string value" category="Primitives" type="String" description="This is a sample description for string value input" defaultValue="something here" />
-            <property name="intValue" label="Input integer value" category="Primitives" type="String" description="This is help information for sample integer input" defaultValue="150" />
+            <property name="intValue" label="Input integer value" category="Primitives" type="Integer" description="This is help information for sample integer input" defaultValue="150" />
             <property name="simpleFile" label="Select a file" category="Files" type="File" description="Help information for file property" />
             <property name="imageFile" label="Select an image file" category="Files" type="ImageFile" description="Help information for image file property" />
             <property name="selectFolder" label="Select a folder" category="Folder" type="Folder" description="Help information for folder property" />
+
+            <property name="boolean" label="Boolean value" category="Property demo" type="Boolean" description="Demostrates the Boolean type value" />
+            <property name="flags" label="Flags value" category="Property demo" type="Flags" description="Demosrtates the Flags type value">
+              <options>
+                <option>Flag attribute 1</option>
+                <option>Flag attribute 2</option>
+                <option>Flag attribute 3</option>
+              </options>
+            </property>
+            <property name="float" label="Float value" category="Property demo" type="Float" description="Demostrates the Float type value" default="1.0" />
+            <property name="unsignedInteger" label="Unsigned integer" category="Property demo" type="UnsignedInteger" description="Demostrates the UnsignedInteger type value" default="100"/>
+            <property name="password" label="Password value" category="Property demo" type="Password" description="Demostrates the Password type value" default="password"/>
+            <property name="arrayString" label="Array string" category="Property demo" type="ArrayString" description="Demostrates the ArrayString type value" />
+            <property name="longString" label="Long string" category="Property demo" type="LongString" description="Demostrates the LongString type value" />
+            <property name="enumeration" label="Enumeration" category="Property demo" type="Enumeration" description="Demostrates the Enumeration type value">
+              <options>
+                <option>Enumeration value 1</option>
+                <option>Enumeration value 2</option>
+                <option>Enumeration value 3</option>
+              </options>
+            </property>
+            <property name="multiChoice" label="Multi choice" category="Property demo" type="MultiChoice" description="Demostrates the MultiChoice type value">
+              <options>
+                <option>Choice 1</option>
+                <option>Choice 2</option>
+                <option>Choice 3</option>
+              </options>
+            </property>
+            <property name="date" label="Date value" category="Property demo" type="Date" description="Demostrates the Date type value" />
+            <property name="font" label="Font value" category="Property demo" type="Font" description="Demostrates the Font type value" />
+            <property name="cursor" label="Cursor value" category="Property demo" type="Cursor" description="Demostrates the Cursor type value" />
+            <property name="color" label="Color value" category="Property demo" type="Color" description="Demostrates the Color type value" />
+            <property name="systemColor" label="System color value" category="Property demo" type="SystemColor" description="Demostrates the SystemColor type value" />
           </properties>
         </propertyInput>
       </left>
