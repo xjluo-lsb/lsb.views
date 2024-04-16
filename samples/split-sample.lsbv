@@ -58,7 +58,7 @@
                 <option>Enumeration value 3</option>
               </options>
             </property>
-            <property name="multiChoice" label="Multi choice" category="Property demo" type="MultiChoice" description="Demostrates the MultiChoice type value">
+            <property name="multiChoice" label="Multi choice" category="Property demo" type="MultiChoice" description="Demostrates the MultiChoice type value" default="Choice 2">
               <options>
                 <option>Choice 1</option>
                 <option>Choice 2</option>
@@ -67,7 +67,6 @@
             </property>
             <property name="date" label="Date value" category="Property demo" type="Date" description="Demostrates the Date type value" />
             <property name="font" label="Font value" category="Property demo" type="Font" description="Demostrates the Font type value" />
-            <property name="cursor" label="Cursor value" category="Property demo" type="Cursor" description="Demostrates the Cursor type value" />
             <property name="color" label="Color value" category="Property demo" type="Color" description="Demostrates the Color type value" />
             <property name="systemColor" label="System color value" category="Property demo" type="SystemColor" description="Demostrates the SystemColor type value" />
           </properties>
