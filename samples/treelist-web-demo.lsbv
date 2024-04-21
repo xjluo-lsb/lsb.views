@@ -59,9 +59,7 @@ return
           </input>
           <data showProgress="false">
             <script type="lua">
-<![CDATA[
-return "{URL}"
-]]>
+<![CDATA[return "{URL}"]]>
             </script>
           </data>
         </webView>
