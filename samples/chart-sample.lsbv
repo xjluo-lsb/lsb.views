@@ -9,7 +9,21 @@
   createTime="2021-12-05T10:31:45Z"
   lastChangeTime="2023-08-28T22:00:00.000Z">
 
-  <description>A view that demonstrates different types of charts supported by LSB</description>
+  <description>
+    <![CDATA[
+    This is a sample view that demonstrates the TabLayout, TableLayout and ChartView that are provided in LSB. The ChartView
+    is the view control that is used to show all the 16 types of charts supported, which includes,
+    <ul>
+      <li> Bar chart          <li> Stacked bar chart  <li> Column chart   <li> Stacked column chart
+      <li> Candlestick chart  <li> Box plot           <li> OHLC chart     <li> Histogram
+      <li> Pie chart          <li> Polar area chart   <li> Doughnut chart <li> Bubble chart
+      <li> Scatter plot       <li> Line chart         <li> Math2D plot    <li> Area chart
+    </ul>
+    The data used in this sample view is generated using the embedded Lua scripts.
+    More details about the wxCharts library used to display the charts can be found at
+      https://github.com/wxIshiko/wxCharts
+    ]]>
+  </description>
   <version major="0" minor="1" build="1" revision="0" />
 
   <view>
