@@ -13,9 +13,7 @@
   <version major="0" minor="9" build="0" revision="0" />
   <os>Any</os>
   <about type="Url">
-<![CDATA[
-https://www.wxwidgets.org
-]]>    
+<![CDATA[https://www.wxwidgets.org]]>
   </about>
 
   <view>
@@ -247,7 +245,7 @@ return {
                 </buttonGroup>
               </page>
               <page title="ChartView">
-                <chartView id="07bbe232-6fed-47f5-8baa-620ee54e382c" chartType="ColumnChart" loadDataAt="Creating">
+                <chartView id="07bbe232-6fed-47f5-8baa-620ee54e382c" chartType="ColumnChart" loadDataAt="Creating" showTooltip="false">
                   <data showProgress="false">
                     <script type="lua">
                       <![CDATA[
