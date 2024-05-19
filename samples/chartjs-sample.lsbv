@@ -108,7 +108,7 @@ new Chart(ctx, {
                   </script>
                 </data>
                 <scripts>
-                  <file path="None">https://cdn.jsdelivr.net/npm/chart.js</file>
+                  <file>https://cdn.jsdelivr.net/npm/chart.js</file>
                 </scripts>
               </webView>
             </page>
@@ -173,7 +173,7 @@ new Chart(ctx, {
                   </script>
                 </data>
                 <scripts>
-                  <file path="None">https://cdn.jsdelivr.net/npm/chart.js</file>
+                  <file>https://cdn.jsdelivr.net/npm/chart.js</file>
                 </scripts>
               </webView>
             </page>
