@@ -4,12 +4,12 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="https://github.com/xjluo-lsb/lsb.views ..\LsbViewSchema.xsd"
 
-  name="File Explorer View"
+  name="File Explorer View (Windows)"
   author="Kevin Luo"
   createTime="2021-10-17T10:36:00z"
-  lastChangeTime="2023-09-10T21:26:45z">
+  lastChangeTime="2024-05-22T21:26:45z">
 
-  <description>A sample view to demonstrate the capabilities of LeaveScriptBehind</description>
+  <description>A file explorer like sample view to demonstrate the capabilities of LeaveScriptBehind. This view is for Windows OS only, there is another similar one for Linux and Mac OS X.</description>
   <version major="0" minor="0" build="1" revision="0" />
   <os>Windows</os>
 
