@@ -124,7 +124,7 @@ window.onresize();
                   </script>
                 </data>
                 <scripts>
-                  <file path="None">https://d3js.org/d3.v7.min.js</file>
+                  <file>https://d3js.org/d3.v7.min.js</file>
                 </scripts>
               </webView>
             </page>
@@ -196,7 +196,7 @@ window.onresize();
                   </script>
                 </data>
                 <scripts>
-                  <file path="None">https://d3js.org/d3.v7.min.js</file>
+                  <file>https://d3js.org/d3.v7.min.js</file>
                   <file path="View">d3-sample-support.js</file>
                 </scripts>
               </webView>
@@ -293,7 +293,7 @@ window.onresize();
                   </script>
                 </data>
                 <scripts>
-                  <file path="None">https://d3js.org/d3.v7.min.js</file>
+                  <file>https://d3js.org/d3.v7.min.js</file>
                   <file path="View">d3-zoomable-circle.js</file>
                 </scripts>
               </webView>
