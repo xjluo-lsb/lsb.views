@@ -16,7 +16,7 @@
   <view>
     <splitLayout id="f535783a-d8ae-47db-99d1-ca9669a297ec" orientation="Horizontal" fixedView="Left" size="240">
       <left>
-        <treeView id="00aa9ad2-15d4-4368-b2cd-12afb389ee55" loadDataAt="Creating" childProperty="Child" labelProperty="Name">
+        <treeView id="00aa9ad2-15d4-4368-b2cd-12afb389ee55" loadDataAt="Creating" childProperty="Child" labelProperty="File">
           <caption visible="true">Folders</caption>
           <input />
           <output>
@@ -25,8 +25,8 @@
           <data>
             <script type="bash">
 <![CDATA[
-r = $(ls / -l)
-ptj -i $r -p "(?<Mode>[drwx\-@]+)\s+\d+\s+(?<Owner>\w+)\d+(?<Group>\w+)\s+(?<Length>\d+)\d+(?<Time>\w{3}\s+\d+\s+((\d{2}\:\d{2})|\d{4}))\s+(?<File>[\w\d\.]+)" -v
+r=$(ls / -l)
+ptj -i "$r" -p "(?<Mode>[drwx\-@]+)\s+\d+\s+(?<Owner>\w+)\s+(?<Group>\w+)\s+(?<Length>\d+)\s+(?<Time>\w{3}\s+\d+\s+((\d{2}\:\d{2})|\d{4}))\s+(?<File>[\w\d\.]+)"
 ]]>
             </script>
           </data>
@@ -95,10 +95,10 @@ return (not name.IsEmpty) and (not path.IsEmpty) and name.IsTrigger
 ]]>
               </condition>
               <data showProgress="false">
-                <script type="pwsh">
+                <script type="bash">
 <![CDATA[
-$filePath = '{path}{name}'
-Get-Content $filePath -Raw
+filePath="{path}{name}"
+cat $filePath
 ]]>
                 </script>
               </data>
