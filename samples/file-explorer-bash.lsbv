@@ -46,10 +46,12 @@ ptj -i "$r" -p "(?<Mode>[drwx\-@]+)\s+\d+\s+(?<Owner>\w+)\s+(?<Group>\w+)\s+(?<L
               <data>
                 <script type="bash">
                   <![CDATA[
-if (-not [String]::IsNullOrEmpty('{path}'))
-{
-    Get-ChildItem '{path}' | Where-Object { $_.Attributes -ne 'Directory' } | Select-Object -Property @('Name', 'Mode', 'Length', 'CreationTime', 'LastWriteTime')
-}
+if [ -z "{path}" ]; then
+  echo "[]"
+else
+ r=$(ls -l --color=never /{path})
+ ptj -i "$r" -p "(?<Mode>[drwx\-@]+)\s+\d+\s+(?<Owner>\w+)\s+(?<Group>\w+)\s+(?<Length>\d+)\s+(?<Time>\w{3}\s+\d+\s+((\d{2}\:\d{2})|\d{4}))\s+(?<File>[\w\d\.]+)"
+fi
 ]]>
                 </script>
               </data>
@@ -72,11 +74,11 @@ if (-not [String]::IsNullOrEmpty('{path}'))
                 singleSelectionPrompt="there is %%ITEM_COUNT%% item currently selected."
                 multipleSelectionPrompt="there are %%ITEM_COUNT%% items currently selected." />
               <columns>
-                <column name="Name" width="160" align="Left" visible="true" />
-                <column name="LastWriteTime" displayName="Last Write Time" width="220" align="Right"/>
+                <column name="File" displayName="Name" width="160" align="Left" visible="true" />
+                <column name="Owner" width="100" align="Left"/>
                 <column name="Mode" width="60" align="Right"/>
                 <column name="Length" width="100" align="Right"/>
-                <column name="CreationTime" displayName="Creation Time" width="220" align="Right"/>
+                <column name="Time" displayName="Last Write Time" width="220" align="Right"/>
               </columns>
               <rowColors />
             </listView>
@@ -97,8 +99,7 @@ return (not name.IsEmpty) and (not path.IsEmpty) and name.IsTrigger
               <data showProgress="false">
                 <script type="bash">
 <![CDATA[
-filePath="{path}{name}"
-cat $filePath
+cat {path}{name}
 ]]>
                 </script>
               </data>
