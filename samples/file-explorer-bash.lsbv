@@ -26,7 +26,7 @@
             <script type="bash">
 <![CDATA[
 r=$(ls -l --color=never /)
-ptj -i "$r" -p "(?<Mode>[drwx\-@]+)\s+\d+\s+(?<Owner>\w+)\s+(?<Group>\w+)\s+(?<Length>\d+)\s+(?<Time>\w{3}\s+\d+\s+((\d{2}\:\d{2})|\d{4}))\s+(?<File>[\w\d\.]+)"
+ptj -i "$r" -p "(?<Mode>[drwx\-@]+)\s+\d+\s+(?<Owner>\w+)\s+(?<Group>\w+)\s+(?<Length>\d+)\s+(?<Time>\w{3}\s+\d+\s+((\d{2}\:\d{2})|\d{4}))\s+(?<File>[\w\d\+\-\.]+)"
 ]]>
             </script>
           </data>
@@ -49,8 +49,8 @@ ptj -i "$r" -p "(?<Mode>[drwx\-@]+)\s+\d+\s+(?<Owner>\w+)\s+(?<Group>\w+)\s+(?<L
 if [ -z "{path}" ]; then
   echo "[]"
 else
- r=$(ls -l --color=never /{path})
- ptj -i "$r" -p "(?<Mode>[drwx\-@]+)\s+\d+\s+(?<Owner>\w+)\s+(?<Group>\w+)\s+(?<Length>\d+)\s+(?<Time>\w{3}\s+\d+\s+((\d{2}\:\d{2})|\d{4}))\s+(?<File>[\w\d\.]+)"
+ r=$(ls -l --color=never {path})
+ ptj -i "$r" -p "(?<Mode>[drwx\-@]+)\s+\d+\s+(?<Owner>\w+)\s+(?<Group>\w+)\s+(?<Length>\d+)\s+(?<Time>\w{3}\s+\d+\s+((\d{2}\:\d{2})|\d{4}))\s+(?<File>[\w\d\+\-\.]+)"
 fi
 ]]>
                 </script>
@@ -76,7 +76,7 @@ fi
               <columns>
                 <column name="File" displayName="Name" width="160" align="Left" visible="true" />
                 <column name="Owner" width="100" align="Left"/>
-                <column name="Mode" width="60" align="Right"/>
+                <column name="Mode" width="80" align="Right"/>
                 <column name="Length" width="100" align="Right"/>
                 <column name="Time" displayName="Last Write Time" width="220" align="Right"/>
               </columns>
