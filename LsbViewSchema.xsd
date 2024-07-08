@@ -329,7 +329,57 @@ in the LSB view files. It also defines the file structure of the view files usin
       <xs:enumeration value="Temp" />
     </xs:restriction>
   </xs:simpleType>
-  
+
+  <xs:simpleType name="FontFamily" final="restriction">
+    <xs:annotation>
+      <xs:documentation>
+        This is the enumeration type of font family
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Default" />
+      <xs:enumeration value="Decorative" />
+      <xs:enumeration value="Roman" />
+      <xs:enumeration value="Script" />
+      <xs:enumeration value="Swiss" />
+      <xs:enumeration value="Modern" />
+      <xs:enumeration value="Teletype" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="FontStyle" final="restriction">
+    <xs:annotation>
+      <xs:documentation>
+        This is the enumeration type of font style
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Normal" />
+      <xs:enumeration value="Italic" />
+      <xs:enumeration value="Slant" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="FontWeight" final="restriction">
+    <xs:annotation>
+      <xs:documentation>
+        This is the enumeration type of font weight
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Thin" />
+      <xs:enumeration value="ExtraLight" />
+      <xs:enumeration value="Light" />
+      <xs:enumeration value="Normal" />
+      <xs:enumeration value="Medium" />
+      <xs:enumeration value="SemiBold" />
+      <xs:enumeration value="Bold" />
+      <xs:enumeration value="ExtraBold" />
+      <xs:enumeration value="Heavy" />
+      <xs:enumeration value="ExtraHeavy" />
+    </xs:restriction>
+  </xs:simpleType>
+
   <!-- Following types are non-structure types derived from primitive types -->
 
   <!-- UUID type definition -->
@@ -422,6 +472,22 @@ in the LSB view files. It also defines the file structure of the view files usin
         <xs:attribute name="visible" type="xs:boolean" use="optional" default="true" />
       </xs:extension>
     </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:complexType name="FontDesc">
+    <xs:annotation>
+      <xs:documentation>
+        This is the structure that defines font description.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="encoding" type="xs:positiveInteger" use="optional" default="33" />
+    <xs:attribute name="family" type="FontFamily" use="optional" default="Default" />
+    <xs:attribute name="pointSize" type="xs:positiveInteger" use="required" />
+    <xs:attribute name="style" type="FontStyle" use="optional" default="Normal" />
+    <xs:attribute name="weight" type="FontWeight" use="optional" default="Normal" />
+    <xs:attribute name="underline" type="xs:boolean" use="optional" default="false" />
+    <xs:attribute name="strikethrough" type="xs:boolean" use="optional" default="false" />
+    <xs:attribute name="faceName" type="xs:string" use="required" />
   </xs:complexType>
 
   <xs:complexType name="Parameter">
@@ -926,17 +992,19 @@ in the LSB view files. It also defines the file structure of the view files usin
     <xs:attribute name="showTooltip" type="xs:boolean" use="optional" default="true" />
   </xs:complexType>
 
-  <xs:complexType name="RowColor">
+  <xs:complexType name="RowStyle">
     <xs:annotation>
       <xs:documentation>
-        This is the schema for RowColor class that defines the color and font to be used for a specific ListView rows
+        This is the schema for RowStyle class that defines the color and font to be used for a specific ListView rows
         that has the column value(s) meet the predefined condition.
       </xs:documentation>
     </xs:annotation>
+    <xs:sequence>
+      <xs:element name="font" type="FontDesc" minOccurs="0" maxOccurs="1" />
+    </xs:sequence>
     <xs:attribute name="condition" type="xs:string" use="required" />
     <xs:attribute name="foreColor" type="HtmlColor" use="optional" />
     <xs:attribute name="backColor" type="HtmlColor" use="optional" />
-    <xs:attribute name="fontInfo" type="xs:string" use="optional" />
   </xs:complexType>
 
   <xs:complexType name="ListViewFilter">
@@ -976,10 +1044,10 @@ in the LSB view files. It also defines the file structure of the view files usin
       <xs:element name="filter" type="ListViewFilter" minOccurs="0" maxOccurs="1" />
       <xs:element name="status" type="ListViewStatus" minOccurs="0" maxOccurs="1" />
       <xs:element name="columns" type="ColumnSet" minOccurs="1" maxOccurs="1" />
-      <xs:element name="rowColors" minOccurs="0" maxOccurs="1">
+      <xs:element name="rowStyles" minOccurs="0" maxOccurs="1">
         <xs:complexType>
           <xs:sequence>
-            <xs:element name="row" type="RowColor" minOccurs="0" maxOccurs="unbounded" />
+            <xs:element name="row" type="RowStyle" minOccurs="0" maxOccurs="unbounded" />
           </xs:sequence>
         </xs:complexType>
       </xs:element>
@@ -1016,7 +1084,7 @@ in the LSB view files. It also defines the file structure of the view files usin
       <xs:element name="nodeColors" minOccurs="0" maxOccurs="1">
         <xs:complexType>
           <xs:sequence>
-            <xs:element name="node" type="RowColor" minOccurs="0" maxOccurs="unbounded" />
+            <xs:element name="node" type="RowStyle" minOccurs="0" maxOccurs="unbounded" />
           </xs:sequence>
         </xs:complexType>
       </xs:element>
