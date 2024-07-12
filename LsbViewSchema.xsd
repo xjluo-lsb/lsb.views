@@ -663,6 +663,7 @@ in the LSB view files. It also defines the file structure of the view files usin
       <xs:extension base="xs:string">
         <!-- This is the type of the script. The script should be content of the element. -->
         <xs:attribute name="type" type="xs:string" use="required" />
+        <xs:attribute name="timeout" type="xs:unsignedInt" use="optional" default="0" />
       </xs:extension>
     </xs:simpleContent>
   </xs:complexType>

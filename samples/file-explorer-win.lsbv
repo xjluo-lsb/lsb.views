@@ -25,7 +25,7 @@
                 <param id="35a9527e-bc13-4023-a9aa-334e540958b7" name="Drive" activation="Default"/>
               </output>
               <data>
-                <script type="pwsh">
+                <script type="pwsh" timeout="10">
 <![CDATA[
 $query = 'SELECT * from win32_logicaldisk'
 Get-WmiObject -Query $query | Select-Object -Property @('DeviceID', 'VolumeName', 'Size', 'Freespace')
@@ -59,7 +59,7 @@ Get-WmiObject -Query $query | Select-Object -Property @('DeviceID', 'VolumeName'
                 <param id="a02b668e-3550-4421-8e1d-9a4cdd740ac5" name="__path__" activation="Default"/>
               </output>
               <data>
-                <script type="pwsh">
+                <script type="pwsh" timeout="10">
 <![CDATA[
 if (-not [String]::IsNullOrEmpty('{Drive}'))
 {
@@ -85,7 +85,7 @@ if (-not [String]::IsNullOrEmpty('{Drive}'))
                 <param id="ba4d8c36-fae9-469b-a24c-45c9c1e402ed" name="name" activation="DoubleClick"/>
               </output>
               <data>
-                <script type="pwsh">
+                <script type="pwsh" timeout="10">
                   <![CDATA[
 if (-not [String]::IsNullOrEmpty('{path}'))
 {
@@ -123,7 +123,7 @@ if (-not [String]::IsNullOrEmpty('{path}'))
             </listView>
           </top>
           <bottom>
-            <textView id="77962981-c306-460a-a878-dec857d11bf3" readOnly="false">
+            <textView id="77962981-c306-460a-a878-dec857d11bf3" readOnly="true">
               <caption visible="true">Content of {path}{name}</caption>
               <input>
                 <param id="cdf69587-9c8e-4b55-ba0d-df65b19f4330" name="name"/>
