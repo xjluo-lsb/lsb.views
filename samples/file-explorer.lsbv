@@ -1,0 +1,95 @@
+<?xml version="1.0"?>
+
+<LsbView xmlns="https://github.com/xjluo-lsb/lsb.views"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="https://github.com/xjluo-lsb/lsb.views ..\LsbViewSchema.xsd"
+
+  name="File Explorer View"
+  author="Kevin Luo"
+  createTime="2021-10-17T10:36:00z"
+  lastChangeTime="2024-05-22T21:26:45z">
+
+  <description>A file explorer like sample view to demonstrate the capabilities of LeaveScriptBehind. This one works on all OSes.</description>
+  <version major="0" minor="0" build="1" revision="0" />
+  <os>Any</os>
+
+  <view>
+    <splitLayout id="f535783a-d8ae-47db-99d1-ca9669a297ec" orientation="Horizontal" fixedView="Left" size="240">
+      <left>
+        <fileTree id="00aa9ad2-15d4-4368-b2cd-12afb389ee55" loadDataAt="Creating" root="/">
+          <caption visible="true">Folders</caption>
+          <input />
+          <output>
+            <param id="a02b668e-3550-4421-8e1d-9a4cdd740ac5" name="__path__" activation="Default"/>
+          </output>
+          <data showProgress="false">
+            <script type="lua">
+<![CDATA[]]>
+            </script>
+          </data>
+        </fileTree>
+      </left>
+      <right>
+        <splitLayout id="e9a47037-a1d5-44a2-9a26-e68fda9abf3a" orientation="Vertical" fixedView="None" ratio="0.42">
+          <top>
+            <fileList id="a1f7ce3a-7c5e-4765-95e6-147049163135" multiSelect="true" filter="true" status="true" dirs="true">
+              <caption visible="true">Files under {path}</caption>
+              <input>
+                <param id="837825a3-9853-4318-8211-b0c4b50e5967" name="path"/>
+              </input>
+              <output>
+                <param id="ba4d8c36-fae9-469b-a24c-45c9c1e402ed" name="name" activation="DoubleClick"/>
+              </output>
+              <data showProgress="false">
+                <script type="lua">
+<![CDATA[return [[{path}]]]]>
+                </script>
+              </data>
+              <contextMenu copy="true" refresh="true">
+                <menuItem text="Hello world!">
+                  <data>
+                    <script type="lua">
+<![CDATA[]]>
+                    </script>
+                  </data>
+                </menuItem>
+              </contextMenu>
+              <rowStyles />
+            </fileList>
+          </top>
+          <bottom>
+            <textView id="77962981-c306-460a-a878-dec857d11bf3" readOnly="false">
+              <caption visible="true">Content of {path}{name}</caption>
+              <input>
+                <param id="cdf69587-9c8e-4b55-ba0d-df65b19f4330" name="name"/>
+                <param id="a1cfcb16-b339-4408-9a9c-a51cfe80b394" name="path"/>
+              </input>
+              <output />
+              <condition>
+<![CDATA[
+return (not name.IsEmpty) and (not path.IsEmpty) and name.IsTrigger
+]]>
+              </condition>
+              <data showProgress="false">
+                <script type="lua">
+<![CDATA[
+
+]]>
+                </script>
+              </data>
+            </textView>
+          </bottom>
+        </splitLayout>
+      </right>
+    </splitLayout>
+  </view>
+
+  <procedures />
+  <launchers />
+
+  <dataFlow>
+    <mapping source="a02b668e-3550-4421-8e1d-9a4cdd740ac5" target="837825a3-9853-4318-8211-b0c4b50e5967" />
+    <mapping source="ba4d8c36-fae9-469b-a24c-45c9c1e402ed" target="cdf69587-9c8e-4b55-ba0d-df65b19f4330" />
+    <mapping source="a02b668e-3550-4421-8e1d-9a4cdd740ac5" target="a1cfcb16-b339-4408-9a9c-a51cfe80b394" />
+  </dataFlow>
+</LsbView>
