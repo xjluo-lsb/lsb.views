@@ -32,7 +32,7 @@
       <right>
         <splitLayout id="e9a47037-a1d5-44a2-9a26-e68fda9abf3a" orientation="Vertical" fixedView="None" ratio="0.42">
           <top>
-            <fileList id="a1f7ce3a-7c5e-4765-95e6-147049163135" multiSelect="true" filter="true" status="true" dirs="true">
+            <fileList id="a1f7ce3a-7c5e-4765-95e6-147049163135" multiSelect="true" filter="true" status="true">
               <caption visible="true">Files under {path}</caption>
               <input>
                 <param id="837825a3-9853-4318-8211-b0c4b50e5967" name="path"/>
@@ -73,10 +73,19 @@ return (not name.IsEmpty) and (not path.IsEmpty) and name.IsTrigger
               <data showProgress="false">
                 <script type="lua">
 <![CDATA[
+local path = [[{path}{name}]]
+local file = io.open(path, "rb")    -- Open the file in binary mode
+if not file then
+  return nil, ("Could not open file " + path)
+end
 
+local content = file:read("*all")   -- Read the entire file
+file:close()                        -- Close the file
+return content
 ]]>
                 </script>
               </data>
+              <font faceName="Courier New" pointSize="11"/>
             </textView>
           </bottom>
         </splitLayout>
