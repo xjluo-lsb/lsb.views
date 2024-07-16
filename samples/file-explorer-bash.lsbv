@@ -26,7 +26,7 @@
             <script type="bash">
 <![CDATA[
 r=$(ls -l --color=never /)
-ptj -i "$r" -p "(?<Mode>[drwx\-@]+)\s+\d+\s+(?<Owner>\w+)\s+(?<Group>\w+)\s+(?<Length>\d+)\s+(?<Time>\w{3}\s+\d+\s+((\d{2}\:\d{2})|\d{4}))\s+(?<File>[\w\d\+\-\.]+)"
+ptj -i "$r" -p "(?<Mode>(?<Type>[\-bcCdDlMnpPs\?]{1})(?<Permission>[rwx\-@]{9}))\s+(?<HardLink>\d+)\s+(?<Owner>\w+)\s+(?<Group>\w+)\s+(?<Size>\d+)\s+(?<Time>\w{3}\s+\d+\s+((\d{2}\:\d{2})|\d{4}))\s+(?<File>[\w\d\+\-\.]+)"
 ]]>
             </script>
           </data>
@@ -50,7 +50,7 @@ if [ -z "{path}" ]; then
   echo "[]"
 else
  r=$(ls -l --color=never {path})
- ptj -i "$r" -p "(?<Mode>[drwx\-@]+)\s+\d+\s+(?<Owner>\w+)\s+(?<Group>\w+)\s+(?<Length>\d+)\s+(?<Time>\w{3}\s+\d+\s+((\d{2}\:\d{2})|\d{4}))\s+(?<File>[\w\d\+\-\.]+)"
+ ptj -i "$r" -p "(?<Mode>(?<Type>[\-bcCdDlMnpPs\?]{1})(?<Permission>[rwx\-@]{9}))\s+(?<HardLink>\d+)\s+(?<Owner>\w+)\s+(?<Group>\w+)\s+(?<Size>\d+)\s+(?<Time>\w{3}\s+\d+\s+((\d{2}\:\d{2})|\d{4}))\s+(?<File>[\w\d\+\-\.]+)"
 fi
 ]]>
                 </script>
@@ -77,8 +77,8 @@ fi
                 <column name="File" displayName="Name" width="160" align="Left" visible="true" />
                 <column name="Owner" width="100" align="Left"/>
                 <column name="Mode" width="80" align="Right"/>
-                <column name="Length" width="100" align="Right"/>
-                <column name="Time" displayName="Last Write Time" width="220" align="Right"/>
+                <column name="Size" width="100" align="Right"/>
+                <column name="Time" displayName="Modification Time" width="220" align="Right"/>
               </columns>
               <rowColors />
             </listView>
