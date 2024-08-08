@@ -431,13 +431,64 @@ class ContextMenu
   public bool refresh;      //!< This boolean attribute is optional, it controls if the refresh menu item should be enabled. Default value is false. This refresh menu item will automatically load the data from the associated data source and refresh the context in the view control.
 };
 
-//! \brief This is the node to define the configuration for downloading data from an URL through HTTP Web request.
+//! \brief This is the base node to define the configuration for downloading data from an URL through HTTP Web request.
 //! - url - This child node contains the URL for the request.
 //! - payload - This child node contains the payload used for the request. It's only used when the method is set to Post.
 class WebData
 {
   public HttpMethod method;     //!< This optional attribute defines the HTTP Web method used for the request. Default value is Get.
   public string contentType;    //!< This optional attribute defines the content type for the HTTP Web request.
+};
+
+//! \brief This is the node to define the configuration for downloading CSV data from an URL through HTTP Web request.
+class CsvData : public WebData
+{
+  public string delimeter;      //!< This optional attribute defines the delimeted used for separating the columns in CSV data.
+};
+
+//! \brief This is the node to define the configuration for downloading JSON data from an URL through HTTP Web request.
+class JsonData : public WebData
+{
+  public string path;           //!< This optional attribute defines the path to the data to be returned in a complicated JSON object or an JSON array. If the path is not specified, the whole JSON data downloaded is returned.
+};
+
+//! \brief This is the node that defines the configuration for retrieving data through SQL query.
+//! - content - The content of this node is the query statement to be executed to search for the data in the database.
+class SqlData
+{
+  public string server;         //!< This mandatory attribute indicates the database server to connect to.
+  public string database;       //!< This mandatory attribute indicates the name of the database that contains the data.
+  public string user;           //!< This attribute defines the user name to be used for connecting to the database. It's optional.
+};
+
+//! \brief This is the node that defines the configuration for generatign data through script execution.
+//! - content - The content of this node is the script to be executed for generating the data.
+class ScriptData
+{
+  public string type;           //!< This mandatory attribute defines the type of the script, see shell configuration for supported script types. The Lua is an embedded and always supported script language.
+  public unsigned int timeout;  //!< This optional attribute defines the timeout for the script execution. Default value is 0, which means it will use the global setting for the script timeout.
+};
+
+//! \brief This node is used to select one of the supported data sources, only one of the following can be used.
+//! - csv - The data source is using the CsvData, i.e. data is downloaded through HTTP Web request.
+//! - json - The data source is using the JsonData, i.e. data is downloaded through HTTP Web request.
+//! - sql - The data source is using the SqlData, i.e. data is downloaded through SQL query.
+//! - script - The data source is using the ScriptData, i.e. data is generated through the script execution.
+class ChoiceOfData
+{
+  public bool showProgress;     //!< This optional attribute defines if a progress dialog should be shown during the retrieval of data. The default value is false.
+};
+
+//! \brief This node defines a set of parameter mapping from an output parameter (source) to an input parameter (target).
+//! It contains a set of of Mapping nodes that define the actual parameter mapping.
+class DataFlow
+{
+  //! \brief Mapping is the child node for DataFlow.
+  public struct Mapping
+  {
+    public UUID source;         //!< This mandatory attribute contains UUID of an output parameter as source of the data flow.
+    public UUID target;         //!< This mandatory attribute contains UUID of an input parameter as target of the data flow.
+  }[] mapping;
 };
 
 
