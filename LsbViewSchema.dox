@@ -400,12 +400,46 @@ class OutputParamSet
 };
 
 //! \brief This is the node of ContextMenuItem for context menu item.
-//! - The child output node is optional and in type of OutputParamSet for all output parameters.
-//! - The child data node is optional and in type of ChoiceOfData for the possible data source.
+//! - output - This child node is optional and is in type of OutputParamSet for all output parameters specific for this menu item.
+//! - data - This child node is optional and is in type of ChoiceOfData for the data source associated with this menu item.
 class ContextMenuItem
 {
   public string text;       //!< This is the attribute for the context menu item text.
 };
+
+//! \brief This is the node of ContextMenuSeparator for separator in context menu. There is no attribute or content in the node.
+class ContextMenuSeparator
+{
+};
+
+//! \brief This is the node of ContextMenuSubMenu for sub menu in context menu. It should contain at least one of following items and there is no explicit upper boundary on the item count.
+//! - menuItem - This child node is for menu items in the sub menu.
+//! - separator - This child node is for separators in the sub menu.
+//! - subMenu - This child node is for sub menu in the sub menu - this indicates that the sub menu could be nested layer by layer. 
+class ContextMenuSubMenu
+{
+  public string text;       //!< This is the attribute for the context menu sub menu text.
+};
+
+//! \brief This is the node of ContextMenu for defining a context menu in LSB view controls. It contains at least one of following items and there is no upper boundary on the item count.
+//! - menuItem - This child node is for menu items in the context menu.
+//! - separator - This child node is for separators in the context menu.
+//! - subMenu - This child node is for sub menu in the context menu.
+class ContextMenu
+{
+  public bool copy;         //!< This boolean attribute is optional, it controls if the copy menu items should be enabled. Default value is false.
+  public bool refresh;      //!< This boolean attribute is optional, it controls if the refresh menu item should be enabled. Default value is false. This refresh menu item will automatically load the data from the associated data source and refresh the context in the view control.
+};
+
+//! \brief This is the node to define the configuration for downloading data from an URL through HTTP Web request.
+//! - url - This child node contains the URL for the request.
+//! - payload - This child node contains the payload used for the request. It's only used when the method is set to Post.
+class WebData
+{
+  public HttpMethod method;     //!< This optional attribute defines the HTTP Web method used for the request. Default value is Get.
+  public string contentType;    //!< This optional attribute defines the content type for the HTTP Web request.
+};
+
 
 /*!
 @}

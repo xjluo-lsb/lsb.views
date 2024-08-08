@@ -568,7 +568,7 @@ in the LSB view files. It also defines the file structure of the view files usin
     </xs:annotation>
   </xs:complexType>
 
-  <xs:complexType name="ChoiceOfMenuItem">
+  <xs:complexType name="ContextMenuSubMenu">
     <xs:annotation>
       <xs:documentation>
         This is the schema for the union of all supported context menu items
@@ -577,7 +577,7 @@ in the LSB view files. It also defines the file structure of the view files usin
     <xs:choice minOccurs="1" maxOccurs="unbounded">
       <xs:element name="menuItem" type="ContextMenuItem" />
       <xs:element name="separator" type="ContextMenuSeparator" />
-      <xs:element name="subMenu" type="ChoiceOfMenuItem" />
+      <xs:element name="subMenu" type="ContextMenuSubMenu" />
     </xs:choice>
     <xs:attribute name="text" type="xs:string" use="required" />
   </xs:complexType>
@@ -592,7 +592,7 @@ in the LSB view files. It also defines the file structure of the view files usin
       <xs:choice minOccurs="1" maxOccurs="unbounded">
         <xs:element name="menuItem" type="ContextMenuItem" />
         <xs:element name="separator" type="ContextMenuSeparator" />
-        <xs:element name="subMenu" type="ChoiceOfMenuItem" />
+        <xs:element name="subMenu" type="ContextMenuSubMenu" />
       </xs:choice>
     </xs:sequence>
     <xs:attribute name="copy" type="xs:boolean" use="optional" default="false" />
