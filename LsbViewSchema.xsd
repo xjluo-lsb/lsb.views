@@ -58,7 +58,6 @@ in the LSB view files. It also defines the file structure of the view files usin
       </xs:documentation>
     </xs:annotation>
     <xs:restriction base="xs:string">
-      <xs:enumeration value="Default" />
       <xs:enumeration value="IsNull" />
       <xs:enumeration value="IsEmpty" />
       <xs:enumeration value="IsWhiteSpace" />

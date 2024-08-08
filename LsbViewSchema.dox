@@ -1,0 +1,551 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*!
+\mainpage Leave Script Behind Explained
+
+This is the main document for Leave Script Behind (LSB), it includes introduction to the LSB tool, the schema for LSB view files, how to create a LSB view file, how to test a LSB view file, as well as answers for other frequently seen problems.
+
+- \ref section_intro
+- Schema - this section explains the schema for the LSB view files,
+  - \ref section_enum
+  - \ref section_data
+  - \ref section_view
+  - \ref section_lsb
+- \ref section_create
+- \ref section_debug
+- \ref section_faq
+*/
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*!
+\defgroup section_intro Introduction
+
+Leave Script Behind is a cross platform tool designed with the main goal to chain a series of shell commands to complete a sepecific task, ease the user's life by reusing the LSB views without remembering all the shell commands and their parameters. As you know, some of the shell commands are very complicated and it's really a pain for someone who are new to the commands or not using them frequently to remember all the details. Besides, it provides rich capabilities on,
+- Data connectivity through SQL databases, Web APIs, etc.
+- Support Lua language embedded in views to generate data and execute tasks.
+- Offer rich data visualizaion through list view, tree view, chart view or web view with JavaScript support.
+- Provides easy input controls for users to input values, from integer, string, to files.
+*/
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*!
+\defgroup section_enum Enumeration Types
+
+In this page, it lists all enumeration types that define the values for attributes in data classes and view controls in the LSB views.
+
+@{
+*/
+
+//! \brief This is the enumeration type for specifying the content type for the about node in LSB views. The supported values are,
+enum class AboutDataType
+{
+  None,     //!< The about content is not specified. The about information will be generated from the settings for the LSB view.
+  Content,  //!< The content for about information is directly specified as the content of the about node.
+  Url       //!< The about node content is an URL to a Web page for the about information.
+};
+
+//! \brief This is the enumeration type for chart type used for the attribute chartType in the ChartView.
+//! It defines the chart type displayed in the ChartView. The supported values are,
+enum class ChartType
+{
+  BarChart,            //!< This is value for displaying bar chart in the chart view control.
+  StackedBarChart,     //!< This is value for displaying stacked bar chart in the chart view control.
+  ColumnChart,         //!< This is value for displaying column chart in the chart view control.
+  StackedColumnChart,  //!< This is value for displaying stacked column chart in the chart view control.
+  BoxPlot,             //!< This is value for displaying box plot in the chart view control.
+  CandlestickChart,    //!< This is value for displaying candlestick chart in the chart view control.
+  OhlcChart,           //!< This is value for displaying OHLC chart in the chart view control.
+  PieChart,            //!< This is value for pie bar chart in the chart view control.
+  DoughnutChart,       //!< This is value for displaying doughnut chart in the chart view control.
+  PolarAreaChart,      //!< This is value for displaying polar area chart in the chart view control.
+  BubbleChart,         //!< This is value for displaying bubble chart in the chart view control.
+  ScatterPlot,         //!< This is value for displaying scatter plot in the chart view control.
+  Math2dPlot,          //!< This is value for displaying math 2D plot in the chart view control.
+  LineChart,           //!< This is value for displaying line chart in the chart view control.
+  AreaChart,           //!< This is value for displaying area chart in the chart view control.
+  Histogram,           //!< This is value for displaying histogram in the chart view control.
+};
+	  
+//! \brief This is the enumeration type for attribute contentType that is used in WebView.
+//! It indicates the content type returned from the data source defined for the control. The supported values are,
+enum class ContentType
+{
+  Url,      //!< The page should be loaded from the URL returned from the data source.
+  Content,  //!< The page should be loaded from the raw content returned from the data source.
+  File      //!< The page should be loaded from the files defined.
+};
+
+//! \brief This is the enumeration type for the view parameter direction.
+//! This type is used internally in the Leave Script Behind code, not directly used in the LSB views. The supported values are,
+enum class Direction
+{
+  Input,    //!< The parameter is used as input parameter for the view control.
+  Output    //!< The parameter is used as output parameter for the view control.
+};
+
+//! \brief This is the enumeration type for the attribute dock in the Button control.
+//! It defines how the button will be docked in the space reserved for it. The supported values are,
+enum class DockStyle
+{
+  None,     //!< This means the button is not docked, it will have its default size.
+  Left,     //!< This means the button is docked to left of the space, taking full height of space and keep the default width.
+  Top,      //!< This means the button is docked to top of the space, taking full width of space and keep the default height.
+  Right,    //!< This means the button is docked to right of the space, taking full height of space and keep the default width.
+  Bottom,   //!< This means the button is docked to bottom of the space, taking full width of space and keep the default height.
+  Fill      //!< This means the button will take the whole space. This indirectly provides the capability to control the button size through the layout control.
+};
+
+//! \brief This is the enumeration type for when to execute the script defined in the Procedure.
+enum class ExecuteAt
+{
+  ParameterChanging,      //!< The script is kicked off when input parameter(s) is changed
+  OneShotInitializing,    //!< The script is kicked off when the procedure is initialized and is executed once only
+  TimerTicking,           //!< The script is kicked off each time the timer approches the interval
+  TimerStartAndTicking    //!< The script is kicked off when timer is started and approches interval
+};
+
+//! \brief This is the enumeration type used for the fixedView attribute in the SplitLayout.
+//! It indicates which pane in the SplitLayout control has fixed size. The supported values in this type are,
+enum class FixedView
+{
+  None,     //!< None of the two panes have fixed size, i.e. both panes are resizable when the view window resizes.
+  Left,     //!< The left pane in the split layout control has fixed size, i.e. it does not resize when the view window resizes.
+  Right,    //!< The right pane in the split layout control has fixed size.
+  Top,      //!< The top pane in the split layout control has fixed size.
+  Bottom    //!< The bottom pane in the split layout control has fixed size.
+};
+
+//! \brief This is the enumeration type for standard font families.
+//! Please check <a href="https://docs.wxwidgets.org/3.2/interface_2wx_2font_8h.html#a0cd7bfd21a4f901245d3c86d8ea0c080">wxFontFamily</a> for more details.
+enum class FontFamily
+{
+  Default,      //!< A default font.
+  Decorative,   //!< A decorative font.
+  Roman,        //!< A formal, serif font.
+  Script,       //!< A handwriting font.
+  Swiss,        //!< A sans-serif font.
+  Modern,       //!< A fixed pitch font.
+  Teletype      //!< A teletype (i.e. monospaced) font.
+};
+
+//! \brief This is the enumeration type for font styles.
+//! Please check <a href="https://docs.wxwidgets.org/3.2/interface_2wx_2font_8h.html#ab8f87d0b928ad1f8cba7d1c01f5f7a55">wxFontStyle</a> for more details.
+enum class FontStyle
+{
+  Normal,       //!< The font is drawn without slant.
+  Italic,       //!< The font is slanted in an italic style.
+  Slant         //!< The font is slanted, but in a roman style.
+};
+
+//! \brief This is the enumeration type for font weight.
+//! Please check <a href="https://docs.wxwidgets.org/3.2/interface_2wx_2font_8h.html#a7cc37d08c7e84370f4fcc175b557a022">wxFontWeight</a> for more details.
+enum class FontWeight
+{
+  Thin,         //!< Thin font (weight = 100).
+  ExtraLight,   //!< Extra Light (Ultra Light) font (weight = 200).
+  Light,        //!< Light font (weight = 300).
+  Normal,       //!< Normal font (weight = 400).
+  Medium,       //!< Medium font (weight = 500).
+  SemiBold,     //!< Semi Bold (Demi Bold) font (weight = 600).
+  Bold,         //!< Bold font (weight = 700).
+  ExtraBold,    //!< Extra Bold (Ultra Bold) font (weight = 800).
+  Heavy,        //!< Heavy (Black) font (weight = 900).
+  ExtraHeavy    //!< Extra Heavy font (weight = 1000).
+};
+
+//! \brief This is the enumeration type used for the align attribute in the Column.
+//! It indicates how the content in the column will be aligned horizontally. The supported values in this type are,
+enum class HorizontalAlignment
+{
+  Center,       //!< The content in the column will be center aligned.
+  Left,         //!< The content in the column will be left aligned.
+  Right         //!< The content in the column will be right aligned.
+};
+
+//! \brief This is the enumeration type used for the method attribute in the WebData.
+//! It indicates which HTTP method should be used for the web request to download data for the view control. The supported values in this type are,
+enum class HttpMethod
+{
+  Get,      //!< The web request uses GET method to download data from web endpoint.
+  Post,     //!< The web request uses POST method to download data from web endpoint.
+};
+
+//! \brief This is the enumeration type for known paths for file references.
+enum class KnownPath
+{
+  None,     //!< It's not using any known path, the content is raw URL.
+  View,     //!< The path is pointint to the view folder.
+  Libs,     //!< The path is pointing to the libs folder.
+  Data,     //!< The path is pointing to the data folder.
+  Temp      //!< The path is pointing to the temp folder.
+};
+
+//! \brief This is the enumeration type for the chart line types.
+enum class LineType
+{
+  Straight, //!< Straight line is used for drawing the lines in ChartView.
+  Stepped   //!< Stepped line is used for drawing the lines in ChartView.
+};
+
+//!< \brief This is the enumeration type for the view attribute loadDataAt.
+//! This attribute indicates when to load data for a view control. The supported values are,
+enum class LoadDataAt
+{
+  Default,      //!< Data for the view will be loaded when there is change in the input parameters.
+  Creating,     //!< Data for the view will be loaded when the view is created.
+  Visualizing   //!< Data for the view will be loaded when the view becomes visible for the first time.
+};
+  
+//! \brief This is the enumeration type used for the activation attribute of OutputParameter,
+//! It indicates which operation would trigger the ouput parameter value changed event and send out the changed parameter values. The supported values in this type are,
+enum class OperationType
+{
+  Default,      //!< The default operation on the view control, which is same to Selecion.
+  Selection,    //!< When item or content is selected in the view control, it will trigger the OutputParameter changed event.
+  Activation,   //!< The activation operation in the view control, which is same to DoubleClick.
+  DoubleClick   //!< When item in view control is double clicked, it will trigger the OutputParameter changed event.
+};
+  
+//! \brief This is the enumeration type used for the orientation attribute in the SplitLayout.
+//! It indicates the layout direction of the two panes in the SplitLayout. The supported values in this type are,
+enum class Orientation
+{
+  Horizontal,   //!< The two panes are placed horizontally, one in left and one in right.
+  Vertical      //!< The two panes are placed vertically, on in top and one in bottom.
+};
+  
+//! \brief This is the enumeration type for the attribute type in the PropertyField configuration.
+//! It defines which value type is used for the property definition. The supported values are,
+enum class PropertyValueType
+{
+  Boolean,          //!< The value is in boolean type.
+  Flags,            //!< The value is a flags value, which means multiple bits value with each bit as a flag value.
+  Float,            //!< The value is a float value.
+  Integer,          //!< The value is an integer value.
+  UnsignedInteger,  //!< The value is an unsigned integer value.
+  String,           //!< The value is a string value.
+  Password,         //!< The value is a string value for password.
+  ArrayString,      //!< The value is a string array.
+  LongString,       //!< The value is a multiple line string value.
+  Enumeration,      //!< The value is in an enumeration type.
+  MultiChoice,      //!< The value allows selection from multiple values.
+  Date,             //!< The value is a date value.
+  Font,             //!< The value is a font value.
+  Cursor,           //!< The value is a cursor.
+  Color,            //!< The value is a color.
+  SystemColor,      //!< The value is one of the system colors.
+  File,             //!< The value is a file.
+  ImageFile,        //!< The value is an image file.
+  Folder            //!< The value is a folder.
+};
+
+//! \brief This is the enumeration type for defining the size type of table rows and table columns. The supported values are,
+enum class SizeType
+{
+  absolute,     //!< The size is specified as absolute pixels.
+  percentage    //!< The size is specified as percentage of totoal size.
+};
+  
+//! \brief This is the enumeration type used for the tabPosition attribute in the TabLayout.
+//! It indicates the position of the tab bar in the TabLayout. The supported values in this type are,
+enum class TabPosition
+{
+  Top,      //!< The tab bar will be put at the top of the tab layout control. This is the default value.
+  Bottom,   //!< The tab bar will be put at the bottom of the tab layout control.
+  Left,     //!< The tab bar will be put at the left side of the tab layout control.
+  Right     //!< The tab bar will be put at the right side of the tab layout control.
+};
+  
+//! \brief This is the enumeration type used in the InputParameter to indicate what kind of changes happened to the InputParameter. The supported values are,
+enum class TriggerFlags
+{
+  IsNull,       //!< The input parameter value is null.
+  IsEmpty,      //!< The input parameter value is an empty string.
+  IsWhiteSpace, //!< The input parameter value contains whitespace only, not an empty string.
+  IsTrue,       //!< The input parameter value is boolean value true.
+  IsFalse,      //!< The input parameter value is boolean value false.
+  IsZero,       //!< The input parameter value is 0.
+  IsPositive,   //!< The input parameter value is a positive value, greater than 0.
+  IsNegative,   //!< The input parameter value is a negative value, less than 0.
+  IsMatched,    //!< The input parameter value matches the specified regular expression pattern for the parameter.
+  IsChanged,    //!< The input parameter value is changed.
+  IsTrigger     //!< The input parameter is the one triggered the check.
+};
+  
+//! \brief This is the enumeration type of how to trim spaces in a string value. The supported values are,
+enum class TrimSpace
+{
+  None,     //!< The string value won't be trimmed.
+  Left,     //!< Only the left end spaces in the string will be trimmed.
+  Right,    //!< Only the right end spaces in the string will be trimmed.
+  Both      //!< Both left and right end spaces in string will be trimmed.
+};
+  
+//! \brief This is the enumeration type for when to notify text change in TextInput control.
+enum class WhenToNotify
+{
+  Enter,        //!< The text control sends text change event when enter key is pressed.
+  TextChange,   //!< The text control sends text change event when the text content is truly changed.
+  Both          //!< The text control sends text change event on both cases.
+};
+
+/*!
+@}
+*/
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*!
+\defgroup section_data Data Classes
+
+This page lists all the data types and data classes that are used for data nodes in the LSB view files.
+@{
+*/
+
+//! \brief This is the 16-byte unique ID. The string representation of an UUID is 8-4-4-4-12 hexadecimal digits.
+//! One example of UUID string is b0db8ea8-2c10-4c20-9888-d4d0e91a00f0.
+class UUID
+{
+};
+
+//! \brief This is CSS color type in format of rgb(r, g, b) or rgba(r, g, b, a).
+class CssColor
+{
+};
+
+//! \brief This is HTML color type in format of \#rrggbb.
+class HtmlColor
+{
+};
+
+//! \brief This is color type that supports either CssColor or HtmlColor.
+class Color
+{
+};
+
+//! \brief This is the OS type that defines which operating system the LSB view supports. The value could be one of the values below or a combination of them separated by semi-colon.
+/*!
+  - Any - This is equivalent to Windows;Linux;MacOS
+  - Windows - The LSB view supports Windwos system
+  - Linux - The LSB view supports Linux system
+  - MacOS - The LSB view supports Mac OS X system
+*/
+class OS
+{
+};
+
+//! \brief This is the node for defining content of about information for a LSB view.
+//! - The content of this node is for the about information.
+class About
+{
+  public AboutDataType type;        //!< This is a required attribute that defines the type of content in the About node.
+};
+
+//! \brief This is the node that defines font description, for defining fonts to be used in LSB views.
+class FontDesc
+{
+  public unsigned int encoding;    //!< This is an optional attribute for the font encoding, default value is 33.
+  public FontFamily family;        //!< This is an optional attribute for the font family, default value is Default.
+  public unsigned int pointSize;   //!< This is a required attribute for the font size in point.
+  public FontStyle style;          //!< This is an optional attribute for the font style, default value is Normal.
+  public FontWeight weight;        //!< This is an optional attribute for the font weight, default value is Normal.
+  public bool underline;           //!< This is an optional boolean attribute that controls if the font should be underlined, default value is false.
+  public bool strikethrough;       //!< This is an optional boolan attribute that controls if the font should be strikethrough, default value is false.
+  public string faceName;          //!< This is the attribute for the font face name.
+};
+
+//! \brief This is the node for the Parameter. It's base class for InputParameter and OutputParameter.
+class Parameter
+{
+  public UUID id;       //!< The unique ID for the parameter, it's mandatory.
+  public string name;   //!< Name of the parameter, it's mandatory.
+};
+
+//! \brief This is the node for defining version information.
+class Version
+{
+  public unsigned short major;      //!< This is the major number in the version, it's mandatory.
+  public unsigned short minor;      //!< This is the minor number in the version, it's mandatory.
+  public unsigned short build;      //!< This is the build number in the version, it's optional.
+  public unsigned short revision;   //!< This is the revision part in the version, it's optional.
+};
+
+//! \brief This is the node that defines the caption of a LSB view control
+//! - The content of this node is for the view caption.
+class ViewCaption
+{
+  public bool visible;          //!< This is an optional boolean attribute that controls if the view caption is visible, default value is true.
+};
+
+//! \brief This is the node that defines the InputParam for input parameters.
+class InputParam : public Parameter
+{
+  public string valuePattern;   //! This is an optional attribute that defines the value pattern for the input parameter. Only if the value matches the pattern, then some operations will be triggered. The default value is empty, which means no pattern is defined.
+};
+
+//! \brief This is the node for the InputParamSet, contains a set of InputParam.
+//! - It contains a set of param nodes in type of InputParam.
+class InputParamSet
+{
+};
+
+//! \brief This is the node that defines the OutputParam for output parameters.
+class OutputParam : public Parameter
+{
+  public OperationType activation;  //!< This is an optional attribute that defines which operation in the view control would trigger the activation of parameter change. The default value is Default.
+};
+
+//! \brief This is the node for the OutputParamSet, contains a set of OutputParam.
+//! - It contains a set of param nodes in type of OutputParam.
+class OutputParamSet
+{
+};
+
+//! \brief This is the node of ContextMenuItem for context menu item.
+//! - The child output node is optional and in type of OutputParamSet for all output parameters.
+//! - The child data node is optional and in type of ChoiceOfData for the possible data source.
+class ContextMenuItem
+{
+  public string text;       //!< This is the attribute for the context menu item text.
+};
+
+/*!
+@}
+*/
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*!
+\defgroup section_view View Controls
+This page contains the schema information for all view controls.
+
+@{
+- Layout
+  - \subpage layout_button_group
+  - \subpage layout_split_layout
+  - \subpage layout_tab_layout
+  - \subpage layout_table_layout
+- Data views
+  - \subpage data_view_chart_view
+  - \subpage data_view_list_view
+  - \subpage data_view_text_view
+  - \subpage data_view_tree_view
+  - \subpage data_view_tree_list_view
+  - \subpage data_view_web_view
+- Input controls
+  - \subpage input_button
+  - \subpage input_combobox
+  - \subpage input_text_input
+  - \subpage input_property_input
+- Invisible components
+  - \subpage component_procedure
+  - \subpage component_view_launcher
+
+@}
+*/
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*!
+\defgroup section_lsb LSB View
+
+@{
+@}
+
+*/
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/*!
+\page layout_button_group ButtonGroup
+
+*/
+
+/*!
+\page layout_split_layout SplitLayout
+
+*/
+
+/*!
+\page layout_tab_layout TabLayout
+
+*/
+
+/*!
+\page layout_table_layout TableLayout
+
+*/
+
+/*!
+\page data_view_chart_view ChartView
+
+*/
+
+/*!
+\page data_view_list_view ListView
+
+*/
+
+/*!
+\page data_view_text_view TextView
+
+*/
+
+/*!
+\page data_view_tree_view TreeView
+
+*/
+
+/*!
+\page data_view_tree_list_view TreeListView
+
+*/
+
+/*!
+\page data_view_web_view WebView
+
+*/
+
+/*!
+\page input_button Button
+
+*/
+
+/*!
+\page input_combobox ComboBox
+
+*/
+
+/*!
+\page input_text_input TextInput
+
+*/
+
+/*!
+\page input_property_input PropertyInput
+
+*/
+
+/*!
+\page component_procedure Procedure
+
+*/
+
+/*!
+\page component_view_launcher ViewLauncher
+
+*/
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*!
+\defgroup section_create How to Create a LSB View
+
+*/
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*!
+\defgroup section_debug How to Test/Debug a LSB View
+
+*/
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*!
+\defgroup section_faq Other Frequently Seen Questions
+
+*/
