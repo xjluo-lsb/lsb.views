@@ -164,9 +164,15 @@ StringValue: ]] .. StringValue .. [[;
   </view>
 
   <dataFlow>
-    <mapping source="8ffca3b1-295b-442d-ae0b-0a13364f65ef" target="1184df54-fdd4-400f-a7a9-a9876fd55f9f"/>
-    <mapping source="4cdf11e5-0fb5-40dd-814a-19c6fc543020" target="9ad76209-0181-407c-9486-bfaac76c8cff"/>
+    <mapping source="8ffca3b1-295b-442d-ae0b-0a13364f65ef">
+      <target>1184df54-fdd4-400f-a7a9-a9876fd55f9f</target>
+    </mapping>
+    <mapping source="4cdf11e5-0fb5-40dd-814a-19c6fc543020">
+      <target>9ad76209-0181-407c-9486-bfaac76c8cff</target>
+    </mapping>
 
-    <mapping source="b6f95eff-6959-415c-ab60-402f87671ecc" target="3139098a-3881-4437-b584-f11487384573"/>
+    <mapping source="b6f95eff-6959-415c-ab60-402f87671ecc">
+      <target>3139098a-3881-4437-b584-f11487384573</target>
+    </mapping>
   </dataFlow>
 </LsbView>

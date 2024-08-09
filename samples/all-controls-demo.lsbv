@@ -121,8 +121,8 @@ A second line here.]] }
               <column name="Name" width="120" visible="true" />
               <column name="value" width="260" visible="true" />
             </columns>
-            <rowColors>
-            </rowColors>
+            <rowStyles>
+            </rowStyles>
           </listView>
         </bottom>
       </splitLayout>

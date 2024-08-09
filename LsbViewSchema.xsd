@@ -684,8 +684,10 @@ in the LSB view files. It also defines the file structure of the view files usin
 
   <xs:complexType name="Mapping">
     <xs:annotation>
-      This is the schema for the parameter mapping that connects one output parameter (source) to one or more input
-      parameters (target).
+      <xs:documentation>
+        This is the schema for the parameter mapping that connects one output parameter (source) to one or more input
+        parameters (target).
+      </xs:documentation>
     </xs:annotation>
     <xs:sequence>
       <xs:element name="target" type="UUID" minOccurs="1" maxOccurs="unbounded" />

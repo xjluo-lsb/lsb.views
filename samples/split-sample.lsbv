@@ -1,4 +1,5 @@
 <?xml version="1.0"?>
+
 <LsbView xmlns="https://github.com/xjluo-lsb/lsb.views"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="https://github.com/xjluo-lsb/lsb.views ..\LsbViewSchema.xsd"
@@ -124,7 +125,7 @@ lsb.showMessage("Hello world!")
                 <column name="Length" width="100" align="Right" />
                 <column name="CreationTime" displayName="Creation Time" width="220" align="Right" />
               </columns>
-              <rowColors />
+              <rowStyles />
             </listView>
           </top>
           <bottom>
@@ -165,18 +166,36 @@ Last write time: {LastWriteTime}
   <launchers />
   
   <dataFlow>
-      <mapping source="7a7270d8-85be-4147-af41-d3e87608f222" target="a1cfcb16-b339-4408-9a9c-a51cfe80b394" />
-      <mapping source="3a06bfd0-dac5-4bbd-8435-bb1b508dd978" target="251531e3-915d-4947-bb75-5e125c9ca5f4" />
-      <mapping source="87470081-1148-4d44-95a9-7fcb1962df03" target="b448e0c8-924e-4b15-b1ad-4efff6735357" />
-      <mapping source="6477b5ce-96af-4594-ac6b-c981864b2664" target="7c30ad26-117e-4648-b607-be9c384b824d" />
+    <mapping source="7a7270d8-85be-4147-af41-d3e87608f222">
+      <target>a1cfcb16-b339-4408-9a9c-a51cfe80b394</target>
+    </mapping>
+    <mapping source="3a06bfd0-dac5-4bbd-8435-bb1b508dd978">
+      <target>251531e3-915d-4947-bb75-5e125c9ca5f4</target>
+    </mapping>
+    <mapping source="87470081-1148-4d44-95a9-7fcb1962df03">
+      <target>b448e0c8-924e-4b15-b1ad-4efff6735357</target>
+    </mapping>
+    <mapping source="6477b5ce-96af-4594-ac6b-c981864b2664">
+      <target>7c30ad26-117e-4648-b607-be9c384b824d</target>
+    </mapping>
 
-      <mapping source="23e7cb0e-7411-45dd-9a78-dc510253b9a9" target="c7e0ca0f-78e5-48ca-8be5-2c962bc97ef5" />
-      <mapping source="b00e4090-142e-4ff8-9b3c-39bbcb8ebbb4" target="b22ce0cc-620e-49c9-b681-2ce1b893a411" />
-      <mapping source="2bfcf265-52cf-4356-a90a-244f727da546" target="49e30475-b26d-47a8-a5bd-fcd4c96ece6f" />
-      <mapping source="1a8bde48-cda4-4b84-b716-88c1d4daca91" target="de01c845-2f83-448b-955e-2d9bac26cbc3" />
+    <mapping source="23e7cb0e-7411-45dd-9a78-dc510253b9a9">
+      <target>c7e0ca0f-78e5-48ca-8be5-2c962bc97ef5</target>
+    </mapping>
+    <mapping source="b00e4090-142e-4ff8-9b3c-39bbcb8ebbb4">
+      <target>b22ce0cc-620e-49c9-b681-2ce1b893a411</target>
+    </mapping>
+    <mapping source="2bfcf265-52cf-4356-a90a-244f727da546">
+      <target>49e30475-b26d-47a8-a5bd-fcd4c96ece6f</target>
+    </mapping>
+    <mapping source="1a8bde48-cda4-4b84-b716-88c1d4daca91">
+      <target>de01c845-2f83-448b-955e-2d9bac26cbc3</target>
+    </mapping>
 
       <!-- Passing selected folder from PropertyGrid to ListView -->
-      <mapping source="7f8bbfc4-e0e2-4a95-8186-e28caac1526f" target="837825a3-9853-4318-8211-b0c4b50e5967" />
-    </dataFlow>
+    <mapping source="7f8bbfc4-e0e2-4a95-8186-e28caac1526f">
+      <target>837825a3-9853-4318-8211-b0c4b50e5967</target>
+    </mapping>
+  </dataFlow>
 
 </LsbView>
