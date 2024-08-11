@@ -108,7 +108,7 @@ return 2
               <column name="CreateTime" displayName="Create time" width="150" align="Right"/>
               <column name="Description" width="320" align="Left"/>
             </columns>
-            <rowColors></rowColors>
+            <rowStyles />
           </listView>
         </cell>
         <cell row="1" col="1" rowSpan="2" colSpan="1">
@@ -136,7 +136,9 @@ Sample content for TextView
   </launchers>
   
   <dataFlow>
-    <mapping source="b0fa8eec-ea44-45ab-83b0-129a10b2c0e6" target="d8763834-70ff-41bf-949c-e65a291e2361"/>
+    <mapping source="b0fa8eec-ea44-45ab-83b0-129a10b2c0e6">
+      <target>d8763834-70ff-41bf-949c-e65a291e2361</target>
+    </mapping>
   </dataFlow>
   
 </LsbView>

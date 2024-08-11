@@ -1,4 +1,5 @@
 <?xml version="1.0"?>
+
 <LsbView xmlns="https://github.com/xjluo-lsb/lsb.views"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="https://github.com/xjluo-lsb/lsb.views ..\LsbViewSchema.xsd"
@@ -308,16 +309,32 @@ window.onresize();
   <launchers />
   
   <dataFlow>
-    <mapping source="7a7270d8-85be-4147-af41-d3e87608f222" target="a1cfcb16-b339-4408-9a9c-a51cfe80b394"/>
-    <mapping source="3a06bfd0-dac5-4bbd-8435-bb1b508dd978" target="251531e3-915d-4947-bb75-5e125c9ca5f4"/>
-    <mapping source="161452d1-8a86-40ae-bd01-20c2421ae06c" target="ad9d1da1-2369-4aaa-83d5-9325f9ddced5"/>
-    <mapping source="87470081-1148-4d44-95a9-7fcb1962df03" target="b448e0c8-924e-4b15-b1ad-4efff6735357"/>
+    <mapping source="7a7270d8-85be-4147-af41-d3e87608f222">
+      <target>a1cfcb16-b339-4408-9a9c-a51cfe80b394</target>
+    </mapping>
+    <mapping source="3a06bfd0-dac5-4bbd-8435-bb1b508dd978">
+      <target>251531e3-915d-4947-bb75-5e125c9ca5f4</target>
+    </mapping>
+    <mapping source="161452d1-8a86-40ae-bd01-20c2421ae06c">
+      <target>ad9d1da1-2369-4aaa-83d5-9325f9ddced5</target>
+    </mapping>
+    <mapping source="87470081-1148-4d44-95a9-7fcb1962df03">
+      <target>b448e0c8-924e-4b15-b1ad-4efff6735357</target>
+    </mapping>
 
-    <mapping source="39fe7122-5109-4fab-95aa-5a061a0c34b9" target="a60d3981-4e59-43c0-894b-6cd3cd4c39c9"/>
-    <mapping source="56b0fb38-2bae-42f6-84ea-e83228fbce20" target="54620bb9-8401-47f7-927f-be033e863f8b"/>
-    <mapping source="076382fd-b6e8-413f-b84a-42974f4c92fc" target="ad0ad3cd-6c00-4052-9cd2-9ca7addedf9c"/>
+    <mapping source="39fe7122-5109-4fab-95aa-5a061a0c34b9">
+      <target>a60d3981-4e59-43c0-894b-6cd3cd4c39c9</target>
+    </mapping>
+    <mapping source="56b0fb38-2bae-42f6-84ea-e83228fbce20">
+      <target>54620bb9-8401-47f7-927f-be033e863f8b</target>
+    </mapping>
+    <mapping source="076382fd-b6e8-413f-b84a-42974f4c92fc">
+      <target>ad0ad3cd-6c00-4052-9cd2-9ca7addedf9c</target>
+    </mapping>
 
-    <mapping source="9bd179e7-26ec-4ed8-b4b0-bef737203e14" target="43121e3c-98b7-4d3c-95e1-cf09f215eeb4"/>
+    <mapping source="9bd179e7-26ec-4ed8-b4b0-bef737203e14">
+      <target>43121e3c-98b7-4d3c-95e1-cf09f215eeb4</target>
+    </mapping>
   </dataFlow>
 
 </LsbView>

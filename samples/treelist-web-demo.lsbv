@@ -1,7 +1,8 @@
 <?xml version="1.0"?>
-<LsbView xmlns="https://lsb/LsbView"
+
+<LsbView xmlns="https://github.com/xjluo-lsb/lsb.views"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="https://lsb/LsbView ..\LsbViewSchema.xsd"
+  xsi:schemaLocation="https://github.com/xjluo-lsb/lsb.views ..\LsbViewSchema.xsd"
 
   name="Demonstrate TreeView and WebView (show page with URL)"
   author="Kevin Luo"
@@ -68,7 +69,11 @@ return
   </view>
 
   <dataFlow>
-    <mapping source="ec69540e-ed45-49ca-b13d-645894827c05" target="98fd4496-b48b-461e-be0f-e03d04356570"/>
-    <mapping source="0b1196a2-2953-427f-9e2a-99ba1b510b12" target="aecdbb60-23f6-4f56-8944-e7692120ee2b"/>
+    <mapping source="ec69540e-ed45-49ca-b13d-645894827c05">
+      <target>98fd4496-b48b-461e-be0f-e03d04356570</target>
+    </mapping>
+    <mapping source="0b1196a2-2953-427f-9e2a-99ba1b510b12">
+      <target>aecdbb60-23f6-4f56-8944-e7692120ee2b</target>
+    </mapping>
   </dataFlow>
 </LsbView>
