@@ -377,7 +377,7 @@ There is no specific node name for this node. Only one of the following data sou
 */
 class ChoiceOfData
 {
-  public bool showProgress;     //!< This optional attribute defines if a progress dialog should be shown during the retrieval of data. The default value is false.
+  public bool showProgress;     //!< [Optional] This attribute defines if a progress dialog should be shown during the retrieval of data. The default value is false.
 };
 
 //! \brief This node is used to select one of the supported view controls.
@@ -410,25 +410,25 @@ class Color
 //! \brief This node defines the color setting to be used in ChartView.
 class ColorSetting
 {
-  public Color fillColor;           //!< The color for fill.
-  public Color borderColor;         //!< The color for borders.
-  public Color lineColor;           //!< The color for lines.
+  public Color fillColor;           //!< [Optional] The color for fill.
+  public Color borderColor;         //!< [Optional] The color for borders.
+  public Color lineColor;           //!< [Optional] The color for lines.
 };
 
 //! \brief This node defines the attributes for the Column to be used in ListView and TreeListView.
 class Column
 {
-  public string name;                   //!< This is the required name for the column. It's also used to find the attribute in data.
-  public string displayName;            //!< Display name for the column header. If it's not specified, then name is used. Optional.
-  public int width;                     //!< This is optional attribute for the column width.
-  public HorizontalAlignment align;     //!< This is optional attribute that controls how th value in the column is aligned.
-  public bool visible;                  //!< This is optional attribute that controls if the column is visible. The default value is true.
+  public string name;                   //!< [Mandatory] This is the name for the column. It's also used to find the attribute in data.
+  public string displayName;            //!< [Optional] Display name for the column header. If it's not specified, then name is used.
+  public int width;                     //!< [Optional] This is attribute for the column width.
+  public HorizontalAlignment align;     //!< [Optional] This is attribute that controls how th value in the column is aligned. The default value is Left.
+  public bool visible;                  //!< [Optional] This is attribute that controls if the column is visible. The default value is true.
 };
 
 //! \brief This node defines a set of columns to be used in the ListView or TreeListView controls.
 /*!
 This is a container node for the following single type of nodes.
- - column - A set of column nodes for columns in the ListView or TreeListView.
+ - column - A set of Column nodes for columns in the ListView or TreeListView.
 */
 class ColumnSet
 {
@@ -437,16 +437,16 @@ class ColumnSet
 //! \brief This is an attribute group, it defines the attributes that are used in all components, the base for all view controls, Procedure and ViewLauncher.
 class ComponentAttributes
 {
-  public UUID id;       //!< This attribute in type UUID is a mandatory attribute for all components.
+  public UUID id;       //!< [Mandatory] This attribute in type UUID is an attribute for all components.
 };
 
 //! \brief This is a node group, it defines the child nodes for all components, which is base of all view controls, Procedure and ViewLauncher.
 /*!
 Following nodes can be included, and each one of them can appear at most once.
- - input - This node for InputParam is optional. It defines the input parameters for the component.
- - output - This node for OutputParam is optional. It defines the output parameters for the component.
- - condition - This node is optional. It contains a piece of Lua script, defines if the input paramter value changes should trigger data source retrieval.
- - data - This node for ChoiceOfData is optional. It defines the data source for the component.
+ - input - [Optional] This node of InputParam defines the input parameters for the component.
+ - output - [Optional] This node of OutputParam defines the output parameters for the component.
+ - condition - [Optional] This node contains a piece of Lua script, defines if the input paramter value changes should trigger data source retrieval.
+ - data - [Optional] This node of ChoiceOfData defines the data source for the component.
 */
 class ComponentElements
 {
@@ -455,25 +455,25 @@ class ComponentElements
 //! \brief This is the node of ContextMenu for defining a context menu in LSB view controls.
 /*!
 It contains at least one of following items and there is no upper boundary on the node count.
- - menuItem - This child node in type of ContextMenuItem is for menu items in the context menu.
- - separator - This child node in type of ContextMenuSeparator is for separators in the context menu.
- - subMenu - This child node in type of ContextMenuSubMenu is for sub menu in the context menu.
+ - menuItem - [Optional] This child node in type of ContextMenuItem is for menu items in the context menu.
+ - separator - [Optional] This child node in type of ContextMenuSeparator is for separators in the context menu.
+ - subMenu - [Optional] This child node in type of ContextMenuSubMenu is for sub menu in the context menu.
 */
 class ContextMenu
 {
-  public bool copy;         //!< This boolean attribute is optional, it controls if the copy menu items should be enabled. Default value is false.
-  public bool refresh;      //!< This boolean attribute is optional, it controls if the refresh menu item should be enabled. Default value is false. This refresh menu item will automatically load the data from the associated data source and refresh the context in the view control.
+  public bool copy;         //!< [Optional] This boolean attribute controls if the copy menu items should be enabled. The default value is false.
+  public bool refresh;      //!< [Optional] This boolean attribute controls if the refresh menu item should be enabled. The default value is false. This refresh menu item will automatically load the data from the associated data source and refresh the context in the view control.
 };
 
 //! \brief This is the node of ContextMenuItem for context menu item.
 /*!
 It may contain following nodes as child.
- - output - This child node is optional and is in type of OutputParamSet for all output parameters specific for this menu item.
- - data - This child node is optional and is in type of ChoiceOfData for the data source associated with this menu item.
+ - output - [Optional] This child node is in type of OutputParamSet for all output parameters specific for this menu item.
+ - data - [Optional] This child node is in type of ChoiceOfData for the data source associated with this menu item.
 */
 class ContextMenuItem
 {
-  public string text;       //!< This is the attribute for the context menu item text.
+  public string text;       //!< [Mandatory] This is the attribute for the context menu item text.
 };
 
 //! \brief This is the node of ContextMenuSeparator for separator in context menu.
@@ -487,13 +487,13 @@ class ContextMenuSeparator
 //! \brief This is the node of ContextMenuSubMenu for sub menu in context menu.
 /*!
 It should contain at least one of following nodes and there is no explicit upper boundary on the node count.
- - menuItem - This child node is in type of ContextMenuItem. It's for menu items in the sub menu.
- - separator - This child node is in type of ContextMenuSeparator. It's for separators in the sub menu.
- - subMenu - This child node is in type of ContextMenuSubMenu. It's for sub menu in the sub menu - this indicates that the sub menu could be nested layer by layer.
+ - menuItem - [Optional] This child node is in type of ContextMenuItem. It's for menu items in the sub menu.
+ - separator - [Optional] This child node is in type of ContextMenuSeparator. It's for separators in the sub menu.
+ - subMenu - [Optional] This child node is in type of ContextMenuSubMenu. It's for sub menu in the sub menu - this indicates that the sub menu could be nested layer by layer.
 */
 class ContextMenuSubMenu
 {
-  public string text;       //!< This is the attribute for the context menu sub menu text.
+  public string text;       //!< [Mandatory] This is the attribute for the context menu sub menu text.
 };
 
 //! \brief This is CSS color type in format of rgb(r, g, b) or rgba(r, g, b, a).
@@ -504,7 +504,7 @@ class CssColor
 //! \brief This is the node to define the configuration for downloading CSV data from an URL through HTTP Web request.
 class CsvData : public WebData
 {
-  public string delimeter;      //!< This optional attribute defines the delimeted used for separating the columns in CSV data.
+  public string delimeter;      //!< [Optional] This attribute defines the delimeted used for separating the columns in CSV data.
 };
 
 //! \brief This node defines a set of parameter mapping from an output parameter (source) to one or more input parameter (target).
@@ -522,7 +522,7 @@ class DataFlow
 */
 class FileReference
 {
-  public KnownPath path;        //!< This optional attribute defines the path type. The default value is None,
+  public KnownPath path;        //!< [Optional] This attribute defines the path type. The default value is None,
 };
 
 //! \brief This node defines a set of FileReference to be used in the WebView.
@@ -537,23 +537,23 @@ class FileReferences
 //! \brief This is the node that defines font description, for defining fonts to be used in LSB views.
 class FontDesc
 {
-  public unsigned int encoding;    //!< This is an optional attribute for the font encoding, default value is 33.
-  public FontFamily family;        //!< This is an optional attribute for the font family, default value is Default.
-  public unsigned int pointSize;   //!< This is a required attribute for the font size in point.
-  public FontStyle style;          //!< This is an optional attribute for the font style, default value is Normal.
-  public FontWeight weight;        //!< This is an optional attribute for the font weight, default value is Normal.
-  public bool underline;           //!< This is an optional boolean attribute that controls if the font should be underlined, default value is false.
-  public bool strikethrough;       //!< This is an optional boolan attribute that controls if the font should be strikethrough, default value is false.
-  public string faceName;          //!< This is the attribute for the font face name.
+  public unsigned int encoding;    //!< [Optional] This is an attribute for the font encoding, the default value is 33.
+  public FontFamily family;        //!< [Optional] This is an attribute for the font family, the default value is Default.
+  public unsigned int pointSize;   //!< [Mandatory] This is an attribute for the font size in points.
+  public FontStyle style;          //!< [Optional] This is an attribute for the font style, the default value is Normal.
+  public FontWeight weight;        //!< [Optional] This is an attribute for the font weight, the default value is Normal.
+  public bool underline;           //!< [Optional] This is an boolean attribute that controls if the font should be underlined, the default value is false.
+  public bool strikethrough;       //!< [Optional] This is an boolean attribute that controls if the font should be strikethrough, the default value is false.
+  public string faceName;          //!< [Mandatory] This is the attribute for the font face name.
 };
 
 //! \brief This node defines the highlight settings used in WebView for highlighting text.
 class HighlightSetting
 {
-  public string name;           //!< This mandatory attribute defines the name for the highlight setting.
-  public string pattern;        //!< This mandatory attribute defines the regular expression pattern for the content to be highlighted.
-  public HtmlColor backColor;   //!< This optional attribute defines the background color for the text to be highlighted.
-  public HtmlColor foreColor;   //!< This optional attribute defines the foreground color for the text to be highlighted.
+  public string name;           //!< [Mandatory] This attribute defines the name for the highlight setting.
+  public string pattern;        //!< [Mandatory] This attribute defines the regular expression pattern for the content to be highlighted.
+  public HtmlColor backColor;   //!< [Optional] This attribute defines the background color for the text to be highlighted.
+  public HtmlColor foreColor;   //!< [Optional] This attribute defines the foreground color for the text to be highlighted.
 };
 
 //! \brief This is HTML color type in format of \#rrggbb.
@@ -564,7 +564,7 @@ class HtmlColor
 //! \brief This is the node that defines the InputParam for input parameters.
 class InputParam : public Parameter
 {
-  public string valuePattern;   //! This is an optional attribute that defines the value pattern for the input parameter. Only if the value matches the pattern, then some operations will be triggered. The default value is empty, which means no pattern is defined.
+  public string valuePattern;   //! [Optional] This is an attribute that defines the value pattern for the input parameter. Only if the value matches the pattern, then some operations will be triggered. The default value is empty, which means no pattern is defined.
 };
 
 //! \brief This is the node for the InputParamSet, contains a set of InputParam.
@@ -578,27 +578,27 @@ class InputParamSet
 //! \brief This is the node to define the configuration for downloading JSON data from an URL through HTTP Web request.
 class JsonData : public WebData
 {
-  public string path;           //!< This optional attribute defines the path to the data to be returned in a complicated JSON object or an JSON array. If the path is not specified, the whole JSON data downloaded is returned.
+  public string path;           //!< [Optional] This attribute defines the path to the data to be returned in a complicated JSON object or an JSON array. If the path is not specified, the whole JSON data downloaded is returned.
 };
 
 //! \brief This node defines the filter setting for ListView.
 class ListViewFilter
 {
-  public bool visible;              //!< This optional attribute defines if the filter control is visible in ListView. The default value is true.
-  public string prompt;             //!< This optional attribute defines the prompt text for the filter input. Default value is empty, which means there is no prompt.
-  public string placeholder;        //!< This optional attribute defines the placeholder text in the filter input when the actual value is empty. Default value is empty.
+  public bool visible;              //!< [Optional] This attribute defines if the filter control is visible in ListView. The default value is true.
+  public string prompt;             //!< [Optional] This attribute defines the prompt text for the filter input. The default value is empty, which means there is no prompt.
+  public string placeholder;        //!< [Optional] This attribute defines the placeholder text in the filter input when the actual value is empty. The default value is empty.
 };
 
 //! \brief This node defines the status setting for the ListView.
 class ListViewStatus
 {
-  public bool visible;                      //!< This optional attribute defines if the status bar is visible for ListView. Default value is true.
-  public string singleItemCountPrompt;      //!< This optional attribute defines the prompt text when there is only one item in the ListView. %%ITEM_COUNT%% is the placeholder for item count.
-  public string multipleItemCountPrompt;    //!< This optional attribute defines the prompt text when there are multiple items in the ListView. %%ITEM_COUNT%% is the placeholder for item count.
-  public string noSelectionPrompt;          //!< This optional attribute defines the prompt text when there is no item selected in the ListView.
-  public string currentSelectionPrompt;     //!< This optional attribute defines the prompt text for showing current selection in ListView. %%ITEM_INDEX%% is the placeholder for currently selected item index.
-  public string singleSelectionPrompt;      //!< This optional attribute defines the prompt text when there is only one item selected in the ListView.
-  public string multipleSelectionPrompt;    //!< This optional attribute defines the prompt text when there are multiple items in the ListView.
+  public bool visible;                      //!< [Optional] This attribute defines if the status bar is visible for ListView. The default value is true.
+  public string singleItemCountPrompt;      //!< [Optional] This attribute defines the prompt text when there is only one item in the ListView. %%ITEM_COUNT%% is the placeholder for item count.
+  public string multipleItemCountPrompt;    //!< [Optional] This attribute defines the prompt text when there are multiple items in the ListView. %%ITEM_COUNT%% is the placeholder for item count.
+  public string noSelectionPrompt;          //!< [Optional] This attribute defines the prompt text when there is no item selected in the ListView.
+  public string currentSelectionPrompt;     //!< [Optional] This attribute defines the prompt text for showing current selection in ListView. %%ITEM_INDEX%% is the placeholder for currently selected item index.
+  public string singleSelectionPrompt;      //!< [Optional] This attribute defines the prompt text when there is only one item selected in the ListView.
+  public string multipleSelectionPrompt;    //!< [Optional] This attribute defines the prompt text when there are multiple items in the ListView.
 };
 
 //! \brief This node defines the parameter mapping from one output parameter (source) to one or more input parameter (target).
@@ -608,7 +608,7 @@ This node may contain one to many target nodes.
 */
 class Mapping
 {
-  public UUID source;       //!< This mandatory defines the unique ID of a source parameter (OutputParam).
+  public UUID source;       //!< [Mandatory] This attribute defines the unique ID of a source parameter (OutputParam).
 };
 
 //! \brief This node defines single option to be used ComboBox or PropertyInput control.
@@ -618,7 +618,7 @@ There is no attribute on the node.
 */
 class Option
 {
-  public string group;          //!< This optional attribute defines the option group that the option belongs to.
+  public string group;          //!< [Optional] This attribute defines the option group that the option belongs to.
 };
 
 //! \brief This node defines a set of options to be used in ComboBox or PropertyInput control.
@@ -644,7 +644,7 @@ class OS
 //! \brief This is the node that defines the OutputParam for output parameters.
 class OutputParam : public Parameter
 {
-  public OperationType activation;  //!< This is an optional attribute that defines which operation in the view control would trigger the activation of parameter change. The default value is Default.
+  public OperationType activation;  //!< [Optional] This is an attribute that defines which operation in the view control would trigger the activation of parameter change. The default value is Default.
 };
 
 //! \brief This is the node for the OutputParamSet, contains a set of OutputParam.
@@ -658,8 +658,8 @@ class OutputParamSet
 //! \brief This is the node for the Parameter. It's base class for InputParameter and OutputParameter.
 class Parameter
 {
-  public UUID id;       //!< The unique ID for the parameter, it's mandatory.
-  public string name;   //!< Name of the parameter, it's mandatory.
+  public UUID id;       //!< [Mandatory] The unique ID for the parameter.
+  public string name;   //!< [Mandatory] Name of the parameter.
 };
 
 //! \brief This node defines the prompt text for the ComboBox and TextInput.
@@ -668,24 +668,24 @@ class Parameter
 */
 class Prompt
 {
-  public bool visible;          //!< This optional boolean flag controls if the prompt should be visible.
-  public bool exclusive;        //!< This optional boolean flag controls if the prompt should be displayed in exclusive line.
+  public bool visible;          //!< [Optional] This boolean flag controls if the prompt should be visible.
+  public bool exclusive;        //!< [Optional] This boolean flag controls if the prompt should be displayed in exclusive line.
 };
 
 //! \brief This node defines the configuration for a property field to be used in PropertyInput control.
 /*!
- - options - This child node is optional. It defines the option list when the property is in a type needs options support.
+ - options - [Optional] This child node defines the option list when the property is in a type needs options support.
 */
 class PropertyField
 {
-  public string name;               //!< This mandatory attribute defines the name for the property.
-  public PropertyValueType type;    //!< This mandatory attribute defines the type for the property.
-  public string label;              //!< This optional attribute defines the label for the property. If it's empty, then the name will be used for label.
-  public string category;           //!< This optional attribute defines the category for the property.
-  public string description;        //!< This optional attribute defines the description text for the property.
-  public string default;            //!< This optional attribute defines the default value for the property.
-  public string fileTypes;          //!< This optional attribute defines the file types supported by the property. It is used in the popup dialog when user tries to select a file.
-  public string initialPath;        //!< This optional attribute defines the initial path for the file property. It is used in the popup dialog when user tries to select a file.
+  public string name;               //!< [Mandatory] This attribute defines the name for the property.
+  public PropertyValueType type;    //!< [Mandatory] This attribute defines the type for the property.
+  public string label;              //!< [Optional] This attribute defines the label for the property. If it's empty, then the name will be used for label.
+  public string category;           //!< [Optional] This attribute defines the category for the property.
+  public string description;        //!< [Optional] This attribute defines the description text for the property.
+  public string default;            //!< [Optional] This attribute defines the default value for the property.
+  public string fileTypes;          //!< [Optional] This attribute defines the file types supported by the property. It is used in the popup dialog when user tries to select a file.
+  public string initialPath;        //!< [Optional] This attribute defines the initial path for the file property. It is used in the popup dialog when user tries to select a file.
 };
 
 //! \brief This node defines the font and style setting for condition matched rows in ListView and TreeListView.
@@ -694,9 +694,9 @@ class PropertyField
 */
 class RowStyle
 {
-  public string condition;          //!< This mandatory string attribute contains the row condition written in Lua script. The matched row will be displayed using configured font and colors.
-  public Color foreColor;           //!< This optional attribute defines foreground color for the matched row.
-  public Color backColor;           //!< This optional attribute defines background color for the matched row.
+  public string condition;          //!< [Mandatory] This string attribute contains the row condition written in Lua script. The matched row will be displayed using configured font and colors.
+  public Color foreColor;           //!< [Optional] This attribute defines foreground color for the matched row.
+  public Color backColor;           //!< [Optional] This attribute defines background color for the matched row.
 };
 
 //! \brief This is the node that defines the configuration for generatign data through script execution.
@@ -705,8 +705,8 @@ class RowStyle
 */
 class ScriptData
 {
-  public string type;           //!< This mandatory attribute defines the type of the script, see shell configuration for supported script types. The Lua is an embedded and always supported script language.
-  public unsigned int timeout;  //!< This optional attribute defines the timeout for the script execution. Default value is 0, which means it will use the global setting for the script timeout.
+  public string type;           //!< [Mandatory] This attribute defines the type of the script, see shell configuration for supported script types. The Lua is an embedded and always supported script language.
+  public unsigned int timeout;  //!< [Optional] This attribute defines the timeout for the script execution. The default value is 0, which means it will use the global setting for the script timeout.
 };
 
 //! \brief This is the node that defines the configuration for retrieving data through SQL query.
@@ -715,9 +715,9 @@ class ScriptData
 */
 class SqlData
 {
-  public string server;         //!< This mandatory attribute indicates the database server to connect to.
-  public string database;       //!< This mandatory attribute indicates the name of the database that contains the data.
-  public string user;           //!< This attribute defines the user name to be used for connecting to the database. It's optional.
+  public string server;         //!< [Mandatory] This attribute indicates the database server to connect to.
+  public string database;       //!< [Mandatory] This attribute indicates the name of the database that contains the data.
+  public string user;           //!< [Optional] This attribute defines the user name to be used for connecting to the database.
 };
 
 //! \brief This node is used for defining the table cell in TableControl.
@@ -726,24 +726,24 @@ This node is derived from ChoiceOfView and uses one of the supported view contro
 */
 class TableCell : public ChoiceOfView
 {
-  public unsigned int row;          //!< This mandatory attribute defines row of the table cell.
-  public unsigned int col;          //!< This mandatory attribute defines column of the table cell.
-  public unsigned int rowSpan;      //!< This optional attribute defines row span of the table cell. Default value is 1.
-  public unsigned int colSpan;      //!< This optional attribute defines column span of the table cell. Default value is 1.
+  public unsigned int row;          //!< [Mandatory] This attribute defines row of the table cell.
+  public unsigned int col;          //!< [Mandatory] This attribute defines column of the table cell.
+  public unsigned int rowSpan;      //!< [Optional] This attribute defines row span of the table cell. The default value is 1.
+  public unsigned int colSpan;      //!< [Optional] This attribute defines column span of the table cell. The default value is 1.
 };
 
 //! \brief This node defines the table column sizing settings.
 class TableColumn
 {
-  public SizeType sizeType;         //!< This mandatory attribute defines how the width is specified for the table column.
-  public float width;               //!< This mandatory attribute defines the width of the table column.
+  public SizeType sizeType;         //!< [Mandatory] This attribute defines how the width is specified for the table column.
+  public float width;               //!< [Mandatory] This attribute defines the width of the table column.
 };
 
 //! \brief This node defines the table row sizing settings.
 class TableRow
 {
-  public SizeType sizeType;         //!< This mandatory attribute defines how the height is specified for the table row.
-  public float height;              //!< This mandatory attribute defines the height of the table row.
+  public SizeType sizeType;         //!< [Mandatory] This attribute defines how the height is specified for the table row.
+  public float height;              //!< [Mandatory] This attribute defines the height of the table row.
 };
 
 //! \brief This node is used for defining the tag page in TabControl.
@@ -752,7 +752,7 @@ It's derived from ChoiceOfView and uses one of the supported view controls as ch
 */
 class TabPage : public ChoiceOfView
 {
-  public string title;      //!< This is a mandatory attribute that defines the title for the tab page.
+  public string title;      //!< [Mandatory] This is an attribute that defines the title for the tab page.
 };
 
 //! \brief This is the 16-byte unique ID.
@@ -766,19 +766,19 @@ class UUID
 //! \brief This is the node for defining version information.
 class Version
 {
-  public unsigned short major;      //!< This is the major number in the version, it's mandatory.
-  public unsigned short minor;      //!< This is the minor number in the version, it's mandatory.
-  public unsigned short build;      //!< This is the build number in the version, it's optional.
-  public unsigned short revision;   //!< This is the revision part in the version, it's optional.
+  public unsigned short major;      //!< [Mandatory] This is the major number in the version.
+  public unsigned short minor;      //!< [Mandatory] This is the minor number in the version.
+  public unsigned short build;      //!< [Optional] This is the build number in the version.
+  public unsigned short revision;   //!< [Optional] This is the revision part in the version.
 };
 
 //! \brief This group defines the attributes for all views.
 /*!
 It includes all attributes deinfed in the ComponentAttributes.
- - loadDataAt - This optional attribute defines when the view should load the data. Default value is Default.
 */
-class ViewAttributes
+class ViewAttributes : public ComponentAttributes
 {
+  public LoadDataAt loadDataAt;     //!< [Optional] This attribute defines when the view should load the data. The default value is Default.
 };
 
 //! \brief This is the node that defines the caption of a LSB view control
@@ -787,37 +787,37 @@ class ViewAttributes
  */
 class ViewCaption
 {
-  public bool visible;          //!< This is an optional boolean attribute that controls if the view caption is visible, default value is true.
+  public bool visible;          //!< [Optional] This is a boolean attribute that controls if the view caption is visible, the default value is true.
 };
 
 //! \brief This group defines the child nodes for all views.
 /*!
 It includes all elements defined in the ComponentElements.
- - caption - This node is optional. It defines the caption for the view.
- - contextMenu - This node is optional. It defines the context menu for the view.
+ - caption - [Optional] This node defines the caption for the view.
+ - contextMenu - [Optional] This node defines the context menu for the view.
 */
-class ViewElements
+class ViewElements : public ComponentElements
 {
 };
 
 //! \brief This is the base node to define the configuration for downloading data from an URL through HTTP Web request.
 /*!
 Following nodes can be specified under this node,
- - url - This child node contains the URL for the request. It's represented as content of the child node.
- - payload - This child node contains the payload used for the request as it's content. It's only used when the method is set to Post.
+ - url - [Mandatory] This child node contains the URL for the request. It's represented as content of the child node.
+ - payload - [Optional] This child node contains the payload used for the request as it's content. It's only used when the method is set to Post.
 */
 class WebData
 {
-  public HttpMethod method;     //!< This optional attribute defines the HTTP Web method used for the request. Default value is Get.
-  public string contentType;    //!< This optional attribute defines the content type for the HTTP Web request.
+  public HttpMethod method;     //!< [Optional] This attribute defines the HTTP Web method used for the request. The default value is Get.
+  public string contentType;    //!< [Optional] This attribute defines the content type for the HTTP Web request.
 };
 
 //! \brief This node defines the data column for the X axis in ChartView.
 class XAxisColumn
 {
-  public string name;               //!< This mandatory attribute defines the name of the data column.
-  public string displayName;        //!< This optional attribute defines the display name for the data column. If it's not specified, then the name is used.
-  public bool isDateTime;           //!< This optional attribute defines if the data column is in type of datetime. Default value is false.
+  public string name;               //!< [Mandatory] This attribute defines the name of the data column.
+  public string displayName;        //!< [Optional] This attribute defines the display name for the data column. If it's not specified, then the name is used.
+  public bool isDateTime;           //!< [Optional] This attribute defines if the data column is in type of datetime. The default value is false.
 };
 
 /*!
@@ -856,30 +856,61 @@ This page contains the list of all view controls available in LSB.
 //! \brief This node defines the ButtonGroup layout control that supports arranging a group of buttons in the designated area.
 /*!
 The node contains following child nodes,
-  - All nodes defined in ViewElements
-  - buttons - This node contains a set of button nodes where each of them is a Button node.
-  - All attributes defined in the ViewAttributes, plus
+ - All nodes defined in ViewElements.
+ - buttons - This node contains a set of button nodes where each of them is a Button node.
+ - All attributes defined in the ViewAttributes, plus following attributes.
 */
-class ButtonGroup
+class ButtonGroup : public ViewElements, public ViewAttributes
 {
-  public bool autoFlow;                 //!< This optional boolean attribute defines if the buttons would autoflow to next row when the tital width exceeds the space width.
-  public unsigned int buttonsPerRow;    //!< This optional attribute defines how many buttons will be put in each row when the autoFlow is set to false.
+  public bool autoFlow;                 //!< [Optional] This boolean attribute defines if the buttons would autoflow to next row when the tital width exceeds the space width.
+  public unsigned int buttonsPerRow;    //!< [Optional] This attribute defines how many buttons will be put in each row when the autoFlow is set to false.
 };
 
-//!
-class SplitLayout
+//! \brief This node defines the SplitLayout layout control that supports showing two child views side by side.
+/*!
+Depends on the configured orientation for the SplitLayout, the two child views could be placed horizontally (one in left and one in right) or vertically
+(one in top and one in bottom). One of the child views could have fixed size, or both could be resizable at the same time when the SplitLayout size 
+changes. This node contains following child nodes,
+ - All nodes defined in ViewElements.
+ - The left node and right node if the orientation is set to Horizontal.
+ - The top node and bottom node if the orientation is set to Vertical.
+ - All attributes defined in the ViewAttributes, plus following attributes.
+*/
+class SplitLayout : public ViewElements, public ViewAttributes
 {
-
+  public Orientation orientation;   //!< [Optional] This attribute defines the orientation of the two child views in SplitLayout. The default value is Horizontal.
+  public FixedView fixedView;       //!< [Mandatory] This attribute defines which one of the two child views has fixed size.
+  public double ratio;              //!< [Optional] When the fixedView is set to None, this attribute defines the ratio of how the two child views split the client size, either width (if orientation is set to Horizontal) or height (if orientation is set to Vertical).
+  public unsigned int size;         //!< [Optional] When the fixedView is set to value other than None, this attribute defines the size of the fixed size child view.
 };
 
-class TabLayout
+//! \brief This node defines the TabLayout layout control that arranges child views in multiple tab pages.
+/*!
+The TabLayout layout control uses the TabControl to arrange many child views (or layout controls) in each tab pages. This node contains following chils
+nodes,
+ - All nodes defined in ViewElements.
+ - pages - This is the parent node for all page nodes in type of TabPage. There should be at least one page under the pages node, and there is no upper
+ boundary on the page count.
+ - All attributes defined in the ViewAttributes, plus following attributes.
+*/
+class TabLayout : public ViewElements, public ViewAttributes
 {
-
+  public bool multiLine;            //!< [Optional] This boolean attribute controls if the tab headers in the tab control can be displayed in multiple lines. The default value is false.
+  public TabPosition tabPosition;   //!< [Optional] This attribute defines in which side should be tab headers be displayed. The default value is Top. 
 };
 
-class TableLayout
+//! \brief This node defines the TableLayout layout control that arranges multiple child views in a table layout.
+/*!
+The TableLayout layout control arranges the child views including layout controls in the table layout. Each child view can have customized position and
+size settings. This node contains following child nodes.
+ - All nodes defined in ViewElements.
+ - [Mandatory] The rows node defines how the size of each row is calculated.
+ - [Mandatory] The columns node defines how the size of each column is calculated.
+ - [Mandatory] The cells node defines the position and size of child views, as well as which child view is placed in the table cell.
+ - All attributes defined in the ViewAttributes.
+*/
+class TableLayout : public ViewElements, public ViewAttributes
 {
-
 };
 
 class ChartView
