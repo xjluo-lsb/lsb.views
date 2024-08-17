@@ -790,6 +790,8 @@ in the LSB view files. It also defines the file structure of the view files usin
       <xs:element name="buttonGroup" type="ButtonGroup" />
 
       <xs:element name="chartView" type="ChartView" />
+      <xs:element name="fileList" type="FileListView" />
+      <xs:element name="fileTree" type="FileTreeView" />
       <xs:element name="listView" type="ListView" />
       <xs:element name="textView" type="TextView" />
       <xs:element name="treeListView" type="TreeListView" />
@@ -1015,6 +1017,17 @@ in the LSB view files. It also defines the file structure of the view files usin
     <xs:attribute name="backColor" type="HtmlColor" use="optional" />
   </xs:complexType>
 
+  <xs:complexType name="RowStyleSet">
+    <xs:annotation>
+      <xs:documentation>
+        This is the schema for RowStyleSet that contains a set of RowStyles.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="row" type="RowStyle" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+
   <xs:complexType name="ListViewFilter">
     <xs:annotation>
       <xs:documentation>
@@ -1052,17 +1065,31 @@ in the LSB view files. It also defines the file structure of the view files usin
       <xs:element name="filter" type="ListViewFilter" minOccurs="0" maxOccurs="1" />
       <xs:element name="status" type="ListViewStatus" minOccurs="0" maxOccurs="1" />
       <xs:element name="columns" type="ColumnSet" minOccurs="1" maxOccurs="1" />
-      <xs:element name="rowStyles" minOccurs="0" maxOccurs="1">
-        <xs:complexType>
-          <xs:sequence>
-            <xs:element name="row" type="RowStyle" minOccurs="0" maxOccurs="unbounded" />
-          </xs:sequence>
-        </xs:complexType>
-      </xs:element>
+      <xs:element name="rowStyles" type="RowStyleSet" minOccurs="0" maxOccurs="1" />
     </xs:sequence>
     <xs:attributeGroup ref="ViewAttributes" />
     <xs:attribute name="sortable" type="xs:boolean" use="optional" default="false" />
     <xs:attribute name="multiSelect" type="xs:boolean" use="optional" default="false" />
+  </xs:complexType>
+
+  <xs:complexType name="FileListView">
+    <xs:annotation>
+      <xs:documentation>
+        This is the schema for FileListView control that shows all files under specified folder.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:group ref="ViewElements" />
+      <xs:element name="rowStyles" type="RowStyleSet" minOccurs="0" maxOccurs="1" />
+    </xs:sequence>
+    <xs:attributeGroup ref="ViewAttributes" />
+    <xs:attribute name="multiSelect" type="xs:boolean" use="optional" default="false" />
+    <xs:attribute name="filter" type="xs:boolean" use="optional" default="true" />
+    <xs:attribute name="status" type="xs:boolean" use="optional" default="true" />
+    <xs:attribute name="files" type="xs:boolean" use="optional" default="true" />
+    <xs:attribute name="dirs" type="xs:boolean" use="optional" default="false" />
+    <xs:attribute name="hidden" type="xs:boolean" use="optional" default="false" />
+    <xs:attribute name="dotdot" type="xs:boolean" use="optional" default="false" />
   </xs:complexType>
 
   <xs:complexType name="TextView">
@@ -1103,6 +1130,19 @@ in the LSB view files. It also defines the file structure of the view files usin
     <xs:attribute name="childProperty" type="xs:string" use="required" />
   </xs:complexType>
 
+  <xs:complexType name="FileTreeView">
+    <xs:annotation>
+      <xs:documentation>
+        This is the schema for the FileTreeView control for displaying file system tree structure.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:group ref="ViewElements" />
+    </xs:sequence>
+    <xs:attributeGroup ref="ViewAttributes" />
+    <xs:attribute name="root" type="xs:string" use="required" />
+  </xs:complexType>
+
   <xs:complexType name="TreeListView">
     <xs:annotation>
       <xs:documentation>
@@ -1112,12 +1152,13 @@ in the LSB view files. It also defines the file structure of the view files usin
     <xs:sequence>
       <xs:group ref="ViewElements" />
       <xs:element name="columns" type="ColumnSet" minOccurs="1" maxOccurs="1" />
+      <xs:element name="rowStyles" type="RowStyleSet" minOccurs="0" maxOccurs="1" />
     </xs:sequence>
     <xs:attributeGroup ref="ViewAttributes" />
     <xs:attribute name="childProperty" type="xs:string" use="required" />
     <xs:attribute name="expandLevel" type="xs:int" use="optional" default="0" />
   </xs:complexType>
-
+  
   <xs:complexType name="HighlightSetting">
     <xs:annotation>
       <xs:documentation>
