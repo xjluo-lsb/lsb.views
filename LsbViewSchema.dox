@@ -836,6 +836,8 @@ This page contains the list of all view controls available in LSB.
   - TableLayout
 - Data View Controls
   - ChartView
+  - FileList
+  - FileTree
   - ListView
   - TextView
   - TreeListView
@@ -853,12 +855,22 @@ This page contains the list of all view controls available in LSB.
 @{
 */
 
-//! \brief This node defines the ButtonGroup layout control that supports arranging a group of buttons in the designated area.
+//! \brief The ButtonGroup is a layout control that supports automatically arranging a group of buttons in the designated area based on preset rules.
 /*!
-The node contains following child nodes,
- - All nodes defined in ViewElements.
- - buttons - This node contains a set of button nodes where each of them is a Button node.
- - All attributes defined in the ViewAttributes, plus following attributes.
+The ButtonGroup supports two ways to layout the buttons in the group.
+ - If autoFlow attribute is set to true, then the buttons are automatically arranged based on their natural width (per on the text length). It puts
+the buttons one by one in the same row. When the remaining space in a row is not big enough to fit in the next button, then the next button will be
+put into a new row. The button after will be put after this button in the new row following the same space check rule.
+ - If autoFlow is set to false, then the number of buttons in a row is determined by the value specified in the attribute buttonsPerRow. The buttons
+will be resized to fit in the space, despite the actual content in the button.
+
+This ButtonGroup node contains following child nodes,
+ - All the nodes defined in ViewElements.
+ - buttons - This node contains a set of button nodes where each of the nodes is in type of Button.
+
+This ButtonGroup node contains following attributes,
+ - All the attributes defined in the ViewAttributes
+ - Plus following attributes,
 */
 class ButtonGroup : public ViewElements, public ViewAttributes
 {
@@ -866,15 +878,22 @@ class ButtonGroup : public ViewElements, public ViewAttributes
   public unsigned int buttonsPerRow;    //!< [Optional] This attribute defines how many buttons will be put in each row when the autoFlow is set to false.
 };
 
-//! \brief This node defines the SplitLayout layout control that supports showing two child views side by side.
+//! \brief The SplitLayout is a layout control that supports hosting two child views side by side.
 /*!
-Depends on the configured orientation for the SplitLayout, the two child views could be placed horizontally (one in left and one in right) or vertically
-(one in top and one in bottom). One of the child views could have fixed size, or both could be resizable at the same time when the SplitLayout size 
-changes. This node contains following child nodes,
- - All nodes defined in ViewElements.
- - The left node and right node if the orientation is set to Horizontal.
- - The top node and bottom node if the orientation is set to Vertical.
- - All attributes defined in the ViewAttributes, plus following attributes.
+Here are the SplitLayout features,
+ - The two child views supported by SplitLayout could be any data view controls, input controls, or even layout controls including SplitLayout.
+ - Depends on the orientation configured for the SplitLayout, the two child views could be placed either horizontally (one in left and another one in
+right) or vertically (one in top and another one in bottom).
+ - One of the child views could have fixed size, or both of them could be resizable at the same time when the SplitLayout control size changes.
+ 
+ This SplitLayout node contains following child nodes,
+ - All the nodes defined in ViewElements.
+ - The left node and right node if the orientation is set to Horizontal, both in type of ChoiceOfView.
+ - The top node and bottom node if the orientation is set to Vertical, both in type of ChoiceOfView.
+
+ This SplitLayout node contains following attributes,
+ - All the attributes defined in the ViewAttributes.
+ - Plus following attributes,
 */
 class SplitLayout : public ViewElements, public ViewAttributes
 {
@@ -884,91 +903,166 @@ class SplitLayout : public ViewElements, public ViewAttributes
   public unsigned int size;         //!< [Optional] When the fixedView is set to value other than None, this attribute defines the size of the fixed size child view.
 };
 
-//! \brief This node defines the TabLayout layout control that arranges child views in multiple tab pages.
+//! \brief The TabLayout is a layout control that arranges child views in tab pages.
 /*!
-The TabLayout layout control uses the TabControl to arrange many child views (or layout controls) in each tab pages. This node contains following chils
-nodes,
- - All nodes defined in ViewElements.
+The TabLayout layout control uses the TabControl to arrange multiple child views in tab pages, one child view in each tab page. The child views in 
+each tab page could be data view controls, input controls or even layout controls including TabLayout itself.
+
+This TabLayout node contains following child nodes,
+ - All the nodes defined in ViewElements.
  - pages - This is the parent node for all page nodes in type of TabPage. There should be at least one page under the pages node, and there is no upper
  boundary on the page count.
- - All attributes defined in the ViewAttributes, plus following attributes.
+
+ This TabLayout node contains following attributes,
+ - All the attributes defined in the ViewAttributes.
+ - Plus following attributes,
 */
 class TabLayout : public ViewElements, public ViewAttributes
 {
-  public bool multiLine;            //!< [Optional] This boolean attribute controls if the tab headers in the tab control can be displayed in multiple lines. The default value is false.
+  public bool multiLine;            //!< [Optional] This boolean attribute controls if the tab headers in the tab control can be displayed in multiple rows. The default value is false.
   public TabPosition tabPosition;   //!< [Optional] This attribute defines in which side should be tab headers be displayed. The default value is Top. 
 };
 
-//! \brief This node defines the TableLayout layout control that arranges multiple child views in a table layout.
+//! \brief This TableLayout is a layout control that arranges multiple child views in a table layout.
 /*!
-The TableLayout layout control arranges the child views including layout controls in the table layout. Each child view can have customized position and
-size settings. This node contains following child nodes.
- - All nodes defined in ViewElements.
- - [Mandatory] The rows node defines how the size of each row is calculated.
- - [Mandatory] The columns node defines how the size of each column is calculated.
- - [Mandatory] The cells node defines the position and size of child views, as well as which child view is placed in the table cell.
- - All attributes defined in the ViewAttributes.
+The TableLayout arranges the child views in a way very similar to the HTML table. It supports child views including data view controls, input controls,
+and layout controls. Each child view can have customized position and size settings similar to the HTML cell in HTML table.
+
+This TableLayout node contains following child nodes,
+ - All the nodes defined in ViewElements.
+ - [Mandatory] The rows node defines how the size of each row is calculated. It contains a set of row elements. Each row element is in type of TableRow.
+ - [Mandatory] The columns node defines how the size of each column is calculated. It contains a set of column elements. Each column element is in type of TableColumn.
+ - [Mandatory] The cells node defines the position and size of child views, as well as which child view is placed inside the table cell. It contains a set of cell nodes. Each cell element is in type of TableCell.
+
+This TableLayout node contains following attributes,
+ - All the attributes defined in the ViewAttributes.
 */
 class TableLayout : public ViewElements, public ViewAttributes
 {
 };
 
-class ChartView
+//! \brief This ChartView is a data view control that uses the wxChart control to render data as charts.
+/*!
+Please refer to <a href="https://github.com/wxIshiko/wxCharts">wxChart</a> to see more details on which charts are supported by the this data view
+control.
+
+This ChartView node contains following child nodes,
+ - All the nodes defined in ViewElements.
+ - [Mandatory] The xAxis node in type of XAxisColumn defines which column in data will be used for the x-axis in the chart.
+ - [Optional] The colors node contains a set of color nodes in type of ColorSetting that defines the colors to be used in the charts view control.
+
+This ChartView node contains following attributes,
+ - All the attributes defined in the ViewAttributes.
+ - Plus following attributes,
+*/
+class ChartView : public ViewElements, public ViewAttributes
+{
+  public ChartType chartType;       //!< [Mandatory] Thia attribute controls which type of chart is to be rendered.
+  public bool showLegend;           //!< [Optional] This attribute controls if the legend should be displayed together with the chart.
+  public LineType lineType;         //!< [Optional] This attribute controls the line type to be used in the charts.
+  public HtmlColor background;      //!< [Optional] This attribute controls the background color for the chart.
+  public bool showTooltip;          //!< [Optional] This attribute controls if the tooltip should be visible in the chart.
+};
+
+//! \brief This FileList is a data view control that uses a list view to display files and/or folders under a specific path in file system.
+/*!
+The FileList implements most of the features available in the ListView, including filter, status, copy, etc. Please refer to ListView for more details
+on these features.
+*/
+class FileList : public ViewElements, public ViewAttributes
+{
+};
+
+class FileTree : public ViewElements, public ViewAttributes
+{
+};
+
+//! \brief This ListView is a data view control that uses the very common list view control to display data in rows and columns.
+/*!
+Besides displaying data, this view control supports many other useful features,
+ - Supports single selection or multiple selection of items in the list view.
+ - The index of selected row as well as values in each of the columns for the selected row could be sent out to other view controls through output parameters for the ListView.
+ - There is rich filtering feature supported in the ListView control, see details in the \ref page_smart_filter.
+ - User may copy full row or selected columns from the selected row(s) into clipboard, in plain text or HTML format.
+ - There is status bar showing the item status and selection status for the items in the ListView.
+
+This ListView node contains following child nodes,
+ - All the nodes defined in ViewElements.
+ - [Optional] The filter node in type of ListViewFilter configures the filter setting for the ListView.
+ - [Optional] The status node in type of ListViewStatus configures the status setting for the ListView.
+ - [Mandatory] The columns node in type of ColumnSet defines the columns to be shown in the ListView.
+ - [Optional] The rowStyles node contains a set of row nodes in type of RowStyle that defines the style for matched rows.
+ 
+This ListView node contains following attributes,
+ - All the attributes defined in the ViewAttributes.
+ - Plus following attributes,
+*/
+class ListView : public ViewElements, public ViewAttributes
+{
+  public bool sortable;         //!< [Optional] This boolean attribute controls if the ListView supports sorting by clicking on column headers.
+  public bool multiSelect;      //!< [Optional] This boolean attribute controls if the ListView supports multiple selection of items.
+};
+
+//! \brief This TextView is a data view control for displaying single line or multiple lines of plain text.
+/*!
+
+This TextView node contains following child nodes,
+ - All the nodes defined in ViewElements.
+ - [Optional] The font node in type of FontDesc defines the font to be used for displaying the text content.
+ - [Optional] The content node contains the predefined content to be displayed in the control.
+
+This TextView node contains following attributes,
+- All the attributes defined in the ViewAttributes.
+- Plus following attributes,
+*/
+class TextView : public ViewElements, public ViewAttributes
+{
+  public bool noWrap;           //!< [Optional] This boolean attribute controls if the text content longer than the TextView width should be wrapped automatically (when the value is false). The default value is false.
+  public bool multiline;        //!< [Optional] This boolean attribute controls if the control can display multiple lines of text content. The default value is true.
+  public bool readOnly;         //!< [Optional] This boolean attribute controls if the control is used to display text only. When this attribute is set to false, user may edit the content in place. The default value is false.
+};
+
+class TreeListView : public ViewElements, public ViewAttributes
 {
 
 };
 
-class ListView
+class TreeView : public ViewElements, public ViewAttributes
 {
 
 };
 
-class TextView
+class WebView : public ViewElements, public ViewAttributes
 {
 
 };
 
-class TreeListView
+class Button : public ViewElements, public ViewAttributes
 {
 
 };
 
-class TreeView
+class ComboBox : public ViewElements, public ViewAttributes
 {
 
 };
 
-class WebView
+class TextInput : public ViewElements, public ViewAttributes
 {
 
 };
 
-class Button
+class PropertyInput : public ViewElements, public ViewAttributes
 {
 
 };
 
-class ComboBox
+class Procedure : public ComponentElements, public ComponentAttributes
 {
 
 };
 
-class TextInput
-{
-
-};
-
-class PropertyInput
-{
-
-};
-
-class Procedure
-{
-
-};
-
-class ViewLauncher
+class ViewLauncher : public ComponentElements, public ComponentAttributes
 {
 
 };
@@ -1003,5 +1097,11 @@ class ViewLauncher
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*!
 \defgroup section_faq Other Frequently Seen Questions
+
+*/
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*!
+\defgroup page_smart_filter The Smart Filtering in ListiView
 
 */
