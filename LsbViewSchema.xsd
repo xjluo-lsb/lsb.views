@@ -792,6 +792,7 @@ in the LSB view files. It also defines the file structure of the view files usin
       <xs:element name="chartView" type="ChartView" />
       <xs:element name="fileList" type="FileListView" />
       <xs:element name="fileTree" type="FileTreeView" />
+	  <xs:element name="hexView" type="HexView" />
       <xs:element name="listView" type="ListView" />
       <xs:element name="textView" type="TextView" />
       <xs:element name="treeListView" type="TreeListView" />
@@ -1002,6 +1003,24 @@ in the LSB view files. It also defines the file structure of the view files usin
     <xs:attribute name="showTooltip" type="xs:boolean" use="optional" default="true" />
   </xs:complexType>
 
+  <xs:complexType name="HexView">
+	<xs:annotation>
+	  <xs:documentation>
+		This is the schema for the HexView for displaying binary data in hexadecimal values.
+	  </xs:documentation>
+	</xs:annotation>
+	<xs:sequence>
+	  <xs:group ref="ViewElementa" />
+      <xs:element name="font" type="FontDesc" minOccurs="0" maxOccurs="1" />
+	</xs:sequence>
+	<xs:attributeGroup ref="ViewAttributes" />
+	<xs:attribute name="groupSize" type="xs:unsignedInt" use="optional" default="0" />
+	<xs:attribute name="lineSize" type="xs:unsignedInt" use="optional" default="16" />
+	<xs:attribute name="offsetSize" type="xs:unsignedInt" use="optional" default="8" />
+	<xs:attribute name="showOffset" type="xs:boolean" use="optional" default="true" />
+	<xs:attribute name="showText" type="xs:boolean" use="optional" default="true" />
+  </xs:complexType>
+
   <xs:complexType name="RowStyle">
     <xs:annotation>
       <xs:documentation>
@@ -1117,7 +1136,7 @@ in the LSB view files. It also defines the file structure of the view files usin
     </xs:annotation>
     <xs:sequence>
       <xs:group ref="ViewElements" />
-      <xs:element name="nodeColors" minOccurs="0" maxOccurs="1">
+      <xs:element name="nodeStyles" minOccurs="0" maxOccurs="1">
         <xs:complexType>
           <xs:sequence>
             <xs:element name="node" type="RowStyle" minOccurs="0" maxOccurs="unbounded" />

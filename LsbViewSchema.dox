@@ -964,17 +964,45 @@ class ChartView : public ViewElements, public ViewAttributes
   public bool showTooltip;          //!< [Optional] This attribute controls if the tooltip should be visible in the chart.
 };
 
-//! \brief This FileList is a data view control that uses a list view to display files and/or folders under a specific path in file system.
+//! \brief This FileList is a data view control that uses a list view to display files and/or folders under the specified path in file system.
 /*!
 The FileList implements most of the features available in the ListView, including filter, status, copy, etc. Please refer to ListView for more details
 on these features.
+
+The FileList node contains following child nodes,
+ - All the nodes defined in the ViewElements.
+ - [Optional] The rowStyles node contains a set of row nodes in type of RowStyle that defines the style for matched rows.
+
+The FileList node contains following attributes,
+ - All the attributes defined in the ViewAttributes.
+ - Plus following attributes,
 */
 class FileList : public ViewElements, public ViewAttributes
 {
+  public bool multiSelect;      //!< [Optional] This attribute controls if the file list view supports multiple selections on the items. The default value is false.
+  public bool filter;           //!< [Optional] This attribute controls if the filter support is enabled for the file list view. The default value is true.
+  public bool status;           //!< [Optional] This attribute controls if the status bar is enabled for the file list view. The default value is true.
+  public bool files;            //!< [Optiona;] This attribute controls if files are shown in the file list view. The default value is true.
+  public bool dirs;             //!< [Optional] This attribute controls if folders are shown in the file list view, The default value is false;
+  public bool hidden;           //!< [Optional] This attribute controls if hiden files/folders are shown in the file list view. The default value is false.
+  public bool dotdot;           //!< [Optional] This attribute controls if . and .. folders are shown in the file list view. The default value is false.
 };
 
+//! \brief This FileTree is a data view control that uses a tree view to display the folder structures under the specified path in file system.
+/*!
+The FileTree implements similar features available in the TreeView. It loads the folder hierachy in file system and populate them into the tree view control. User
+may expand/collapse a folder or select a folder to trigger further actions in other controls.
+
+The FileTree node contains following nodes,
+ - All the nodes defined in the ViewElements.
+
+The FileTree node contains following attribtues,
+ - All the attributes defined in the ViewAttributes.
+ - Plus following attributes,
+*/
 class FileTree : public ViewElements, public ViewAttributes
 {
+  public string root;       //!< [Optional] This attribute controls the default path that the FileTree will load data from. Empty value means nothing will be loaded.
 };
 
 //! \brief This ListView is a data view control that uses the very common list view control to display data in rows and columns.
@@ -1005,7 +1033,6 @@ class ListView : public ViewElements, public ViewAttributes
 
 //! \brief This TextView is a data view control for displaying single line or multiple lines of plain text.
 /*!
-
 This TextView node contains following child nodes,
  - All the nodes defined in ViewElements.
  - [Optional] The font node in type of FontDesc defines the font to be used for displaying the text content.
@@ -1022,19 +1049,66 @@ class TextView : public ViewElements, public ViewAttributes
   public bool readOnly;         //!< [Optional] This boolean attribute controls if the control is used to display text only. When this attribute is set to false, user may edit the content in place. The default value is false.
 };
 
+//! \brief This TreeListView is a data view control for displaying hierachy data in multiple columns.
+/*!
+This TreeListView control combines features from both list view and tree view. It can display the hierachy data as tree view, meanwhile it can also display data for each
+node with more details in multiple columns, like the list view.
+
+This TreeListView node contains following child nodes,
+ - All the nodes defined in ViewElements.
+ - [Mandatory] The columns node in type of ColumnSet defines the columns to be shown in the TreeListView.
+ - [Optional] The rowStyles node contains a set of row nodes in type of RowStyle that defines the style for matched rows.
+
+This TreeListView node contains following attributes,
+ - All the attributes defined in ViewAttributes.
+ - Plus following attributes,
+*/
 class TreeListView : public ViewElements, public ViewAttributes
 {
-
+  public string childProperty;  //!< [Mandatory] This attribute define the property name for getting the child node data in the data for current node.
+  public int expandLevel;       //!< [Optional] This attribute defines how many levels of child data will be expanded automatically when data is loaded into the control. Default value is 0.
 };
 
+//! \brief This TreeView is a data view control for displaying hierachy data in tree style.
+/*!
+This TreeView control requires data being presented in layers through a predefined child property. The value of the child property should be an array in the same type of
+data, each element in the array reprensents a child node of current node.
+
+This TreeView node contains following child nodes,
+ - All the nodes defined in ViewElements.
+ - [Optional] The nodeColors node contains a set of node nodes in type of RowStyle that defines the style for matched rows.
+
+This TreeView node contains following attributes,
+ - All the attributes defined in ViewAttributes.
+ - Plus following attributes,
+*/
 class TreeView : public ViewElements, public ViewAttributes
 {
-
+  public string labelProperty;  //!< [Optional] This attribute defines the name of data property that contains the value for tree node name. The default value is name.
+  public string childProperty;  //!< [Mandatory] This attribute defines the name of data property that contains data for the child nodes.
 };
 
+//! \brief This WebView is a data view control for displaying data through Web page form.
+/*!
+This WebView can be used to show data in any form that the user wants to, depends on how the page content is rendered. The LSB view creators can use HTML + JavaScript +
+CSS to create whatever they want to visualize the data. This provides LSB the capability to render data in forms not limited to the existing data view controls.
+Basically the LSB view authors can create any new controls with the support of HTML + JavaScript in the WebView.
+
+The WebView node contains following child nodes,
+ - All the nodes defined in ViewElements.
+ - [Optional] The styles node contains a set of file nodes in type of FileReference that define the CSS style files to be referenced in the WebView page.
+ - [Optional] The scripts node contains a set of file nodes in type of FileReference that define the JavaScript files to be references in the WebView page.
+ - [Optional] The body node in type of FileReference defines the web page body content defined in separate file.
+ - [Optional] The highlights node contains a set of highlight nodes that define how specific content in the Web page content should be highlighted.
+
+The WebView node contains following attributes,
+ - All the attributes defined in ViewAttributes.
+ - Plus following attributes,
+*/
 class WebView : public ViewElements, public ViewAttributes
 {
-
+  public ContentType contentType;    //!< [Mandatory] This attrubutes defines the type of the data that is returned from the data source associated with the WebView control.
+  public bool selectToHighlight;     //!< [Optional] This attribute controls if the highlight for selection should be enabled or not. The default value is false.
 };
 
 class Button : public ViewElements, public ViewAttributes
