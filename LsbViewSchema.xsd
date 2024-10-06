@@ -287,7 +287,7 @@ in the LSB view files. It also defines the file structure of the view files usin
     </xs:restriction>
   </xs:simpleType>
 
-  <xs:simpleType name="ExecuteAt" final="restriction">
+  <xs:simpleType name="WhenToExecute" final="restriction">
     <xs:annotation>
       <xs:documentation>
         This is the enumeration type for when to execute the script defined in Procedure
@@ -790,6 +790,9 @@ in the LSB view files. It also defines the file structure of the view files usin
       <xs:element name="buttonGroup" type="ButtonGroup" />
 
       <xs:element name="chartView" type="ChartView" />
+      <xs:element name="fileList" type="FileListView" />
+      <xs:element name="fileTree" type="FileTreeView" />
+	  <xs:element name="hexView" type="HexView" />
       <xs:element name="listView" type="ListView" />
       <xs:element name="textView" type="TextView" />
       <xs:element name="treeListView" type="TreeListView" />
@@ -1000,6 +1003,31 @@ in the LSB view files. It also defines the file structure of the view files usin
     <xs:attribute name="showTooltip" type="xs:boolean" use="optional" default="true" />
   </xs:complexType>
 
+  <xs:complexType name="HexView">
+	<xs:annotation>
+	  <xs:documentation>
+		This is the schema for the HexView for displaying binary data in hexadecimal values.
+	  </xs:documentation>
+	</xs:annotation>
+	<xs:sequence>
+	  <xs:group ref="ViewElementa" />
+      <xs:element name="font" type="FontDesc" minOccurs="0" maxOccurs="1" />
+      <xs:element name="highlights" minOccurs="0" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="highlight" type="HexViewHighlightSetting" minOccurs="0" maxOccurs="unbounded" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+	</xs:sequence>
+	<xs:attributeGroup ref="ViewAttributes" />
+	<xs:attribute name="groupSize" type="xs:unsignedInt" use="optional" default="0" />
+	<xs:attribute name="lineSize" type="xs:unsignedInt" use="optional" default="16" />
+	<xs:attribute name="offsetSize" type="xs:unsignedInt" use="optional" default="8" />
+	<xs:attribute name="showOffset" type="xs:boolean" use="optional" default="true" />
+	<xs:attribute name="showText" type="xs:boolean" use="optional" default="true" />
+  </xs:complexType>
+
   <xs:complexType name="RowStyle">
     <xs:annotation>
       <xs:documentation>
@@ -1013,6 +1041,17 @@ in the LSB view files. It also defines the file structure of the view files usin
     <xs:attribute name="condition" type="xs:string" use="required" />
     <xs:attribute name="foreColor" type="HtmlColor" use="optional" />
     <xs:attribute name="backColor" type="HtmlColor" use="optional" />
+  </xs:complexType>
+
+  <xs:complexType name="RowStyleSet">
+    <xs:annotation>
+      <xs:documentation>
+        This is the schema for RowStyleSet that contains a set of RowStyles.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="row" type="RowStyle" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
   </xs:complexType>
 
   <xs:complexType name="ListViewFilter">
@@ -1052,17 +1091,31 @@ in the LSB view files. It also defines the file structure of the view files usin
       <xs:element name="filter" type="ListViewFilter" minOccurs="0" maxOccurs="1" />
       <xs:element name="status" type="ListViewStatus" minOccurs="0" maxOccurs="1" />
       <xs:element name="columns" type="ColumnSet" minOccurs="1" maxOccurs="1" />
-      <xs:element name="rowStyles" minOccurs="0" maxOccurs="1">
-        <xs:complexType>
-          <xs:sequence>
-            <xs:element name="row" type="RowStyle" minOccurs="0" maxOccurs="unbounded" />
-          </xs:sequence>
-        </xs:complexType>
-      </xs:element>
+      <xs:element name="rowStyles" type="RowStyleSet" minOccurs="0" maxOccurs="1" />
     </xs:sequence>
     <xs:attributeGroup ref="ViewAttributes" />
     <xs:attribute name="sortable" type="xs:boolean" use="optional" default="false" />
     <xs:attribute name="multiSelect" type="xs:boolean" use="optional" default="false" />
+  </xs:complexType>
+
+  <xs:complexType name="FileListView">
+    <xs:annotation>
+      <xs:documentation>
+        This is the schema for FileListView control that shows all files under specified folder.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:group ref="ViewElements" />
+      <xs:element name="rowStyles" type="RowStyleSet" minOccurs="0" maxOccurs="1" />
+    </xs:sequence>
+    <xs:attributeGroup ref="ViewAttributes" />
+    <xs:attribute name="multiSelect" type="xs:boolean" use="optional" default="false" />
+    <xs:attribute name="filter" type="xs:boolean" use="optional" default="true" />
+    <xs:attribute name="status" type="xs:boolean" use="optional" default="true" />
+    <xs:attribute name="files" type="xs:boolean" use="optional" default="true" />
+    <xs:attribute name="dirs" type="xs:boolean" use="optional" default="false" />
+    <xs:attribute name="hidden" type="xs:boolean" use="optional" default="false" />
+    <xs:attribute name="dotdot" type="xs:boolean" use="optional" default="false" />
   </xs:complexType>
 
   <xs:complexType name="TextView">
@@ -1090,7 +1143,7 @@ in the LSB view files. It also defines the file structure of the view files usin
     </xs:annotation>
     <xs:sequence>
       <xs:group ref="ViewElements" />
-      <xs:element name="nodeColors" minOccurs="0" maxOccurs="1">
+      <xs:element name="nodeStyles" minOccurs="0" maxOccurs="1">
         <xs:complexType>
           <xs:sequence>
             <xs:element name="node" type="RowStyle" minOccurs="0" maxOccurs="unbounded" />
@@ -1103,6 +1156,19 @@ in the LSB view files. It also defines the file structure of the view files usin
     <xs:attribute name="childProperty" type="xs:string" use="required" />
   </xs:complexType>
 
+  <xs:complexType name="FileTreeView">
+    <xs:annotation>
+      <xs:documentation>
+        This is the schema for the FileTreeView control for displaying file system tree structure.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:group ref="ViewElements" />
+    </xs:sequence>
+    <xs:attributeGroup ref="ViewAttributes" />
+    <xs:attribute name="root" type="xs:string" use="required" />
+  </xs:complexType>
+
   <xs:complexType name="TreeListView">
     <xs:annotation>
       <xs:documentation>
@@ -1112,16 +1178,29 @@ in the LSB view files. It also defines the file structure of the view files usin
     <xs:sequence>
       <xs:group ref="ViewElements" />
       <xs:element name="columns" type="ColumnSet" minOccurs="1" maxOccurs="1" />
+      <xs:element name="rowStyles" type="RowStyleSet" minOccurs="0" maxOccurs="1" />
     </xs:sequence>
     <xs:attributeGroup ref="ViewAttributes" />
     <xs:attribute name="childProperty" type="xs:string" use="required" />
     <xs:attribute name="expandLevel" type="xs:int" use="optional" default="0" />
   </xs:complexType>
 
-  <xs:complexType name="HighlightSetting">
+  <xs:complexType name="HexViewHighlightSetting">
+	<xs:annotation>
+	  <xs:documentation>
+		This is the schema for highlight settings used in the HexView to highlight selections.
+	  </xs:documentation>
+	</xs:annotation>
+	<xs:attribute name="name" type="xs:string" use="required" />
+	<xs:attribute name="foreground" type="HtmlColor" use="required" />
+	<xs:attribute name="background" type="HtmlColor" use="required" />
+	<xs:attribute name="border" type="HtmlColor" use="required" />
+  </xs:complexType>
+  
+  <xs:complexType name="WebViewHighlightSetting">
     <xs:annotation>
       <xs:documentation>
-        This is the schema for highlight settings used in the WevView to highlight text.
+        This is the schema for highlight settings used in the WebView to highlight text.
       </xs:documentation>
     </xs:annotation>
     <xs:attribute name="name" type="xs:string" use="required" />
@@ -1172,7 +1251,7 @@ in the LSB view files. It also defines the file structure of the view files usin
       <xs:element name="highlights" minOccurs="0" maxOccurs="1">
         <xs:complexType>
           <xs:sequence>
-            <xs:element name="highlight" type="HighlightSetting" minOccurs="0" maxOccurs="unbounded" />
+            <xs:element name="highlight" type="WebViewHighlightSetting" minOccurs="0" maxOccurs="unbounded" />
           </xs:sequence>
         </xs:complexType>
       </xs:element>
@@ -1325,7 +1404,7 @@ in the LSB view files. It also defines the file structure of the view files usin
     </xs:sequence>
     <xs:attributeGroup ref="ComponentAttributes" />
     <xs:attribute name="name" type="xs:string" use="optional" />
-    <xs:attribute name="executeAt" type="ExecuteAt" use="optional" default="ParameterChanging" />
+    <xs:attribute name="whenToExecute" type="WhenToExecute" use="optional" default="ParameterChanging" />
     <xs:attribute name="timerInterval" type="xs:string" use="optional" />
   </xs:complexType>
 

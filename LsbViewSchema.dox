@@ -9,9 +9,11 @@ This is the main document for Leave Script Behind (LSB), it includes introductio
   - \ref section_enum
   - \ref section_data
   - \ref section_view
-  - \ref section_lsb
+  - LsbView
 - \ref section_create
 - \ref section_debug
+- \ref section_smart_time
+- \ref section_smart_filter
 - \ref section_faq
 */
 
@@ -105,11 +107,11 @@ enum class DockStyle
   Fill      //!< This means the button will take the whole space. This indirectly provides the capability to control the button size through the layout control.
 };
 
-//! \brief This is the enumeration type for when to execute the script defined in the Procedure.
+//! \brief This is the enumeration type that defines the values that control when the script hooked with Procedure(s) will be executed.
 /*!
-It defines when the Procedure will execute the script associated with it. The supported values are,
+It defines when a Procedure executes the script associated with it, depending on the value specified. The supported values are,
 */
-enum class ExecuteAt
+enum class WhenToExecute
 {
   ParameterChanging,      //!< The script is kicked off when input parameter(s) is changed
   OneShotInitializing,    //!< The script is kicked off when the procedure is initialized and is executed once only
@@ -377,7 +379,7 @@ There is no specific node name for this node. Only one of the following data sou
 */
 class ChoiceOfData
 {
-  public bool showProgress;     //!< This optional attribute defines if a progress dialog should be shown during the retrieval of data. The default value is false.
+  public bool showProgress;     //!< [Optional] This attribute defines if a progress dialog should be shown during the retrieval of data. The default value is false.
 };
 
 //! \brief This node is used to select one of the supported view controls.
@@ -410,25 +412,25 @@ class Color
 //! \brief This node defines the color setting to be used in ChartView.
 class ColorSetting
 {
-  public Color fillColor;           //!< The color for fill.
-  public Color borderColor;         //!< The color for borders.
-  public Color lineColor;           //!< The color for lines.
+  public Color fillColor;           //!< [Optional] The color for fill.
+  public Color borderColor;         //!< [Optional] The color for borders.
+  public Color lineColor;           //!< [Optional] The color for lines.
 };
 
 //! \brief This node defines the attributes for the Column to be used in ListView and TreeListView.
 class Column
 {
-  public string name;                   //!< This is the required name for the column. It's also used to find the attribute in data.
-  public string displayName;            //!< Display name for the column header. If it's not specified, then name is used. Optional.
-  public int width;                     //!< This is optional attribute for the column width.
-  public HorizontalAlignment align;     //!< This is optional attribute that controls how th value in the column is aligned.
-  public bool visible;                  //!< This is optional attribute that controls if the column is visible. The default value is true.
+  public string name;                   //!< [Mandatory] This is the name for the column. It's also used to find the attribute in data.
+  public string displayName;            //!< [Optional] Display name for the column header. If it's not specified, then name is used.
+  public int width;                     //!< [Optional] This is attribute for the column width.
+  public HorizontalAlignment align;     //!< [Optional] This is attribute that controls how th value in the column is aligned. The default value is Left.
+  public bool visible;                  //!< [Optional] This is attribute that controls if the column is visible. The default value is true.
 };
 
 //! \brief This node defines a set of columns to be used in the ListView or TreeListView controls.
 /*!
 This is a container node for the following single type of nodes.
- - column - A set of column nodes for columns in the ListView or TreeListView.
+ - column - A set of Column nodes for columns in the ListView or TreeListView.
 */
 class ColumnSet
 {
@@ -437,16 +439,16 @@ class ColumnSet
 //! \brief This is an attribute group, it defines the attributes that are used in all components, the base for all view controls, Procedure and ViewLauncher.
 class ComponentAttributes
 {
-  public UUID id;       //!< This attribute in type UUID is a mandatory attribute for all components.
+  public UUID id;       //!< [Mandatory] This attribute in type UUID is an attribute for all components.
 };
 
 //! \brief This is a node group, it defines the child nodes for all components, which is base of all view controls, Procedure and ViewLauncher.
 /*!
 Following nodes can be included, and each one of them can appear at most once.
- - input - This node for InputParam is optional. It defines the input parameters for the component.
- - output - This node for OutputParam is optional. It defines the output parameters for the component.
- - condition - This node is optional. It contains a piece of Lua script, defines if the input paramter value changes should trigger data source retrieval.
- - data - This node for ChoiceOfData is optional. It defines the data source for the component.
+ - input - [Optional] This node of InputParam defines the input parameters for the component.
+ - output - [Optional] This node of OutputParam defines the output parameters for the component.
+ - condition - [Optional] This node contains a piece of Lua script, defines if the input paramter value changes should trigger data source retrieval.
+ - data - [Optional] This node of ChoiceOfData defines the data source for the component.
 */
 class ComponentElements
 {
@@ -455,25 +457,25 @@ class ComponentElements
 //! \brief This is the node of ContextMenu for defining a context menu in LSB view controls.
 /*!
 It contains at least one of following items and there is no upper boundary on the node count.
- - menuItem - This child node in type of ContextMenuItem is for menu items in the context menu.
- - separator - This child node in type of ContextMenuSeparator is for separators in the context menu.
- - subMenu - This child node in type of ContextMenuSubMenu is for sub menu in the context menu.
+ - menuItem - [Optional] This child node in type of ContextMenuItem is for menu items in the context menu.
+ - separator - [Optional] This child node in type of ContextMenuSeparator is for separators in the context menu.
+ - subMenu - [Optional] This child node in type of ContextMenuSubMenu is for sub menu in the context menu.
 */
 class ContextMenu
 {
-  public bool copy;         //!< This boolean attribute is optional, it controls if the copy menu items should be enabled. Default value is false.
-  public bool refresh;      //!< This boolean attribute is optional, it controls if the refresh menu item should be enabled. Default value is false. This refresh menu item will automatically load the data from the associated data source and refresh the context in the view control.
+  public bool copy;         //!< [Optional] This boolean attribute controls if the copy menu items should be enabled. The default value is false.
+  public bool refresh;      //!< [Optional] This boolean attribute controls if the refresh menu item should be enabled. The default value is false. This refresh menu item will automatically load the data from the associated data source and refresh the context in the view control.
 };
 
 //! \brief This is the node of ContextMenuItem for context menu item.
 /*!
 It may contain following nodes as child.
- - output - This child node is optional and is in type of OutputParamSet for all output parameters specific for this menu item.
- - data - This child node is optional and is in type of ChoiceOfData for the data source associated with this menu item.
+ - output - [Optional] This child node is in type of OutputParamSet for all output parameters specific for this menu item.
+ - data - [Optional] This child node is in type of ChoiceOfData for the data source associated with this menu item.
 */
 class ContextMenuItem
 {
-  public string text;       //!< This is the attribute for the context menu item text.
+  public string text;       //!< [Mandatory] This is the attribute for the context menu item text.
 };
 
 //! \brief This is the node of ContextMenuSeparator for separator in context menu.
@@ -487,13 +489,13 @@ class ContextMenuSeparator
 //! \brief This is the node of ContextMenuSubMenu for sub menu in context menu.
 /*!
 It should contain at least one of following nodes and there is no explicit upper boundary on the node count.
- - menuItem - This child node is in type of ContextMenuItem. It's for menu items in the sub menu.
- - separator - This child node is in type of ContextMenuSeparator. It's for separators in the sub menu.
- - subMenu - This child node is in type of ContextMenuSubMenu. It's for sub menu in the sub menu - this indicates that the sub menu could be nested layer by layer.
+ - menuItem - [Optional] This child node is in type of ContextMenuItem. It's for menu items in the sub menu.
+ - separator - [Optional] This child node is in type of ContextMenuSeparator. It's for separators in the sub menu.
+ - subMenu - [Optional] This child node is in type of ContextMenuSubMenu. It's for sub menu in the sub menu - this indicates that the sub menu could be nested layer by layer.
 */
 class ContextMenuSubMenu
 {
-  public string text;       //!< This is the attribute for the context menu sub menu text.
+  public string text;       //!< [Mandatory] This is the attribute for the context menu sub menu text.
 };
 
 //! \brief This is CSS color type in format of rgb(r, g, b) or rgba(r, g, b, a).
@@ -504,7 +506,7 @@ class CssColor
 //! \brief This is the node to define the configuration for downloading CSV data from an URL through HTTP Web request.
 class CsvData : public WebData
 {
-  public string delimeter;      //!< This optional attribute defines the delimeted used for separating the columns in CSV data.
+  public string delimeter;      //!< [Optional] This attribute defines the delimeted used for separating the columns in CSV data.
 };
 
 //! \brief This node defines a set of parameter mapping from an output parameter (source) to one or more input parameter (target).
@@ -522,7 +524,7 @@ class DataFlow
 */
 class FileReference
 {
-  public KnownPath path;        //!< This optional attribute defines the path type. The default value is None,
+  public KnownPath path;        //!< [Optional] This attribute defines the path type. The default value is None,
 };
 
 //! \brief This node defines a set of FileReference to be used in the WebView.
@@ -537,23 +539,23 @@ class FileReferences
 //! \brief This is the node that defines font description, for defining fonts to be used in LSB views.
 class FontDesc
 {
-  public unsigned int encoding;    //!< This is an optional attribute for the font encoding, default value is 33.
-  public FontFamily family;        //!< This is an optional attribute for the font family, default value is Default.
-  public unsigned int pointSize;   //!< This is a required attribute for the font size in point.
-  public FontStyle style;          //!< This is an optional attribute for the font style, default value is Normal.
-  public FontWeight weight;        //!< This is an optional attribute for the font weight, default value is Normal.
-  public bool underline;           //!< This is an optional boolean attribute that controls if the font should be underlined, default value is false.
-  public bool strikethrough;       //!< This is an optional boolan attribute that controls if the font should be strikethrough, default value is false.
-  public string faceName;          //!< This is the attribute for the font face name.
+  public unsigned int encoding;    //!< [Optional] This is an attribute for the font encoding, the default value is 33.
+  public FontFamily family;        //!< [Optional] This is an attribute for the font family, the default value is Default.
+  public unsigned int pointSize;   //!< [Mandatory] This is an attribute for the font size in points.
+  public FontStyle style;          //!< [Optional] This is an attribute for the font style, the default value is Normal.
+  public FontWeight weight;        //!< [Optional] This is an attribute for the font weight, the default value is Normal.
+  public bool underline;           //!< [Optional] This is an boolean attribute that controls if the font should be underlined, the default value is false.
+  public bool strikethrough;       //!< [Optional] This is an boolean attribute that controls if the font should be strikethrough, the default value is false.
+  public string faceName;          //!< [Mandatory] This is the attribute for the font face name.
 };
 
 //! \brief This node defines the highlight settings used in WebView for highlighting text.
 class HighlightSetting
 {
-  public string name;           //!< This mandatory attribute defines the name for the highlight setting.
-  public string pattern;        //!< This mandatory attribute defines the regular expression pattern for the content to be highlighted.
-  public HtmlColor backColor;   //!< This optional attribute defines the background color for the text to be highlighted.
-  public HtmlColor foreColor;   //!< This optional attribute defines the foreground color for the text to be highlighted.
+  public string name;           //!< [Mandatory] This attribute defines the name for the highlight setting.
+  public string pattern;        //!< [Mandatory] This attribute defines the regular expression pattern for the content to be highlighted.
+  public HtmlColor backColor;   //!< [Optional] This attribute defines the background color for the text to be highlighted.
+  public HtmlColor foreColor;   //!< [Optional] This attribute defines the foreground color for the text to be highlighted.
 };
 
 //! \brief This is HTML color type in format of \#rrggbb.
@@ -564,7 +566,7 @@ class HtmlColor
 //! \brief This is the node that defines the InputParam for input parameters.
 class InputParam : public Parameter
 {
-  public string valuePattern;   //! This is an optional attribute that defines the value pattern for the input parameter. Only if the value matches the pattern, then some operations will be triggered. The default value is empty, which means no pattern is defined.
+  public string valuePattern;   //! [Optional] This is an attribute that defines the value pattern for the input parameter. Only if the value matches the pattern, then some operations will be triggered. The default value is empty, which means no pattern is defined.
 };
 
 //! \brief This is the node for the InputParamSet, contains a set of InputParam.
@@ -578,27 +580,27 @@ class InputParamSet
 //! \brief This is the node to define the configuration for downloading JSON data from an URL through HTTP Web request.
 class JsonData : public WebData
 {
-  public string path;           //!< This optional attribute defines the path to the data to be returned in a complicated JSON object or an JSON array. If the path is not specified, the whole JSON data downloaded is returned.
+  public string path;           //!< [Optional] This attribute defines the path to the data to be returned in a complicated JSON object or an JSON array. If the path is not specified, the whole JSON data downloaded is returned.
 };
 
 //! \brief This node defines the filter setting for ListView.
 class ListViewFilter
 {
-  public bool visible;              //!< This optional attribute defines if the filter control is visible in ListView. The default value is true.
-  public string prompt;             //!< This optional attribute defines the prompt text for the filter input. Default value is empty, which means there is no prompt.
-  public string placeholder;        //!< This optional attribute defines the placeholder text in the filter input when the actual value is empty. Default value is empty.
+  public bool visible;              //!< [Optional] This attribute defines if the filter control is visible in ListView. The default value is true.
+  public string prompt;             //!< [Optional] This attribute defines the prompt text for the filter input. The default value is empty, which means there is no prompt.
+  public string placeholder;        //!< [Optional] This attribute defines the placeholder text in the filter input when the actual value is empty. The default value is empty.
 };
 
 //! \brief This node defines the status setting for the ListView.
 class ListViewStatus
 {
-  public bool visible;                      //!< This optional attribute defines if the status bar is visible for ListView. Default value is true.
-  public string singleItemCountPrompt;      //!< This optional attribute defines the prompt text when there is only one item in the ListView. %%ITEM_COUNT%% is the placeholder for item count.
-  public string multipleItemCountPrompt;    //!< This optional attribute defines the prompt text when there are multiple items in the ListView. %%ITEM_COUNT%% is the placeholder for item count.
-  public string noSelectionPrompt;          //!< This optional attribute defines the prompt text when there is no item selected in the ListView.
-  public string currentSelectionPrompt;     //!< This optional attribute defines the prompt text for showing current selection in ListView. %%ITEM_INDEX%% is the placeholder for currently selected item index.
-  public string singleSelectionPrompt;      //!< This optional attribute defines the prompt text when there is only one item selected in the ListView.
-  public string multipleSelectionPrompt;    //!< This optional attribute defines the prompt text when there are multiple items in the ListView.
+  public bool visible;                      //!< [Optional] This attribute defines if the status bar is visible for ListView. The default value is true.
+  public string singleItemCountPrompt;      //!< [Optional] This attribute defines the prompt text when there is only one item in the ListView. %%ITEM_COUNT%% is the placeholder for item count.
+  public string multipleItemCountPrompt;    //!< [Optional] This attribute defines the prompt text when there are multiple items in the ListView. %%ITEM_COUNT%% is the placeholder for item count.
+  public string noSelectionPrompt;          //!< [Optional] This attribute defines the prompt text when there is no item selected in the ListView.
+  public string currentSelectionPrompt;     //!< [Optional] This attribute defines the prompt text for showing current selection in ListView. %%ITEM_INDEX%% is the placeholder for currently selected item index.
+  public string singleSelectionPrompt;      //!< [Optional] This attribute defines the prompt text when there is only one item selected in the ListView.
+  public string multipleSelectionPrompt;    //!< [Optional] This attribute defines the prompt text when there are multiple items in the ListView.
 };
 
 //! \brief This node defines the parameter mapping from one output parameter (source) to one or more input parameter (target).
@@ -608,7 +610,7 @@ This node may contain one to many target nodes.
 */
 class Mapping
 {
-  public UUID source;       //!< This mandatory defines the unique ID of a source parameter (OutputParam).
+  public UUID source;       //!< [Mandatory] This attribute defines the unique ID of a source parameter (OutputParam).
 };
 
 //! \brief This node defines single option to be used ComboBox or PropertyInput control.
@@ -618,7 +620,7 @@ There is no attribute on the node.
 */
 class Option
 {
-  public string group;          //!< This optional attribute defines the option group that the option belongs to.
+  public string group;          //!< [Optional] This attribute defines the option group that the option belongs to.
 };
 
 //! \brief This node defines a set of options to be used in ComboBox or PropertyInput control.
@@ -644,7 +646,7 @@ class OS
 //! \brief This is the node that defines the OutputParam for output parameters.
 class OutputParam : public Parameter
 {
-  public OperationType activation;  //!< This is an optional attribute that defines which operation in the view control would trigger the activation of parameter change. The default value is Default.
+  public OperationType activation;  //!< [Optional] This is an attribute that defines which operation in the view control would trigger the activation of parameter change. The default value is Default.
 };
 
 //! \brief This is the node for the OutputParamSet, contains a set of OutputParam.
@@ -658,8 +660,8 @@ class OutputParamSet
 //! \brief This is the node for the Parameter. It's base class for InputParameter and OutputParameter.
 class Parameter
 {
-  public UUID id;       //!< The unique ID for the parameter, it's mandatory.
-  public string name;   //!< Name of the parameter, it's mandatory.
+  public UUID id;       //!< [Mandatory] The unique ID for the parameter.
+  public string name;   //!< [Mandatory] Name of the parameter.
 };
 
 //! \brief This node defines the prompt text for the ComboBox and TextInput.
@@ -668,24 +670,24 @@ class Parameter
 */
 class Prompt
 {
-  public bool visible;          //!< This optional boolean flag controls if the prompt should be visible.
-  public bool exclusive;        //!< This optional boolean flag controls if the prompt should be displayed in exclusive line.
+  public bool visible;          //!< [Optional] This boolean flag controls if the prompt should be visible.
+  public bool exclusive;        //!< [Optional] This boolean flag controls if the prompt should be displayed in exclusive line.
 };
 
 //! \brief This node defines the configuration for a property field to be used in PropertyInput control.
 /*!
- - options - This child node is optional. It defines the option list when the property is in a type needs options support.
+ - options - [Optional] This child node defines the option list when the property is in a type needs options support.
 */
 class PropertyField
 {
-  public string name;               //!< This mandatory attribute defines the name for the property.
-  public PropertyValueType type;    //!< This mandatory attribute defines the type for the property.
-  public string label;              //!< This optional attribute defines the label for the property. If it's empty, then the name will be used for label.
-  public string category;           //!< This optional attribute defines the category for the property.
-  public string description;        //!< This optional attribute defines the description text for the property.
-  public string default;            //!< This optional attribute defines the default value for the property.
-  public string fileTypes;          //!< This optional attribute defines the file types supported by the property. It is used in the popup dialog when user tries to select a file.
-  public string initialPath;        //!< This optional attribute defines the initial path for the file property. It is used in the popup dialog when user tries to select a file.
+  public string name;               //!< [Mandatory] This attribute defines the name for the property.
+  public PropertyValueType type;    //!< [Mandatory] This attribute defines the type for the property.
+  public string label;              //!< [Optional] This attribute defines the label for the property. If it's empty, then the name will be used for label.
+  public string category;           //!< [Optional] This attribute defines the category for the property.
+  public string description;        //!< [Optional] This attribute defines the description text for the property.
+  public string default;            //!< [Optional] This attribute defines the default value for the property.
+  public string fileTypes;          //!< [Optional] This attribute defines the file types supported by the property. It is used in the popup dialog when user tries to select a file.
+  public string initialPath;        //!< [Optional] This attribute defines the initial path for the file property. It is used in the popup dialog when user tries to select a file.
 };
 
 //! \brief This node defines the font and style setting for condition matched rows in ListView and TreeListView.
@@ -694,9 +696,9 @@ class PropertyField
 */
 class RowStyle
 {
-  public string condition;          //!< This mandatory string attribute contains the row condition written in Lua script. The matched row will be displayed using configured font and colors.
-  public Color foreColor;           //!< This optional attribute defines foreground color for the matched row.
-  public Color backColor;           //!< This optional attribute defines background color for the matched row.
+  public string condition;          //!< [Mandatory] This string attribute contains the row condition written in Lua script. The matched row will be displayed using configured font and colors.
+  public Color foreColor;           //!< [Optional] This attribute defines foreground color for the matched row.
+  public Color backColor;           //!< [Optional] This attribute defines background color for the matched row.
 };
 
 //! \brief This is the node that defines the configuration for generatign data through script execution.
@@ -705,8 +707,8 @@ class RowStyle
 */
 class ScriptData
 {
-  public string type;           //!< This mandatory attribute defines the type of the script, see shell configuration for supported script types. The Lua is an embedded and always supported script language.
-  public unsigned int timeout;  //!< This optional attribute defines the timeout for the script execution. Default value is 0, which means it will use the global setting for the script timeout.
+  public string type;           //!< [Mandatory] This attribute defines the type of the script, see shell configuration for supported script types. The Lua is an embedded and always supported script language.
+  public unsigned int timeout;  //!< [Optional] This attribute defines the timeout for the script execution. The default value is 0, which means it will use the global setting for the script timeout.
 };
 
 //! \brief This is the node that defines the configuration for retrieving data through SQL query.
@@ -715,9 +717,9 @@ class ScriptData
 */
 class SqlData
 {
-  public string server;         //!< This mandatory attribute indicates the database server to connect to.
-  public string database;       //!< This mandatory attribute indicates the name of the database that contains the data.
-  public string user;           //!< This attribute defines the user name to be used for connecting to the database. It's optional.
+  public string server;         //!< [Mandatory] This attribute indicates the database server to connect to.
+  public string database;       //!< [Mandatory] This attribute indicates the name of the database that contains the data.
+  public string user;           //!< [Optional] This attribute defines the user name to be used for connecting to the database.
 };
 
 //! \brief This node is used for defining the table cell in TableControl.
@@ -726,24 +728,24 @@ This node is derived from ChoiceOfView and uses one of the supported view contro
 */
 class TableCell : public ChoiceOfView
 {
-  public unsigned int row;          //!< This mandatory attribute defines row of the table cell.
-  public unsigned int col;          //!< This mandatory attribute defines column of the table cell.
-  public unsigned int rowSpan;      //!< This optional attribute defines row span of the table cell. Default value is 1.
-  public unsigned int colSpan;      //!< This optional attribute defines column span of the table cell. Default value is 1.
+  public unsigned int row;          //!< [Mandatory] This attribute defines row of the table cell.
+  public unsigned int col;          //!< [Mandatory] This attribute defines column of the table cell.
+  public unsigned int rowSpan;      //!< [Optional] This attribute defines row span of the table cell. The default value is 1.
+  public unsigned int colSpan;      //!< [Optional] This attribute defines column span of the table cell. The default value is 1.
 };
 
 //! \brief This node defines the table column sizing settings.
 class TableColumn
 {
-  public SizeType sizeType;         //!< This mandatory attribute defines how the width is specified for the table column.
-  public float width;               //!< This mandatory attribute defines the width of the table column.
+  public SizeType sizeType;         //!< [Mandatory] This attribute defines how the width is specified for the table column.
+  public float width;               //!< [Mandatory] This attribute defines the width of the table column.
 };
 
 //! \brief This node defines the table row sizing settings.
 class TableRow
 {
-  public SizeType sizeType;         //!< This mandatory attribute defines how the height is specified for the table row.
-  public float height;              //!< This mandatory attribute defines the height of the table row.
+  public SizeType sizeType;         //!< [Mandatory] This attribute defines how the height is specified for the table row.
+  public float height;              //!< [Mandatory] This attribute defines the height of the table row.
 };
 
 //! \brief This node is used for defining the tag page in TabControl.
@@ -752,7 +754,7 @@ It's derived from ChoiceOfView and uses one of the supported view controls as ch
 */
 class TabPage : public ChoiceOfView
 {
-  public string title;      //!< This is a mandatory attribute that defines the title for the tab page.
+  public string title;      //!< [Mandatory] This is an attribute that defines the title for the tab page.
 };
 
 //! \brief This is the 16-byte unique ID.
@@ -766,19 +768,19 @@ class UUID
 //! \brief This is the node for defining version information.
 class Version
 {
-  public unsigned short major;      //!< This is the major number in the version, it's mandatory.
-  public unsigned short minor;      //!< This is the minor number in the version, it's mandatory.
-  public unsigned short build;      //!< This is the build number in the version, it's optional.
-  public unsigned short revision;   //!< This is the revision part in the version, it's optional.
+  public unsigned short major;      //!< [Mandatory] This is the major number in the version.
+  public unsigned short minor;      //!< [Mandatory] This is the minor number in the version.
+  public unsigned short build;      //!< [Optional] This is the build number in the version.
+  public unsigned short revision;   //!< [Optional] This is the revision part in the version.
 };
 
 //! \brief This group defines the attributes for all views.
 /*!
 It includes all attributes deinfed in the ComponentAttributes.
- - loadDataAt - This optional attribute defines when the view should load the data. Default value is Default.
 */
-class ViewAttributes
+class ViewAttributes : public ComponentAttributes
 {
+  public LoadDataAt loadDataAt;     //!< [Optional] This attribute defines when the view should load the data. The default value is Default.
 };
 
 //! \brief This is the node that defines the caption of a LSB view control
@@ -787,37 +789,37 @@ class ViewAttributes
  */
 class ViewCaption
 {
-  public bool visible;          //!< This is an optional boolean attribute that controls if the view caption is visible, default value is true.
+  public bool visible;          //!< [Optional] This is a boolean attribute that controls if the view caption is visible, the default value is true.
 };
 
 //! \brief This group defines the child nodes for all views.
 /*!
 It includes all elements defined in the ComponentElements.
- - caption - This node is optional. It defines the caption for the view.
- - contextMenu - This node is optional. It defines the context menu for the view.
+ - caption - [Optional] This node defines the caption for the view.
+ - contextMenu - [Optional] This node defines the context menu for the view.
 */
-class ViewElements
+class ViewElements : public ComponentElements
 {
 };
 
 //! \brief This is the base node to define the configuration for downloading data from an URL through HTTP Web request.
 /*!
 Following nodes can be specified under this node,
- - url - This child node contains the URL for the request. It's represented as content of the child node.
- - payload - This child node contains the payload used for the request as it's content. It's only used when the method is set to Post.
+ - url - [Mandatory] This child node contains the URL for the request. It's represented as content of the child node.
+ - payload - [Optional] This child node contains the payload used for the request as it's content. It's only used when the method is set to Post.
 */
 class WebData
 {
-  public HttpMethod method;     //!< This optional attribute defines the HTTP Web method used for the request. Default value is Get.
-  public string contentType;    //!< This optional attribute defines the content type for the HTTP Web request.
+  public HttpMethod method;     //!< [Optional] This attribute defines the HTTP Web method used for the request. The default value is Get.
+  public string contentType;    //!< [Optional] This attribute defines the content type for the HTTP Web request.
 };
 
 //! \brief This node defines the data column for the X axis in ChartView.
 class XAxisColumn
 {
-  public string name;               //!< This mandatory attribute defines the name of the data column.
-  public string displayName;        //!< This optional attribute defines the display name for the data column. If it's not specified, then the name is used.
-  public bool isDateTime;           //!< This optional attribute defines if the data column is in type of datetime. Default value is false.
+  public string name;               //!< [Mandatory] This attribute defines the name of the data column.
+  public string displayName;        //!< [Optional] This attribute defines the display name for the data column. If it's not specified, then the name is used.
+  public bool isDateTime;           //!< [Optional] This attribute defines if the data column is in type of datetime. The default value is false.
 };
 
 /*!
@@ -836,6 +838,9 @@ This page contains the list of all view controls available in LSB.
   - TableLayout
 - Data View Controls
   - ChartView
+  - FileList
+  - FileTree
+  - HexView
   - ListView
   - TextView
   - TreeListView
@@ -853,93 +858,409 @@ This page contains the list of all view controls available in LSB.
 @{
 */
 
-//! \brief This node defines the ButtonGroup layout control that supports arranging a group of buttons in the designated area.
+//! \brief The ButtonGroup is a layout control that supports automatically arranging a group of buttons in the designated area based on preset rules.
 /*!
-The node contains following child nodes,
-  - All nodes defined in ViewElements
-  - buttons - This node contains a set of button nodes where each of them is a Button node.
-  - All attributes defined in the ViewAttributes, plus
+The ButtonGroup supports two ways to layout the buttons in the group.
+ - If autoFlow attribute is set to true, then the buttons are automatically arranged based on their natural width (per on the text length). It puts
+the buttons one by one in the same row. When the remaining space in a row is not big enough to fit in the next button, then the next button will be
+put into a new row. The button after will be put after this button in the new row following the same space check rule.
+ - If autoFlow is set to false, then the number of buttons in a row is determined by the value specified in the attribute buttonsPerRow. The buttons
+will be resized to fit in the space, despite the actual content in the button.
+
+This ButtonGroup node contains following child nodes,
+ - All the nodes defined in ViewElements.
+ - buttons - This node contains a set of button nodes where each of the nodes is in type of Button.
+
+This ButtonGroup node contains following attributes,
+ - All the attributes defined in the ViewAttributes
+ - Plus following attributes,
 */
-class ButtonGroup
+class ButtonGroup : public ViewElements, public ViewAttributes
 {
-  public bool autoFlow;                 //!< This optional boolean attribute defines if the buttons would autoflow to next row when the tital width exceeds the space width.
-  public unsigned int buttonsPerRow;    //!< This optional attribute defines how many buttons will be put in each row when the autoFlow is set to false.
+  public bool autoFlow;                 //!< [Optional] This boolean attribute defines if the buttons would autoflow to next row when the tital width exceeds the space width.
+  public unsigned int buttonsPerRow;    //!< [Optional] This attribute defines how many buttons will be put in each row when the autoFlow is set to false.
 };
 
-//!
-class SplitLayout
-{
+//! \brief The SplitLayout is a layout control that supports hosting two child views side by side.
+/*!
+Here are the SplitLayout features,
+ - The two child views supported by SplitLayout could be any data view controls, input controls, or even layout controls including SplitLayout.
+ - Depends on the orientation configured for the SplitLayout, the two child views could be placed either horizontally (one in left and another one in
+right) or vertically (one in top and another one in bottom).
+ - One of the child views could have fixed size, or both of them could be resizable at the same time when the SplitLayout control size changes.
+ 
+ This SplitLayout node contains following child nodes,
+ - All the nodes defined in ViewElements.
+ - The left node and right node if the orientation is set to Horizontal, both in type of ChoiceOfView.
+ - The top node and bottom node if the orientation is set to Vertical, both in type of ChoiceOfView.
 
+ This SplitLayout node contains following attributes,
+ - All the attributes defined in the ViewAttributes.
+ - Plus following attributes,
+*/
+class SplitLayout : public ViewElements, public ViewAttributes
+{
+  public Orientation orientation;   //!< [Optional] This attribute defines the orientation of the two child views in SplitLayout. The default value is Horizontal.
+  public FixedView fixedView;       //!< [Mandatory] This attribute defines which one of the two child views has fixed size.
+  public double ratio;              //!< [Optional] When the fixedView is set to None, this attribute defines the ratio of how the two child views split the client size, either width (if orientation is set to Horizontal) or height (if orientation is set to Vertical).
+  public unsigned int size;         //!< [Optional] When the fixedView is set to value other than None, this attribute defines the size of the fixed size child view.
 };
 
-class TabLayout
-{
+//! \brief The TabLayout is a layout control that arranges child views in tab pages.
+/*!
+The TabLayout layout control uses the TabControl to arrange multiple child views in tab pages, one child view in each tab page. The child views in 
+each tab page could be data view controls, input controls or even layout controls including TabLayout itself.
 
+This TabLayout node contains following child nodes,
+ - All the nodes defined in ViewElements.
+ - pages - This is the parent node for all page nodes in type of TabPage. There should be at least one page under the pages node, and there is no upper
+ boundary on the page count.
+
+ This TabLayout node contains following attributes,
+ - All the attributes defined in the ViewAttributes.
+ - Plus following attributes,
+*/
+class TabLayout : public ViewElements, public ViewAttributes
+{
+  public bool multiLine;            //!< [Optional] This boolean attribute controls if the tab headers in the tab control can be displayed in multiple rows. The default value is false.
+  public TabPosition tabPosition;   //!< [Optional] This attribute defines in which side should be tab headers be displayed. The default value is Top. 
 };
 
-class TableLayout
-{
+//! \brief This TableLayout is a layout control that arranges multiple child views in a table layout.
+/*!
+The TableLayout arranges the child views in a way very similar to the HTML table. It supports child views including data view controls, input controls,
+and layout controls. Each child view can have customized position and size settings similar to the HTML cell in HTML table.
 
+This TableLayout node contains following child nodes,
+ - All the nodes defined in ViewElements.
+ - [Mandatory] The rows node defines how the size of each row is calculated. It contains a set of row elements. Each row element is in type of TableRow.
+ - [Mandatory] The columns node defines how the size of each column is calculated. It contains a set of column elements. Each column element is in type of TableColumn.
+ - [Mandatory] The cells node defines the position and size of child views, as well as which child view is placed inside the table cell. It contains a set of cell nodes. Each cell element is in type of TableCell.
+
+This TableLayout node contains following attributes,
+ - All the attributes defined in the ViewAttributes.
+*/
+class TableLayout : public ViewElements, public ViewAttributes
+{
 };
 
-class ChartView
-{
+//! \brief This ChartView is a data view control that uses the wxChart control to render data as charts.
+/*!
+Please refer to <a href="https://github.com/wxIshiko/wxCharts">wxChart</a> to see more details on which charts are supported by the this data view
+control.
 
+This ChartView node contains following child nodes,
+ - All the nodes defined in ViewElements.
+ - [Mandatory] The xAxis node in type of XAxisColumn defines which column in data will be used for the x-axis in the chart.
+ - [Optional] The colors node contains a set of color nodes in type of ColorSetting that defines the colors to be used in the charts view control.
+
+This ChartView node contains following attributes,
+ - All the attributes defined in the ViewAttributes.
+ - Plus following attributes,
+*/
+class ChartView : public ViewElements, public ViewAttributes
+{
+  public ChartType chartType;       //!< [Mandatory] Thia attribute controls which type of chart is to be rendered.
+  public bool showLegend;           //!< [Optional] This attribute controls if the legend should be displayed together with the chart.
+  public LineType lineType;         //!< [Optional] This attribute controls the line type to be used in the charts.
+  public HtmlColor background;      //!< [Optional] This attribute controls the background color for the chart.
+  public bool showTooltip;          //!< [Optional] This attribute controls if the tooltip should be visible in the chart.
 };
 
-class ListView
-{
+//! \brief This FileList is a data view control that uses a list view to display files and/or folders under the specified path in file system.
+/*!
+The FileList implements most of the features available in the ListView, including filter, status, copy, etc. Please refer to ListView for more details
+on these features.
 
+The FileList node contains following child nodes,
+ - All the nodes defined in the ViewElements.
+ - [Optional] The rowStyles node contains a set of row nodes in type of RowStyle that defines the style for matched rows.
+
+The FileList node contains following attributes,
+ - All the attributes defined in the ViewAttributes.
+ - Plus following attributes,
+*/
+class FileList : public ViewElements, public ViewAttributes
+{
+  public bool multiSelect;      //!< [Optional] This attribute controls if the file list view supports multiple selections on the items. The default value is false.
+  public bool filter;           //!< [Optional] This attribute controls if the filter support is enabled for the file list view. The default value is true.
+  public bool status;           //!< [Optional] This attribute controls if the status bar is enabled for the file list view. The default value is true.
+  public bool files;            //!< [Optiona;] This attribute controls if files are shown in the file list view. The default value is true.
+  public bool dirs;             //!< [Optional] This attribute controls if folders are shown in the file list view, The default value is false;
+  public bool hidden;           //!< [Optional] This attribute controls if hiden files/folders are shown in the file list view. The default value is false.
+  public bool dotdot;           //!< [Optional] This attribute controls if . and .. folders are shown in the file list view. The default value is false.
 };
 
-class TextView
-{
+//! \brief This FileTree is a data view control that uses a tree view to display the folder structures under the specified path in file system.
+/*!
+The FileTree implements similar features available in the TreeView. It loads the folder hierachy in file system and populate them into the tree view control. User
+may expand/collapse a folder or select a folder to trigger further actions in other controls.
 
+The FileTree node contains following nodes,
+ - All the nodes defined in the ViewElements.
+
+The FileTree node contains following attribtues,
+ - All the attributes defined in the ViewAttributes.
+ - Plus following attributes,
+*/
+class FileTree : public ViewElements, public ViewAttributes
+{
+  public string root;       //!< [Optional] This attribute controls the default path that the FileTree will load data from. Empty value means nothing will be loaded.
 };
 
-class TreeListView
-{
+//! \brief This HexView is a data view control that displays binary data in the hexadecimal format.
+/*!
+The HexView displays each byte in the binary data as two-digit hexadecimal. User may customize the control to display offset for each line and also show the text form
+for each byte if it's visual character, otherwise a dot '.' is displayed for the byte. Besides, user may also customize how many bytes are displayed in each line and
+how many bytes should be grouped in each line. The byte count in line should be multiplies of byte count in each group.
 
+The HexView node contains following nodes,
+ - All the nodes defined in the ViewElements.
+ - The font node in type of FontDesc that defines which font is used to display the content in the HexView.
+ - The highlights node which contains a list of highlight nodes in type of HexViewHighlightSettings that defines the highlight styles to be used in the HexView control.
+
+The HexView node contains following attributes,
+ - All the attributes defined in the ViewAttributes.
+ - Plus following attributes,
+*/
+class HexView : public ViewElements, public ViewAttributes
+{
+	public unsigned int groupSize;  //!< [Optional] This defines how many bytes are displayed in each group in a line. The default value is 0 which means no groups.
+    public unsigned int lineSize;   //!< [Optional] This defines how many bytes are displayed in each line. The default value is 16.
+	public unsigned int offsetSize; //!< [Optional] This defines how many digits are used to display the offset for the data. The default value is 8.
+    public bool showOffset;         //!< [Optional] This boolean flag controls if the offset area is shown in the HexView control. The default value is true.
+    public bool showText;           //!< [Optional] This boolean flag controls if the text form for the bytes is shown in the control. The default value is true.
 };
 
-class TreeView
-{
+//! \brief This ListView is a data view control that uses the very common list view control to display data in rows and columns.
+/*!
+Besides displaying data, this view control supports many other useful features,
+ - Supports single selection or multiple selection of items in the list view.
+ - The index of selected row as well as values in each of the columns for the selected row could be sent out to other view controls through output parameters for the ListView.
+ - There is rich filtering feature supported in the ListView control, see details in the \ref section_smart_filter.
+ - User may copy full row or selected columns from the selected row(s) into clipboard, in plain text or HTML format.
+ - There is status bar showing the item status and selection status for the items in the ListView.
 
+This ListView node contains following child nodes,
+ - All the nodes defined in ViewElements.
+ - [Optional] The filter node in type of ListViewFilter configures the filter setting for the ListView.
+ - [Optional] The status node in type of ListViewStatus configures the status setting for the ListView.
+ - [Mandatory] The columns node in type of ColumnSet defines the columns to be shown in the ListView.
+ - [Optional] The rowStyles node contains a set of row nodes in type of RowStyle that defines the style for matched rows.
+ 
+This ListView node contains following attributes,
+ - All the attributes defined in the ViewAttributes.
+ - Plus following attributes,
+*/
+class ListView : public ViewElements, public ViewAttributes
+{
+  public bool sortable;         //!< [Optional] This boolean attribute controls if the ListView supports sorting by clicking on column headers.
+  public bool multiSelect;      //!< [Optional] This boolean attribute controls if the ListView supports multiple selection of items.
 };
 
-class WebView
-{
+//! \brief This TextView is a data view control for displaying single line or multiple lines of plain text.
+/*!
+This TextView node contains following child nodes,
+ - All the nodes defined in ViewElements.
+ - [Optional] The font node in type of FontDesc defines the font to be used for displaying the text content.
+ - [Optional] The content node contains the predefined content to be displayed in the control.
 
+This TextView node contains following attributes,
+- All the attributes defined in the ViewAttributes.
+- Plus following attributes,
+*/
+class TextView : public ViewElements, public ViewAttributes
+{
+  public bool noWrap;           //!< [Optional] This boolean attribute controls if the text content longer than the TextView width should be wrapped automatically (when the value is false). The default value is false.
+  public bool multiline;        //!< [Optional] This boolean attribute controls if the control can display multiple lines of text content. The default value is true.
+  public bool readOnly;         //!< [Optional] This boolean attribute controls if the control is used to display text only. When this attribute is set to false, user may edit the content in place. The default value is false.
 };
 
-class Button
-{
+//! \brief This TreeListView is a data view control for displaying hierachy data in multiple columns.
+/*!
+This TreeListView control combines features from both list view and tree view. It can display the hierachy data as tree view, meanwhile it can also display data for each
+node with more details in multiple columns, like the list view.
 
+This TreeListView node contains following child nodes,
+ - All the nodes defined in ViewElements.
+ - [Mandatory] The columns node in type of ColumnSet defines the columns to be shown in the TreeListView.
+ - [Optional] The rowStyles node contains a set of row nodes in type of RowStyle that defines the style for matched rows.
+
+This TreeListView node contains following attributes,
+ - All the attributes defined in ViewAttributes.
+ - Plus following attributes,
+*/
+class TreeListView : public ViewElements, public ViewAttributes
+{
+  public string childProperty;  //!< [Mandatory] This attribute define the property name for getting the child node data in the data for current node.
+  public int expandLevel;       //!< [Optional] This attribute defines how many levels of child data will be expanded automatically when data is loaded into the control. Default value is 0.
 };
 
-class ComboBox
-{
+//! \brief This TreeView is a data view control for displaying hierachy data in tree style.
+/*!
+This TreeView control requires data being presented in layers through a predefined child property. The value of the child property should be an array in the same type of
+data, each element in the array reprensents a child node of current node.
 
+This TreeView node contains following child nodes,
+ - All the nodes defined in ViewElements.
+ - [Optional] The nodeColors node contains a set of node nodes in type of RowStyle that defines the style for matched rows.
+
+This TreeView node contains following attributes,
+ - All the attributes defined in ViewAttributes.
+ - Plus following attributes,
+*/
+class TreeView : public ViewElements, public ViewAttributes
+{
+  public string labelProperty;  //!< [Optional] This attribute defines the name of data property that contains the value for tree node name. The default value is name.
+  public string childProperty;  //!< [Mandatory] This attribute defines the name of data property that contains data for the child nodes.
 };
 
-class TextInput
-{
+//! \brief This WebView is a data view control for displaying data through Web page form.
+/*!
+This WebView can be used to show data in any form that the user wants to, depends on how the page content is rendered. The LSB view creators can use HTML + JavaScript +
+CSS to create whatever they want to visualize the data. This provides LSB the capability to render data in forms not limited to the existing data view controls.
+Basically the LSB view authors can create any new controls with the support of HTML + JavaScript in the WebView.
 
+The WebView node contains following child nodes,
+ - All the nodes defined in ViewElements.
+ - [Optional] The styles node contains a set of file nodes in type of FileReference that define the CSS style files to be referenced in the WebView page.
+ - [Optional] The scripts node contains a set of file nodes in type of FileReference that define the JavaScript files to be references in the WebView page.
+ - [Optional] The body node in type of FileReference defines the web page body content defined in separate file.
+ - [Optional] The highlights node contains a set of highlight nodes that define how specific content in the Web page content should be highlighted.
+
+The WebView node contains following attributes,
+ - All the attributes defined in ViewAttributes.
+ - Plus following attributes,
+*/
+class WebView : public ViewElements, public ViewAttributes
+{
+  public ContentType contentType;    //!< [Mandatory] This attrubutes defines the type of the data that is returned from the data source associated with the WebView control.
+  public bool selectToHighlight;     //!< [Optional] This attribute controls if the highlight for selection should be enabled or not. The default value is false.
 };
 
-class PropertyInput
-{
+//! \brief This Button is an input control for taking user's click action to confirm or trigger an operation.
+/*!
+The Button control uses the generally used button control in GUI applications to implment the functionalities. It typically shows a string as label and has a piece of
+script hooked with it - when the end user clicks on the button, the corresponding scipt will be executed to take an action or grab data from various data sources. And
+the LSB view can in term pass data to some other controls to implement corresponding busioness logic.
 
+The Button node contains following child nodes,
+ - All the nodes defined in ViewElements.
+
+The Button node contains following attributes,
+ - All the attributes defined in ViewAttributes.
+ - Plus following attributes,
+*/
+class Button : public ViewElements, public ViewAttributes
+{
+    public DockStyle dock;      //!< [Optional] This dock attribute controls how the button is arranged within the space allocated for it. See DockStyle for detailed explanations on each possible values. The default value is None.
+	public string label;        //!< [Mandatory] This label attribute defines the text to be displayed on the button cpontrol.
+    public string description;  //!< [Optional] The attribute defines the description text for the button, which is also used as the content for the hint for the button.
 };
 
-class Procedure
-{
+//! \brief The ComboBox is an input control that supports user to either select a value from predefined value list or type in any other value.
+/*!
+The ComboBox control is a combination of a list box and an edit control. The end user may select a value from the predefined value list or type in a value through the
+edit control. And the control will send the value out through output parameter to trigger any further action(s).
 
+The ComboBox node contains following child nodes,
+ - All the nodes defined in ViewElements.
+ - [Optional] The prompt node in type of Prompt defines the prompt for the ComboBox input.
+ - [Optional] The options node in type of OptionList defines the preset values that the end user can select one from them.
+
+The ComboBox node contains following attributes,
+ - All the attributes defined in ViewAttributes.
+ - Plus following attributes,
+*/
+class ComboBox : public ViewElements, public ViewAttributes
+{
+    public bool selectOnly;         //!< [Optional] This boolean flag controls if the ComboBox supports selecting value from list only (true) or also allows end user to type in value (false). The default value is false.
+	public bool sorted;             //!< [Optional] This boolean flag controls if the values in the value list are sorted or not. The default value is false.
+	public TrimSpace trimSpace;     //!< [Optional] This attribute controls if the user selected/typed in value should have space(s) trimmed before it's sent to other view controls. The default value is None.
+    public string defaultValue;     //!< [Optional] This attribute defines the default value for the control. The default value is empty string.
 };
 
-class ViewLauncher
-{
+//! \brief The TextInput is an input control that allows user to type in any character as the input value.
+/*!
+The TextInput supports both single line and multiple line text edit control that allows end user to type in text as value and send to other view controls though output
+parameter associated with it. It's typically used as input control for one single value. To create input for multiple values or a complicated data structure, please
+refer to the PropertyInput control. The value inputed through TextInput is a string. View author can convert the the string value into any other data types as they need
+in the script(s).
 
+The TextInput node contains following child nodes,
+ - All the nodes defined in ViewElements.
+ - [Optional] The prompt node in type of Prompt defines the prompt for the TextInput control.
+ - [Optional] The content node defines the string content as the initial value for the TextInput control.
+
+The TextInput node contains following attributes,
+ - All the attributes defined in ViewAttributes.
+ - Plus following attributes,
+*/
+class TextInput : public ViewElements, public ViewAttributes
+{
+    public string defaultValue;         //!< [Optional] This attribute defines the default value for the TextInput control. The default value is empty string.
+	public TrimSpace trimSpace;         //!< [Optional] This attribute controls if the user selected/typed in value should have space(s) trimmed before it's sent to other view controls. The default value is None.
+	public bool multiline;              //!< [Optional] This boolean attribute controls if the TextInput supports single line edit control or multiple line edit control. The default value is false, which means it implements as single line edit control.
+	public WhenToNotify whenToNotify;   //!< [Optional] This attribute in type of WhenToNotify defines when to trigger the output parameter to send out the new value that the end user types in to other view controls. The default value is Enter, which means when the Enter key is pressed.
+};
+
+//! \brief The PropertyInput is an input control that supports editing multiple variables or complicated structure(s) in one single control.
+/*!
+The PropertyInput allows user to input multiple values within one single control, and it also supports inputing values in different types directly (not like TextInput
+or ComboBox, with them the view author has to do the conversion from string to the target data types). These features greatly help the view author on reducing the
+effort on creating input controls and doing data conversions. There supported data types can be found in the explanation for PropertyValueType.
+
+The PropertyInput node contains following nodes,
+ - All the nodes defined in ViewElements.
+ - [Mandatory] The properties node contains a list of property node in type of PropertyField which defines the configuration for each property field, equivalent to a variable or a field in a complicates structure.
+
+The PropertyInput node contains following attributes,
+ - All the attributes defined in ViewAttributes,
+ - Plus following attributes,
+*/
+class PropertyInput : public ViewElements, public ViewAttributes
+{
+    public TrimSpace trimSpace;     //!< [Optional] This attribute controls if the string values user typed in should have space(s) trimmed before it's sent to other view controls. The default value is None.
+};
+
+//! \brief The Procedure node does what the name means, execute a piece of script like procedure or function in programming languages.
+/*!
+The Procedure is an invisible component. It doesn't like other data view, input or layout controls, that they will take some space in the GUI. This component takes no
+space on screen at all. The purpose of this component is to take input from other controls or components, run the configured script to complete certain functionality or
+generate a new data set, and then in turn pass the data to one or more other controls.
+
+The Procedure node contains following child nodes,
+ - All the nodes defined in ComponentElements.
+
+The Procedure node contains following attributes,
+ - All the attributes defined in ComponentAttributes,
+ - Plus following attributes,
+*/
+class Procedure : public ComponentElements, public ComponentAttributes
+{
+    public string name;             //!< [Optional] This attribute defines the name of the procedure.
+	public ExecuteAt executeAt;     //!< [Optional] This attribute in type of ExecuteAt controls when the script should be triggered, it could be one shot only or repetitive.
+	public string timerInterval;    //!< [Optional] The script execution interval when the executeAt is set to TimerTicking or TimerStartAndTicking.
+};
+
+//! \brief The ViewLauncher node is a component to launch another LSB view with parameters.
+/*!
+The ViewLauncher is another invisible component. It collects parameter values from current view, sends them as input parameter for the target view and launch the target
+view specified through the view configuration. In the configuration, to specify the target view to be launched, view author needs to specify both the repository name
+and the view name. The reason is that the view name is not unique from LSB perspective - the views in different repositories might have the same name.
+
+The ViewLauncher node contains following child nodes,
+ - All the nodes defined in the ComponentElements.
+ - [Mandatory] The connection node in type of DataFlow defines how the parameters in current view will be passed into the target view as input parameters.
+
+The ViewLauncher node contains following attributes,
+ - All the attributes defined in the ComponentAttributes,
+ - Plus following attributes,
+*/
+class ViewLauncher : public ComponentElements, public ComponentAttributes
+{
+    public string repository;       //!< [Mandatory] This attribute defines the repository name of the target view to be launched.
+	public string view;             //!< [Mandatory] This attribute defines the name of the target view to be launcher.
 };
 
 /*!
@@ -947,20 +1268,45 @@ class ViewLauncher
 */
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//! \brief LsbView is the unit that is supported in LSB to implement different functionalities to meet different business requirements.
 /*!
-\defgroup section_lsb LSB View
+In each of the LSB view file, LsbView is the root node that defines all the controls to be used within the view, together with the corresponding scripts (Lua, bash,
+PowerShell or any other user defined scripts) and parameter flows to implement the specific business logic to achieve the goal.
 
-@{
-@}
+The LsbView node contains following nodes,
+ - [Optional] The description node contains a long string that describes the purpose, usage or any other view related information.
+ - [Mandatory] The version node in type of Version defines the version number of the view.
+ - [Optional] The modules node contains a list of module nodes. Each of the node contains a string that defines the path to a module that is referenced in the view.
+ - [Optional] The value of this os node should be values in type of OS and separated by semi-colon. The values indicate the view supports which Operatings Systems.
+ - [Optional] This about node in type of About contains the definition of the about information of this view.
+ - [Mandatory] The view node in type of ChoiceOfView is the root node of all the view controls used in the LSB view. Typically it starts with one of the layouts.
+ - [Optional] The procedures node contains a list of procedure nodes in type of Procedure which define the script procedures/functions.
+ - [Optional] The launchers node contains a list of launcher nodes in type of ViewLauncher that are used to launch another LSB view from current view.
+ - [Optional] The dataFlow node in type of DataFlow defines how an output parameter in a souce view is connected with an input parameter in a target view.
 
+The LsbView node contains following attributes,
 */
-
+class LsbView
+{
+	public string name;             //!< [Mandatory] This attribute contains the name of the LSB view.
+	public string author;           //!< [Mandatory] This attribute contains the author information (full name or nick name).
+	public DateTime createTime;     //!< [Mandatory] This attribute contains timestamp of when the LSB view was created.
+	public DateTime lastChangeTime; //!< [Mandatory] This attribute contains timestamp of when the LSB view was last changed.
+};
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*!
 \defgroup section_create How to Create a LSB View
 
+[Note] The recommended editor for composing LSB view file, which is in XML format, is the Visual Studio. It's the only
+editor that I'm aware of that comes with very good support with XML schema, and for free (using the community version).
+
+The LsbViewSchema.xsd file comes in the views folder is the schema definition for the LSB view file. With Visual Studio,
+it can provide very powerful hint and highlighting to help you composing or modifying a LSB view file.
+
+With documents on this site, you can get all the necessary information you need to create LSB view, from all data types
+to nodes supported and the explanation of each of them.
 */
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -971,6 +1317,125 @@ class ViewLauncher
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*!
-\defgroup section_faq Other Frequently Seen Questions
+\defgroup section_faq Other Questions
+
+*/
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*!
+\defgroup section_smart_time The Smart Time Input
+
+## Date time
+
+### Standard ISO format
+
+The LSB supports the input of the standard ISO date time in the format of one of followings,
+ - **yyyy-MM-ddThh:mm:ss.nnn+zone**
+ - **yyyy-MM-ddThh:mm:ss.nnn-zone**
+ - **yyyy-MM-ddThh:mm:ss.nnnz**
+ - **yyyy-MM-ddThh:mm:ss.nnn(UTC)**
+
+Here the meanings of each field are listed as below,
+ - **yyyy** - The year of the date time
+ - **MM** - The month of the date time
+ - **dd** - The day of the date time
+ - **hh** - The hours of the date time
+ - **mm** - The minutes of the date time
+ - **ss** - The seconds of the date time
+ - **nnn** - The milliseconds of the date time
+ - **zone** - It is the time zone difference, specified in format of **hhmm**, i.e. hours and minutes
+ - **z** - A simple character **z** or **Z** means that the date time is in GMT-0 time zone, i.e. the date time is an UTC time
+ - **(utc)** or **(UTC)** - It means the date time is an UTC time
+ - The characters not mentioned above are mandatory delimeters for the date time value, such as **-**, **T**, etc.
+
+### Smart format
+ 
+The date time input in LSB also supports a flexible and smart format, such as,
+ - **now** - It's for the current time
+ - **1 week 2 days and 3 hours ago** - It's for time in the past compared to current time, specified through the suffix **ago**. If the current time is 2024-01-01T00:00:00, then the time specified with this string input is **2023-12-22T21:00:00**.
+ - **1h 2m 3s later** - It's for time in future compared to current time, specified through the suffix **later**. If the current time is 2024-01-01T00:00:00, then the time specified with this string input is **2024-01-01T01:02:03**.
+
+There are multiple different time units could be included in this smart time format, and these time units must be presented in the following order, from large time unit to small time unit. Meanwhile, any of these units could be optional if the corresponding value is 0.
+ - **week** - It could be specified with one of these words - **w**, **wk**, **week**, **weeks**
+ - **day** - It could be specified with one of these words - **d**, **day**, **days**
+ - **hour** - It could be specified with one of these words - **h**, **hr**, **hour**, **hours**
+ - **minute** - It could be specified with one of these words - **m**, **min**, **minute**, **minutes**
+ - **second** - It could be specified with one of these words - **s**, **sec**, **second**, **seconds**
+ - **and** - This word is used to connect different time parts in different units. It's optional. The space character does the same job to connect the different time parts in different units.
+
+Besides, you can also use **year** or **month** individually to specify times,
+ - **year** - It could be specified through one of these words - **y**, **yr**, **year**, **years**. Example values are **1 year ago**, **2 yr later**.
+ - **month** - It could be specified through one of these words - **mon**, **month**, **months**. Example values are **2 months ago**, **3 mon later**.
+
+As mentioned earlier, at the end of of the time string, **ago** is appended for time in the past and **later** should be specified for time in future. And obviously, these two suffixes cannot be used together.
+
+Please be reminded that **year** and **month** cannot be used together with each other or used with any of the previously explained **week**, **day**, **hour**, **minute** or **second**. It is very rare that there is need to specify a time with such large and small time units together. Even if there is the need to specify time with large gap and fine resolution, the time could be specified through **week** or **day**.
+
+## Time span
+
+### Standard format
+
+Similiar to the date time, LSB supports standard time span in format of **d.hh:mm:ss.nnn**, where each of the fields means,
+ - **d** - The days for the time span (integer part only). It could contain any digits as needed depends on how big the time span is. And it could also be zero or omitted (together with the dot follows it) if the time span is less than one day.
+ - **hh** - The hours part of the time span. It's mandatory and must be presented as **00** if the hour part in the time span is 0.
+ - **mm** - The minutes part of the time span. It's mandatory and must be presented as **00** if the minute part in the time span is 0.
+ - **ss** - The seconds part of the time span. It's mandatory and must be presented as **00** if the second part in the time span is 0.
+ - **nnn** - The milliseconds part of the time span. It's optional. When it's present in the time span value, it must contain 3 digits. For milliseonds less than 100, they should be left padded by zero. When the milliseconds part is not present in the time span value, it means that the millisecond part is 0.
+
+### Smart format
+
+The time span also supports the smart format in the same way as smart time, except the suffix of **ago** and **later**, they are not needed for time span values. Here are some example values,
+ - 1 week 2 days and 3 hours
+ - 1 hour 23 minutes 45 seconds
+ - 5 mins and 6 secs
+ - 12 minute
+ - 2 years
+ - 3 mon
+
+*/
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*!
+\defgroup section_smart_filter The Smart Filtering in ListView
+
+The ListView control supports rich client filtering functionality through the embedded filter input on the top. It can be turned on/off through the **visible** attribute in the **filter** node (see ListViewFilter) in the ListView definition. Here we discuss that when the filter feature is turned on in the ListView, how we can use it to quickly find items in the ListView.
+
+## Column Based Filter
+
+A filter is typically specified as `column_name:filter_value`. Both the column name and the filter value could have double quotes to wrap them. The double quotes are required only if there are one or more spaces contained in the column name or filter value. If column name is not specified in a filter, then this filter pattern will be tested against all columns in all items.
+
+Here are some examples of column based filter,
+\li `ABC:123` is a valid column based filter. Here the `ABC` is the column name and `123` is the filter value. This filter means that only if the value of column ABC contains `123`, the item is considered matched. Items that have other columns contain value `123` but value in column `ABC` does not contain `123` are not recognized as matched item.
+\li `"AB C":"\d+A\d+"` is also a valid column based filter. Here the `AB C` is the column name and `\d+A\d+` is the filter value. The double quotes in the column name are necessary as there is a space inside the column name. Meanwhile the double quotes in the column pattern are optional.
+\li `A B C:invalid` is an invalid column based filter. The reason is that the value cannot be parsed as `column_name:filter_value`. In this case, the whole string will be used for simple string match test and all columns will be tested. See next section for why.
+
+## Filter Value
+
+The filter support first tries to parse the filter value that user types in as a regular expression pattern and then uses the created regular expression pattern to match the values in corresponding column(s). If the specified filter value cannot be parsed as a regular expression, then the whole filter value will be used to do simple string match test. For example,
+\li The value `A\d+B\d*` is a valid regular expression pattern, if the corresponding column contains values like A1B, A22B1, then the item is recognized as matched item.
+\li The value `*\ABCD` cannot be parsed as regular expression, thus the string value is used to do simple match. Only if the corresponding column value contains `*\ABCD`, then the item will be considered as matched item.
+
+As explained above, the filter value could have a pair of double quotes to wrap it if the value contains space(s). The double quotes used to wrap the filter value won't be used as part of the pattern or string match. If there is no space in the filter value, then the double quote is unnecessary. If there is space in the filter value and we don't use quotes to wrap the value, it will be recognized as multiple filters. The only case that we may skip double quotes with space(s) in the input is that we want to use the whole input to do simple string match test. See the invalid column based filter case above.
+
+## Combination of Filters through Operators
+
+We can put multiple column based filters together to create for complicated filters. For example, with `A:1 AND B:2 AND C:3` we setup a new filter that requires column A to contain 1 and column B to contain 2 and column C to contain 3. Only if all three conditions are all met, an item in the ListView is considered as matched item. The operators supported to connect the filters are,
+\li **AND**, upper case only. It means both two filters need to be matched to declare an item matches the combined filter.
+\li **OR**, upper case only. It means that as long as one of the two connected filters is matched, then the item is declared as matched.
+\li **NOT**, upper case only. This is the not operator. When this operator is present, it means the filter next to it must be unmatched to make the combined filter matched. For example, `! A:1` means that only if the value in column A does not contain 1, then the item is recognized as matched item.
+
+## Grouping of Filters
+
+When the column based filters are connected through operators, it could become difficult to read the meaning of a filter. For example, what does this filter mean?
+
+  `A:1 AND B:2 OR A:3`
+
+And does it have the same meaning as `A:3 OR B:2 AND A:1`? The answer is no. It takes time to figure out the actual meaning of them and learn that they are different.
+
+To make the combined filters more clear and easy to read, we may use brackets to wrap the filters. Anything inside a pair of brackets will be treated like one filter when they are connected with other filters. For exmaples above, if we rewrite them as below,
+
+  `A:1 AND (B:2 OR A:3)`, `(A:3 OR B:2) AND A:1`
+
+It becomes very easy to know that they have the same meanings, despite the actual meaning of the filters is reasonable or not.
 
 */

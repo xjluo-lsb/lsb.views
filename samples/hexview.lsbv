@@ -1,0 +1,105 @@
+<?xml version="1.0"?>
+
+<LsbView xmlns="https://github.com/xjluo-lsb/lsb.views"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="https://github.com/xjluo-lsb/lsb.views ..\LsbViewSchema.xsd"
+         
+  name="HexView demo"
+  author="Kevin Luo"
+  createTime="2024-09-06T00:00:00Z"
+  lastChangeTime="2024-09-09T00:00:00.000Z">
+
+  <description>A sample view that demostrates the HexView control - use the control the show file content in hexadecimal.</description>
+  <version major="0" minor="9" build="0" revision="0" />
+
+  <view>
+    <tableLayout id="9df4cfdd-b73f-4d3d-8a1c-0516211b38fe">
+      <rows>
+        <row height="24" sizeType="absolute"/>
+        <row height="100" sizeType="percentage"/>
+      </rows>
+      <columns>
+        <column width="80" sizeType="absolute"/>
+        <column width="100" sizeType="percentage"/>
+      </columns>
+      <cells>
+        <cell row="0" col="0">
+            <button id="a63f7b8d-9d30-41a8-86c3-642d349825ab" label="Open">
+            <output>
+              <param id="5937c1f6-1e33-4fed-8375-673b5566737b" name="filePath"/>
+            </output>
+            <data showProgress="false">
+              <script type="lua">
+<![CDATA[
+local filePath = lsb.openFile("Open file", "Open binary file (*.bin)|*.bin|All files (*.*)|*.*")
+if (filePath ~= nil and filePath ~= '') then
+  return { filePath = filePath }
+end
+
+return nil
+]]>
+              </script>
+            </data>
+          </button>
+        </cell>
+        <cell row="0" col="1">
+          <textView id="6d627fac-651b-4815-b0fa-4d584f0bc45e" multiline="false" readOnly="true">
+            <input>
+              <param id="e7322b5f-87ea-4ec6-9ff0-a90959dcb2cd" name="filePath"/>
+            </input>
+            <data showProgress="false">
+              <script type="lua">
+<![CDATA[
+return [[{filePath}]]
+]]>
+              </script>
+            </data>
+          </textView>
+        </cell>
+        <cell row="1" col="0" rowSpan="1" colSpan="2">
+		  <hexView id="67bfa45e-32e2-4db1-8666-2cd221d9e511">
+            <input>
+              <param id="d46fd80d-807a-4b95-9611-459f47c3949b" name="filePath"/>
+            </input>
+            <data showProgress="false">
+              <script type="lua">
+<![CDATA[
+local fileHandle = io.open(filePath, "rb")    -- r read mode and b binary mode
+if (fileHandle ~= nil) then
+  local fileContent = fileHandle:read("*a")   -- *a or *all reads the whole file
+  fileHandle:close()
+
+  if (fileContent ~= nil) then
+    local result = ""
+	for b in string.gmatch(fileContent, ".") do   -- gfind has been replaced by gmatch since from Lua 5.1
+      result = result .. string.format("%02X", string.byte(b))
+	end
+	return result
+  end
+end
+
+return nil
+]]>
+              </script>
+            </data>
+			<highlights>
+			  <highlight name="test1" foreground="#FFFFFF" background="#2222CC" border="#00FFFF" />
+			  <highlight name="test2" foreground="#FFFF00" background="#CC2222" border="#CCCC22" />
+			  <highlight name="test3" foreground="#444444" background="#22CC22" border="#888888" />
+			</highlights>
+		  </hexView>
+        </cell>
+      </cells>
+    </tableLayout>
+  </view>
+
+  <dataFlow>
+    <!-- Open button to send out file name -->
+    <mapping source="5937c1f6-1e33-4fed-8375-673b5566737b">
+      <target>e7322b5f-87ea-4ec6-9ff0-a90959dcb2cd</target>
+	  <target>d46fd80d-807a-4b95-9611-459f47c3949b</target>
+    </mapping>
+  </dataFlow>
+  
+</LsbView>
+ 
