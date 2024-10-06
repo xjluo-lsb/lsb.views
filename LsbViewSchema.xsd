@@ -287,7 +287,7 @@ in the LSB view files. It also defines the file structure of the view files usin
     </xs:restriction>
   </xs:simpleType>
 
-  <xs:simpleType name="ExecuteAt" final="restriction">
+  <xs:simpleType name="WhenToExecute" final="restriction">
     <xs:annotation>
       <xs:documentation>
         This is the enumeration type for when to execute the script defined in Procedure
@@ -1012,6 +1012,13 @@ in the LSB view files. It also defines the file structure of the view files usin
 	<xs:sequence>
 	  <xs:group ref="ViewElementa" />
       <xs:element name="font" type="FontDesc" minOccurs="0" maxOccurs="1" />
+      <xs:element name="highlights" minOccurs="0" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="highlight" type="HexViewHighlightSetting" minOccurs="0" maxOccurs="unbounded" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
 	</xs:sequence>
 	<xs:attributeGroup ref="ViewAttributes" />
 	<xs:attribute name="groupSize" type="xs:unsignedInt" use="optional" default="0" />
@@ -1177,11 +1184,23 @@ in the LSB view files. It also defines the file structure of the view files usin
     <xs:attribute name="childProperty" type="xs:string" use="required" />
     <xs:attribute name="expandLevel" type="xs:int" use="optional" default="0" />
   </xs:complexType>
+
+  <xs:complexType name="HexViewHighlightSetting">
+	<xs:annotation>
+	  <xs:documentation>
+		This is the schema for highlight settings used in the HexView to highlight selections.
+	  </xs:documentation>
+	</xs:annotation>
+	<xs:attribute name="name" type="xs:string" use="required" />
+	<xs:attribute name="foreground" type="HtmlColor" use="required" />
+	<xs:attribute name="background" type="HtmlColor" use="required" />
+	<xs:attribute name="border" type="HtmlColor" use="required" />
+  </xs:complexType>
   
-  <xs:complexType name="HighlightSetting">
+  <xs:complexType name="WebViewHighlightSetting">
     <xs:annotation>
       <xs:documentation>
-        This is the schema for highlight settings used in the WevView to highlight text.
+        This is the schema for highlight settings used in the WebView to highlight text.
       </xs:documentation>
     </xs:annotation>
     <xs:attribute name="name" type="xs:string" use="required" />
@@ -1232,7 +1251,7 @@ in the LSB view files. It also defines the file structure of the view files usin
       <xs:element name="highlights" minOccurs="0" maxOccurs="1">
         <xs:complexType>
           <xs:sequence>
-            <xs:element name="highlight" type="HighlightSetting" minOccurs="0" maxOccurs="unbounded" />
+            <xs:element name="highlight" type="WebViewHighlightSetting" minOccurs="0" maxOccurs="unbounded" />
           </xs:sequence>
         </xs:complexType>
       </xs:element>
@@ -1385,7 +1404,7 @@ in the LSB view files. It also defines the file structure of the view files usin
     </xs:sequence>
     <xs:attributeGroup ref="ComponentAttributes" />
     <xs:attribute name="name" type="xs:string" use="optional" />
-    <xs:attribute name="executeAt" type="ExecuteAt" use="optional" default="ParameterChanging" />
+    <xs:attribute name="whenToExecute" type="WhenToExecute" use="optional" default="ParameterChanging" />
     <xs:attribute name="timerInterval" type="xs:string" use="optional" />
   </xs:complexType>
 

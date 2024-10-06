@@ -9,9 +9,11 @@ This is the main document for Leave Script Behind (LSB), it includes introductio
   - \ref section_enum
   - \ref section_data
   - \ref section_view
-  - \ref section_lsb
+  - LsbView
 - \ref section_create
 - \ref section_debug
+- \ref section_smart_time
+- \ref section_smart_filter
 - \ref section_faq
 */
 
@@ -105,11 +107,11 @@ enum class DockStyle
   Fill      //!< This means the button will take the whole space. This indirectly provides the capability to control the button size through the layout control.
 };
 
-//! \brief This is the enumeration type for when to execute the script defined in the Procedure.
+//! \brief This is the enumeration type that defines the values that control when the script hooked with Procedure(s) will be executed.
 /*!
-It defines when the Procedure will execute the script associated with it. The supported values are,
+It defines when a Procedure executes the script associated with it, depending on the value specified. The supported values are,
 */
-enum class ExecuteAt
+enum class WhenToExecute
 {
   ParameterChanging,      //!< The script is kicked off when input parameter(s) is changed
   OneShotInitializing,    //!< The script is kicked off when the procedure is initialized and is executed once only
@@ -838,6 +840,7 @@ This page contains the list of all view controls available in LSB.
   - ChartView
   - FileList
   - FileTree
+  - HexView
   - ListView
   - TextView
   - TreeListView
@@ -1005,12 +1008,36 @@ class FileTree : public ViewElements, public ViewAttributes
   public string root;       //!< [Optional] This attribute controls the default path that the FileTree will load data from. Empty value means nothing will be loaded.
 };
 
+//! \brief This HexView is a data view control that displays binary data in the hexadecimal format.
+/*!
+The HexView displays each byte in the binary data as two-digit hexadecimal. User may customize the control to display offset for each line and also show the text form
+for each byte if it's visual character, otherwise a dot '.' is displayed for the byte. Besides, user may also customize how many bytes are displayed in each line and
+how many bytes should be grouped in each line. The byte count in line should be multiplies of byte count in each group.
+
+The HexView node contains following nodes,
+ - All the nodes defined in the ViewElements.
+ - The font node in type of FontDesc that defines which font is used to display the content in the HexView.
+ - The highlights node which contains a list of highlight nodes in type of HexViewHighlightSettings that defines the highlight styles to be used in the HexView control.
+
+The HexView node contains following attributes,
+ - All the attributes defined in the ViewAttributes.
+ - Plus following attributes,
+*/
+class HexView : public ViewElements, public ViewAttributes
+{
+	public unsigned int groupSize;  //!< [Optional] This defines how many bytes are displayed in each group in a line. The default value is 0 which means no groups.
+    public unsigned int lineSize;   //!< [Optional] This defines how many bytes are displayed in each line. The default value is 16.
+	public unsigned int offsetSize; //!< [Optional] This defines how many digits are used to display the offset for the data. The default value is 8.
+    public bool showOffset;         //!< [Optional] This boolean flag controls if the offset area is shown in the HexView control. The default value is true.
+    public bool showText;           //!< [Optional] This boolean flag controls if the text form for the bytes is shown in the control. The default value is true.
+};
+
 //! \brief This ListView is a data view control that uses the very common list view control to display data in rows and columns.
 /*!
 Besides displaying data, this view control supports many other useful features,
  - Supports single selection or multiple selection of items in the list view.
  - The index of selected row as well as values in each of the columns for the selected row could be sent out to other view controls through output parameters for the ListView.
- - There is rich filtering feature supported in the ListView control, see details in the \ref page_smart_filter.
+ - There is rich filtering feature supported in the ListView control, see details in the \ref section_smart_filter.
  - User may copy full row or selected columns from the selected row(s) into clipboard, in plain text or HTML format.
  - There is status bar showing the item status and selection status for the items in the ListView.
 
@@ -1111,34 +1138,129 @@ class WebView : public ViewElements, public ViewAttributes
   public bool selectToHighlight;     //!< [Optional] This attribute controls if the highlight for selection should be enabled or not. The default value is false.
 };
 
+//! \brief This Button is an input control for taking user's click action to confirm or trigger an operation.
+/*!
+The Button control uses the generally used button control in GUI applications to implment the functionalities. It typically shows a string as label and has a piece of
+script hooked with it - when the end user clicks on the button, the corresponding scipt will be executed to take an action or grab data from various data sources. And
+the LSB view can in term pass data to some other controls to implement corresponding busioness logic.
+
+The Button node contains following child nodes,
+ - All the nodes defined in ViewElements.
+
+The Button node contains following attributes,
+ - All the attributes defined in ViewAttributes.
+ - Plus following attributes,
+*/
 class Button : public ViewElements, public ViewAttributes
 {
-
+    public DockStyle dock;      //!< [Optional] This dock attribute controls how the button is arranged within the space allocated for it. See DockStyle for detailed explanations on each possible values. The default value is None.
+	public string label;        //!< [Mandatory] This label attribute defines the text to be displayed on the button cpontrol.
+    public string description;  //!< [Optional] The attribute defines the description text for the button, which is also used as the content for the hint for the button.
 };
 
+//! \brief The ComboBox is an input control that supports user to either select a value from predefined value list or type in any other value.
+/*!
+The ComboBox control is a combination of a list box and an edit control. The end user may select a value from the predefined value list or type in a value through the
+edit control. And the control will send the value out through output parameter to trigger any further action(s).
+
+The ComboBox node contains following child nodes,
+ - All the nodes defined in ViewElements.
+ - [Optional] The prompt node in type of Prompt defines the prompt for the ComboBox input.
+ - [Optional] The options node in type of OptionList defines the preset values that the end user can select one from them.
+
+The ComboBox node contains following attributes,
+ - All the attributes defined in ViewAttributes.
+ - Plus following attributes,
+*/
 class ComboBox : public ViewElements, public ViewAttributes
 {
-
+    public bool selectOnly;         //!< [Optional] This boolean flag controls if the ComboBox supports selecting value from list only (true) or also allows end user to type in value (false). The default value is false.
+	public bool sorted;             //!< [Optional] This boolean flag controls if the values in the value list are sorted or not. The default value is false.
+	public TrimSpace trimSpace;     //!< [Optional] This attribute controls if the user selected/typed in value should have space(s) trimmed before it's sent to other view controls. The default value is None.
+    public string defaultValue;     //!< [Optional] This attribute defines the default value for the control. The default value is empty string.
 };
 
+//! \brief The TextInput is an input control that allows user to type in any character as the input value.
+/*!
+The TextInput supports both single line and multiple line text edit control that allows end user to type in text as value and send to other view controls though output
+parameter associated with it. It's typically used as input control for one single value. To create input for multiple values or a complicated data structure, please
+refer to the PropertyInput control. The value inputed through TextInput is a string. View author can convert the the string value into any other data types as they need
+in the script(s).
+
+The TextInput node contains following child nodes,
+ - All the nodes defined in ViewElements.
+ - [Optional] The prompt node in type of Prompt defines the prompt for the TextInput control.
+ - [Optional] The content node defines the string content as the initial value for the TextInput control.
+
+The TextInput node contains following attributes,
+ - All the attributes defined in ViewAttributes.
+ - Plus following attributes,
+*/
 class TextInput : public ViewElements, public ViewAttributes
 {
-
+    public string defaultValue;         //!< [Optional] This attribute defines the default value for the TextInput control. The default value is empty string.
+	public TrimSpace trimSpace;         //!< [Optional] This attribute controls if the user selected/typed in value should have space(s) trimmed before it's sent to other view controls. The default value is None.
+	public bool multiline;              //!< [Optional] This boolean attribute controls if the TextInput supports single line edit control or multiple line edit control. The default value is false, which means it implements as single line edit control.
+	public WhenToNotify whenToNotify;   //!< [Optional] This attribute in type of WhenToNotify defines when to trigger the output parameter to send out the new value that the end user types in to other view controls. The default value is Enter, which means when the Enter key is pressed.
 };
 
+//! \brief The PropertyInput is an input control that supports editing multiple variables or complicated structure(s) in one single control.
+/*!
+The PropertyInput allows user to input multiple values within one single control, and it also supports inputing values in different types directly (not like TextInput
+or ComboBox, with them the view author has to do the conversion from string to the target data types). These features greatly help the view author on reducing the
+effort on creating input controls and doing data conversions. There supported data types can be found in the explanation for PropertyValueType.
+
+The PropertyInput node contains following nodes,
+ - All the nodes defined in ViewElements.
+ - [Mandatory] The properties node contains a list of property node in type of PropertyField which defines the configuration for each property field, equivalent to a variable or a field in a complicates structure.
+
+The PropertyInput node contains following attributes,
+ - All the attributes defined in ViewAttributes,
+ - Plus following attributes,
+*/
 class PropertyInput : public ViewElements, public ViewAttributes
 {
-
+    public TrimSpace trimSpace;     //!< [Optional] This attribute controls if the string values user typed in should have space(s) trimmed before it's sent to other view controls. The default value is None.
 };
 
+//! \brief The Procedure node does what the name means, execute a piece of script like procedure or function in programming languages.
+/*!
+The Procedure is an invisible component. It doesn't like other data view, input or layout controls, that they will take some space in the GUI. This component takes no
+space on screen at all. The purpose of this component is to take input from other controls or components, run the configured script to complete certain functionality or
+generate a new data set, and then in turn pass the data to one or more other controls.
+
+The Procedure node contains following child nodes,
+ - All the nodes defined in ComponentElements.
+
+The Procedure node contains following attributes,
+ - All the attributes defined in ComponentAttributes,
+ - Plus following attributes,
+*/
 class Procedure : public ComponentElements, public ComponentAttributes
 {
-
+    public string name;             //!< [Optional] This attribute defines the name of the procedure.
+	public ExecuteAt executeAt;     //!< [Optional] This attribute in type of ExecuteAt controls when the script should be triggered, it could be one shot only or repetitive.
+	public string timerInterval;    //!< [Optional] The script execution interval when the executeAt is set to TimerTicking or TimerStartAndTicking.
 };
 
+//! \brief The ViewLauncher node is a component to launch another LSB view with parameters.
+/*!
+The ViewLauncher is another invisible component. It collects parameter values from current view, sends them as input parameter for the target view and launch the target
+view specified through the view configuration. In the configuration, to specify the target view to be launched, view author needs to specify both the repository name
+and the view name. The reason is that the view name is not unique from LSB perspective - the views in different repositories might have the same name.
+
+The ViewLauncher node contains following child nodes,
+ - All the nodes defined in the ComponentElements.
+ - [Mandatory] The connection node in type of DataFlow defines how the parameters in current view will be passed into the target view as input parameters.
+
+The ViewLauncher node contains following attributes,
+ - All the attributes defined in the ComponentAttributes,
+ - Plus following attributes,
+*/
 class ViewLauncher : public ComponentElements, public ComponentAttributes
 {
-
+    public string repository;       //!< [Mandatory] This attribute defines the repository name of the target view to be launched.
+	public string view;             //!< [Mandatory] This attribute defines the name of the target view to be launcher.
 };
 
 /*!
@@ -1146,20 +1268,45 @@ class ViewLauncher : public ComponentElements, public ComponentAttributes
 */
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//! \brief LsbView is the unit that is supported in LSB to implement different functionalities to meet different business requirements.
 /*!
-\defgroup section_lsb LSB View
+In each of the LSB view file, LsbView is the root node that defines all the controls to be used within the view, together with the corresponding scripts (Lua, bash,
+PowerShell or any other user defined scripts) and parameter flows to implement the specific business logic to achieve the goal.
 
-@{
-@}
+The LsbView node contains following nodes,
+ - [Optional] The description node contains a long string that describes the purpose, usage or any other view related information.
+ - [Mandatory] The version node in type of Version defines the version number of the view.
+ - [Optional] The modules node contains a list of module nodes. Each of the node contains a string that defines the path to a module that is referenced in the view.
+ - [Optional] The value of this os node should be values in type of OS and separated by semi-colon. The values indicate the view supports which Operatings Systems.
+ - [Optional] This about node in type of About contains the definition of the about information of this view.
+ - [Mandatory] The view node in type of ChoiceOfView is the root node of all the view controls used in the LSB view. Typically it starts with one of the layouts.
+ - [Optional] The procedures node contains a list of procedure nodes in type of Procedure which define the script procedures/functions.
+ - [Optional] The launchers node contains a list of launcher nodes in type of ViewLauncher that are used to launch another LSB view from current view.
+ - [Optional] The dataFlow node in type of DataFlow defines how an output parameter in a souce view is connected with an input parameter in a target view.
 
+The LsbView node contains following attributes,
 */
-
+class LsbView
+{
+	public string name;             //!< [Mandatory] This attribute contains the name of the LSB view.
+	public string author;           //!< [Mandatory] This attribute contains the author information (full name or nick name).
+	public DateTime createTime;     //!< [Mandatory] This attribute contains timestamp of when the LSB view was created.
+	public DateTime lastChangeTime; //!< [Mandatory] This attribute contains timestamp of when the LSB view was last changed.
+};
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*!
 \defgroup section_create How to Create a LSB View
 
+[Note] The recommended editor for composing LSB view file, which is in XML format, is the Visual Studio. It's the only
+editor that I'm aware of that comes with very good support with XML schema, and for free (using the community version).
+
+The LsbViewSchema.xsd file comes in the views folder is the schema definition for the LSB view file. With Visual Studio,
+it can provide very powerful hint and highlighting to help you composing or modifying a LSB view file.
+
+With documents on this site, you can get all the necessary information you need to create LSB view, from all data types
+to nodes supported and the explanation of each of them.
 */
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1170,12 +1317,125 @@ class ViewLauncher : public ComponentElements, public ComponentAttributes
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*!
-\defgroup section_faq Other Frequently Seen Questions
+\defgroup section_faq Other Questions
 
 */
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*!
-\defgroup page_smart_filter The Smart Filtering in ListiView
+\defgroup section_smart_time The Smart Time Input
+
+## Date time
+
+### Standard ISO format
+
+The LSB supports the input of the standard ISO date time in the format of one of followings,
+ - **yyyy-MM-ddThh:mm:ss.nnn+zone**
+ - **yyyy-MM-ddThh:mm:ss.nnn-zone**
+ - **yyyy-MM-ddThh:mm:ss.nnnz**
+ - **yyyy-MM-ddThh:mm:ss.nnn(UTC)**
+
+Here the meanings of each field are listed as below,
+ - **yyyy** - The year of the date time
+ - **MM** - The month of the date time
+ - **dd** - The day of the date time
+ - **hh** - The hours of the date time
+ - **mm** - The minutes of the date time
+ - **ss** - The seconds of the date time
+ - **nnn** - The milliseconds of the date time
+ - **zone** - It is the time zone difference, specified in format of **hhmm**, i.e. hours and minutes
+ - **z** - A simple character **z** or **Z** means that the date time is in GMT-0 time zone, i.e. the date time is an UTC time
+ - **(utc)** or **(UTC)** - It means the date time is an UTC time
+ - The characters not mentioned above are mandatory delimeters for the date time value, such as **-**, **T**, etc.
+
+### Smart format
+ 
+The date time input in LSB also supports a flexible and smart format, such as,
+ - **now** - It's for the current time
+ - **1 week 2 days and 3 hours ago** - It's for time in the past compared to current time, specified through the suffix **ago**. If the current time is 2024-01-01T00:00:00, then the time specified with this string input is **2023-12-22T21:00:00**.
+ - **1h 2m 3s later** - It's for time in future compared to current time, specified through the suffix **later**. If the current time is 2024-01-01T00:00:00, then the time specified with this string input is **2024-01-01T01:02:03**.
+
+There are multiple different time units could be included in this smart time format, and these time units must be presented in the following order, from large time unit to small time unit. Meanwhile, any of these units could be optional if the corresponding value is 0.
+ - **week** - It could be specified with one of these words - **w**, **wk**, **week**, **weeks**
+ - **day** - It could be specified with one of these words - **d**, **day**, **days**
+ - **hour** - It could be specified with one of these words - **h**, **hr**, **hour**, **hours**
+ - **minute** - It could be specified with one of these words - **m**, **min**, **minute**, **minutes**
+ - **second** - It could be specified with one of these words - **s**, **sec**, **second**, **seconds**
+ - **and** - This word is used to connect different time parts in different units. It's optional. The space character does the same job to connect the different time parts in different units.
+
+Besides, you can also use **year** or **month** individually to specify times,
+ - **year** - It could be specified through one of these words - **y**, **yr**, **year**, **years**. Example values are **1 year ago**, **2 yr later**.
+ - **month** - It could be specified through one of these words - **mon**, **month**, **months**. Example values are **2 months ago**, **3 mon later**.
+
+As mentioned earlier, at the end of of the time string, **ago** is appended for time in the past and **later** should be specified for time in future. And obviously, these two suffixes cannot be used together.
+
+Please be reminded that **year** and **month** cannot be used together with each other or used with any of the previously explained **week**, **day**, **hour**, **minute** or **second**. It is very rare that there is need to specify a time with such large and small time units together. Even if there is the need to specify time with large gap and fine resolution, the time could be specified through **week** or **day**.
+
+## Time span
+
+### Standard format
+
+Similiar to the date time, LSB supports standard time span in format of **d.hh:mm:ss.nnn**, where each of the fields means,
+ - **d** - The days for the time span (integer part only). It could contain any digits as needed depends on how big the time span is. And it could also be zero or omitted (together with the dot follows it) if the time span is less than one day.
+ - **hh** - The hours part of the time span. It's mandatory and must be presented as **00** if the hour part in the time span is 0.
+ - **mm** - The minutes part of the time span. It's mandatory and must be presented as **00** if the minute part in the time span is 0.
+ - **ss** - The seconds part of the time span. It's mandatory and must be presented as **00** if the second part in the time span is 0.
+ - **nnn** - The milliseconds part of the time span. It's optional. When it's present in the time span value, it must contain 3 digits. For milliseonds less than 100, they should be left padded by zero. When the milliseconds part is not present in the time span value, it means that the millisecond part is 0.
+
+### Smart format
+
+The time span also supports the smart format in the same way as smart time, except the suffix of **ago** and **later**, they are not needed for time span values. Here are some example values,
+ - 1 week 2 days and 3 hours
+ - 1 hour 23 minutes 45 seconds
+ - 5 mins and 6 secs
+ - 12 minute
+ - 2 years
+ - 3 mon
+
+*/
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*!
+\defgroup section_smart_filter The Smart Filtering in ListView
+
+The ListView control supports rich client filtering functionality through the embedded filter input on the top. It can be turned on/off through the **visible** attribute in the **filter** node (see ListViewFilter) in the ListView definition. Here we discuss that when the filter feature is turned on in the ListView, how we can use it to quickly find items in the ListView.
+
+## Column Based Filter
+
+A filter is typically specified as `column_name:filter_value`. Both the column name and the filter value could have double quotes to wrap them. The double quotes are required only if there are one or more spaces contained in the column name or filter value. If column name is not specified in a filter, then this filter pattern will be tested against all columns in all items.
+
+Here are some examples of column based filter,
+\li `ABC:123` is a valid column based filter. Here the `ABC` is the column name and `123` is the filter value. This filter means that only if the value of column ABC contains `123`, the item is considered matched. Items that have other columns contain value `123` but value in column `ABC` does not contain `123` are not recognized as matched item.
+\li `"AB C":"\d+A\d+"` is also a valid column based filter. Here the `AB C` is the column name and `\d+A\d+` is the filter value. The double quotes in the column name are necessary as there is a space inside the column name. Meanwhile the double quotes in the column pattern are optional.
+\li `A B C:invalid` is an invalid column based filter. The reason is that the value cannot be parsed as `column_name:filter_value`. In this case, the whole string will be used for simple string match test and all columns will be tested. See next section for why.
+
+## Filter Value
+
+The filter support first tries to parse the filter value that user types in as a regular expression pattern and then uses the created regular expression pattern to match the values in corresponding column(s). If the specified filter value cannot be parsed as a regular expression, then the whole filter value will be used to do simple string match test. For example,
+\li The value `A\d+B\d*` is a valid regular expression pattern, if the corresponding column contains values like A1B, A22B1, then the item is recognized as matched item.
+\li The value `*\ABCD` cannot be parsed as regular expression, thus the string value is used to do simple match. Only if the corresponding column value contains `*\ABCD`, then the item will be considered as matched item.
+
+As explained above, the filter value could have a pair of double quotes to wrap it if the value contains space(s). The double quotes used to wrap the filter value won't be used as part of the pattern or string match. If there is no space in the filter value, then the double quote is unnecessary. If there is space in the filter value and we don't use quotes to wrap the value, it will be recognized as multiple filters. The only case that we may skip double quotes with space(s) in the input is that we want to use the whole input to do simple string match test. See the invalid column based filter case above.
+
+## Combination of Filters through Operators
+
+We can put multiple column based filters together to create for complicated filters. For example, with `A:1 AND B:2 AND C:3` we setup a new filter that requires column A to contain 1 and column B to contain 2 and column C to contain 3. Only if all three conditions are all met, an item in the ListView is considered as matched item. The operators supported to connect the filters are,
+\li **AND**, upper case only. It means both two filters need to be matched to declare an item matches the combined filter.
+\li **OR**, upper case only. It means that as long as one of the two connected filters is matched, then the item is declared as matched.
+\li **NOT**, upper case only. This is the not operator. When this operator is present, it means the filter next to it must be unmatched to make the combined filter matched. For example, `! A:1` means that only if the value in column A does not contain 1, then the item is recognized as matched item.
+
+## Grouping of Filters
+
+When the column based filters are connected through operators, it could become difficult to read the meaning of a filter. For example, what does this filter mean?
+
+  `A:1 AND B:2 OR A:3`
+
+And does it have the same meaning as `A:3 OR B:2 AND A:1`? The answer is no. It takes time to figure out the actual meaning of them and learn that they are different.
+
+To make the combined filters more clear and easy to read, we may use brackets to wrap the filters. Anything inside a pair of brackets will be treated like one filter when they are connected with other filters. For exmaples above, if we rewrite them as below,
+
+  `A:1 AND (B:2 OR A:3)`, `(A:3 OR B:2) AND A:1`
+
+It becomes very easy to know that they have the same meanings, despite the actual meaning of the filters is reasonable or not.
 
 */

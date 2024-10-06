@@ -34,3 +34,5 @@
 # Ignore the intermediate files for document generation
 docs/
 *~
+*.bak
+.DS_Store
