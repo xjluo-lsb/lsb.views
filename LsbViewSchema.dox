@@ -5,15 +5,21 @@
 This is the main document for Leave Script Behind (LSB), it includes introduction to the LSB tool, the schema for LSB view files, how to create a LSB view file, how to test a LSB view file, as well as answers for other frequently seen problems.
 
 - \ref section_intro
+- Use LSB
+  - \ref section_ui
+  - \ref section_settings
+  - \ref section_views
+- Use LSB in a better way
+  - \ref section_smart_time
+  - \ref section_smart_filter
 - Schema - this section explains the schema for the LSB view files,
   - \ref section_enum
   - \ref section_data
   - \ref section_view
   - LsbView
-- \ref section_create
-- \ref section_debug
-- \ref section_smart_time
-- \ref section_smart_filter
+- Create your own LSB view
+  - \ref section_create
+  - \ref section_debug
 - \ref section_faq
 */
 
@@ -26,6 +32,28 @@ Leave Script Behind is a cross platform tool designed with the main goal to chai
 - Support Lua language embedded in views to generate data and execute tasks.
 - Offer rich data visualizaion through list view, tree view, chart view or web view with JavaScript support.
 - Provides easy input controls for users to input values, from integer, string, to files.
+*/
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*!
+\defgroup section_ui The LSB UI
+
+The LSB is a multiple window MDI(Multiple DOcument Interface) application. It starts with the main window, and then when user opens a new view, it's contained in its own separate window. If user opens the same view file multiple times, they will be presented in multiple windows, one window for each view instance.
+
+Here's how the main window looks like,
+\image html lsb-main-window.png
+
+*/
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*!
+\defgroup section_settings The LSB settings
+
+*/
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*!
+\defgroup section_views The views come with LSB
 */
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
