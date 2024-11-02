@@ -31,7 +31,7 @@
             <data showProgress="false">
               <script type="lua">
 <![CDATA[
-local filePath = lsb.openFile("Open file", "Open binary file (*.bin)|*.bin|All files (*.*)|*.*")
+local filePath = lsb.openFile("Open file", "Open binary file (*.bin)|*.bin")
 if (filePath ~= nil and filePath ~= '') then
   return { filePath = filePath }
 end
