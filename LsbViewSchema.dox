@@ -2,10 +2,10 @@
 /*!
 \mainpage Leave Script Behind Explained
 
-This is the main document for Leave Script Behind (LSB), it includes introduction to the LSB tool, the schema for LSB view files, how to create a LSB view file, how to test a LSB view file, as well as answers for other frequently seen problems.
+This is the main document for Leave Script Behind (aka. LSB). It includes introduction to LSB, the schema for LSB view files, how to create a LSB view file, how to test a LSB view file, as well as answers for other frequently seen problems.
 
 - \ref section_intro
-- Use LSB
+- Using LSB
   - \ref section_ui
   - \ref section_settings
   - \ref section_views
@@ -18,8 +18,8 @@ This is the main document for Leave Script Behind (LSB), it includes introductio
   - \ref section_view
   - LsbView
 - Create your own LSB view
-  - \ref section_create
-  - \ref section_debug
+  - \ref section_create_view
+  - \ref section_debug_view
 - \ref section_faq
 */
 
@@ -27,21 +27,149 @@ This is the main document for Leave Script Behind (LSB), it includes introductio
 /*!
 \defgroup section_intro Introduction
 
-Leave Script Behind is a cross platform tool designed with the main goal to chain a series of shell commands to complete a sepecific task, ease the user's life by reusing the LSB views without remembering all the shell commands and their parameters. As you know, some of the shell commands are very complicated and it's really a pain for someone who are new to the commands or not using them frequently to remember all the details. Besides, it provides rich capabilities on,
-- Data connectivity through SQL databases, Web APIs, etc.
-- Support Lua language embedded in views to generate data and execute tasks.
-- Offer rich data visualizaion through list view, tree view, chart view or web view with JavaScript support.
-- Provides easy input controls for users to input values, from integer, string, to files.
+# Welcome to Leave Script Behind (LSB)!
+
+Shells are commonly used in all Operating Systems, such as **PowerShell** on **Windows**, __bash__ / __dash__ / __fish__ on **Linux**, and __bash__ / __zsh__ / __tcsh__ on **Mac %OS X**, etc. All these shells provide powerful capabilities to allow user to find and run commands / programs on the system, and allow users to write scripts to chain as many commands as needed to work together to complete complicated tasks. Along with the flexibility and great power come with the shells, there is also a steep learning curve for new users to master all the knowledge needed to achieve what they want to do, from learning all the different commands provided by the shell(s), to mastering the usage of each command, including combinations of supported parameters, as well as how to write script in the shell supported syntax. Besides, both the shell input and output are typically presented in plain text in the shell console, which implies that users have to read restricted output in plain text to understand the data, and there is no way to interact with the data after it's outputted to the shell, unless users re-run the command(s) and store the result into variable in the shell supported way(s).
+
+Leave Script Behind (a.k.a LSB) is a cross platform tool designed with the goal to reduce the pain - it chains a sequence of shell commands to complete a specific task and provides a way to reuse the views for the same tasks. It can display the data output of command(s) at each step, user then interacts with the data to make it the input for the next step (this could also be done automatically through shell script, depends how the view is designed), and so on, step by step, till the workflow reaches the end. This can greatly ease the user's life by reusing the LSB views without remembering all the shell commands and their parameters. Each LSB view provides similiar funtionality as a script file does. Besides, it provides extra rich capabilities on,
+- Offers data visualizaion through list view, tree view, chart view and many other data view controls provided by LSB.
+- User may interact with the intermediate data to continue the workflow with different logic and actions.
+- The LSB provides many input controls for users to input values, from integer, string, to files, etc.
+- It also provides capability to layout the input controls and data view controls through simple XML configuration.
+- The LSB has embedded support on data connectivity through SQL databases, Web APIs, etc. with simple configuration.
+- Supports Lua language embedded in views to generate data and execute tasks.
+- Mixes multiple script snippets in the same or different languages to complete a task.
+
+The LSB is designed to address the users' pain points,
+- It helps users to reduce effort needed on learning many different script languages and commands. 
+- It enhances the experience that how the users can interact with the data generated/collected by the commands in the views.
+- It shares view files created by other users and let users benefit from reusing these created views.
+
 */
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*!
 \defgroup section_ui The LSB UI
 
-The LSB is a multiple window MDI(Multiple DOcument Interface) application. It starts with the main window, and then when user opens a new view, it's contained in its own separate window. If user opens the same view file multiple times, they will be presented in multiple windows, one window for each view instance.
+The LSB is a multiple window MDI (Multiple Document Interface) application. It starts with the main window, and then when user opens a new view file, the new view is contained in its own separate window. If user opens the same view file again, a new window will be created for the view file. Despite the view file is same or not, there is always one window for each view instance.
+
+## Main window
 
 Here's how the main window looks like,
+
 \image html lsb-main-window.png
+
+### Menu
+
+#### The **File** menu
+
+\image html lsb-file-menu.png
+
+<ul>
+<li>**Open view ...** - This menu item launches the open view dialog for user to select a view file and open as LSB view.</li>
+<li>**Open recent view** - Select a previously opened view file from the sub-menu and open as LSB view.</li>
+<li>**Close all views** - This will close all the currently opened views.</li>
+<li>**Manage view history ...** - This menu item launches the view file history management window to configure how the view files are ordered in the opened view history.</li>
+<li>**Exit** - This exits and closes the LSB application.</li>
+</ul>
+
+#### The **Windows** menu
+
+\image html lsb-windows-menu.png
+
+<ul>
+<li>**Views** - This sub-menu contains entries for all currently opened LSB views. Selecting an entry in the sub-menu will bring the corresponding LSB view into front/make it active view.</li>
+<li>**Global log window** - This menu item brings the global logging window into front. It logs the view open/close and all application level events.</li>
+</ul>
+
+#### The **Option** menu
+
+\image html lsb-option-menu.png
+
+<ul>
+<li>**Settings ...** - This is the only menu item in this menu. It launches the LSB application settings dialog for user to change configurations for the LSB application.</li>
+</ul>
+
+#### The **Help** menu
+
+\image html lsb-help-menu.png
+
+<ul>
+<li>**Help ...** - This shows the help content for the LSB application, including the content you are reading now.</li>
+<li>**%About ...** - This shows the about information for the LSB application.</li>
+</ul>
+
+### Toolbar Buttons
+
+In the main window, there is also a toolbar that contains a set of buttons for the functionalities. The funtionalities provided by these buttons are already available through the menu items in the main menu.
+
+<ul>
+<li>**Open view** - This button has the same functionality as the "Open view ..." menu item under **File** menu. Clicking the button will launch the open view dialog to select and open LSB view. Besides, the little triangle next to it triggers a drop down menu that shows the same view history as the **Open recent view** does.</li>
+<li>**Close all views** - This button is same as the **Close all views** menu item under **File** menu, it closes all currently opened LSB views.</li>
+<li>**Manage history** - This is another entry to the view file history management window.</li>
+<li>**View** - This button will launch a Select viiew dialog for user to select a view from a view list which contains all currently opened LSB views and make it the active view. There is also a button with little triangle next to it which triggers drop down menu that contains menu items mapped to all currently opened views. Select a menu item here will bring the corresponding LSB view into front.</li>
+<li>**Log window** - This button brings the global logging window into front.</li>
+<li>**Settings** - This button launches the settings dialog for the LSB application.</li>
+<li>**Help page** - This button shows the help window for the LSB application.</li>
+<li>**%About LSB** - This button shows the about window for the LSB application.</li>
+
+## View window
+
+Here's a typical view window, it consists of 4 tabs, **View**, **Logs**, **Lua** and **About**.
+
+### View
+
+The **View** tab shows the content for the LSB view.
+
+\image html lsb-view-view.png
+
+### Logs
+
+The **Logs** tab contains the local logging - all the events happened within the LSB view instance, including both parameter checking and parameter changes, etc.
+
+\image html lsb-view-logs.png
+
+### Lua
+
+The **Lua** tab contains the Lua code snippets executed within the LSB view instance.
+
+\image html lsb-view-lua.png
+
+### About
+
+The **%About** tab contains the about information for the LSB view.
+
+\image html lsb-view-about.png
+
+## Open view dialog
+
+The open view dialog is used to find, select and open a LSB view file in the LSB application. It consists of a view list and view preview pane. When a LSB view is selected in the view list, the corresponding information of the view will be displayed in the preview pane.
+
+\image html lsb-open-view.png
+
+The view list also supports smart filter, see \ref section_smart_filter. This enables user to quickly locate the view through combination of column based filters. When a view is selected, user may also click on the **Open the view folder** button to open the target view folder using the %OS native file management application, such as the **File Explorer** on Windows, **Safari** on Mac %OS X, etc.
+
+## Manage opened view history
+
+This is the dialog that manages how the view history is displayed.
+
+\image html lsb-manage-history.png
+
+<ul>
+<li>**History count settings**
+  <ul>
+    <li>**Maximum item count in menu** - This configures how many items will be displayed in the view history menu.</li>
+    <li>**Maximum item count in history file** - This configures how many items will have the history data stored in the history data file.</li>
+  </ul>
+</li>
+<li>**How are the view files ordered**
+  <ul>
+    <li>**Most recently used time** - The view files are ordered by most recently used time</li>
+    <li>**How many times view used** - The view files are ordered by how many times the view is used</li>
+  </ul>
+</li>
+<li>**View file history** - This is a list of view files opened before. They are ordered based on setting configured above.</li>
+</ul>
 
 */
 
@@ -49,11 +177,119 @@ Here's how the main window looks like,
 /*!
 \defgroup section_settings The LSB settings
 
+LSB has a dedicated settings dialog to configure the various settings for the application. All the settings are categorized in 4 groups. Check the following sections to learn what they are and how they changes the the LSB application behaves.
+
+## General
+
+This is the general setting category for LSB. The settings included in this category are,
+
+\image html lsb-settings-general.png
+
+<ul>
+<li>**Aggregation time window for multiple input parameter changes** - This defines length of a time window in unit of milliseconds. For a LSB view control, it could have multiple input parameters, and there might multiple parameters have the values chaged at the same time (or in a very short time range). If this time window length is set to 0, that means every parameter value change will trigger data load and content refresh in the view control. This is not expected behavior in most cases. By setting this time window to a short length, then all the parameter value changes happened within this window will be recognized as one action and trigger one data load and content refresh only. Please be reminded that this time window is a moving window. Assuming this time window is set to D, and the first input parameter value gets changed at T0, and then a second parameter gets changed at T1, where T1 - T0 <= D, these two input parameter changes will be recognized as one action, and the actual data load/content refresh will be triggered at time T1 + D. In general, if there are n parameters have their values changed around same time (with time gap between each adjecent two parameters less than D), then the actual data load/content refresh will happen at Tn + D.</li>
+<li>**Default view size** - This defines the default window size for LSB view. When a LSB view is open, it will be set to this size by default.</li>
+<li>**Show the GIT client window during execution for enlistment or refresh** - The LSB application uses GIT to synchronize the default view repository and the help document repository. It calls the git command to get the files synced. This setting controls if the console window is shown during the synchronization.</li>
+</ul>
+
+## Color & Fonts
+
+This category contains the configurations for LSB UI, including colors and fonts, etc.
+
+\image html lsb-settings-ui.png
+
+<ul>
+<li>**Active view caption** - This configures the color and font for the active view controls. User may click on the foreground color, background color to chage the colors, and click on the "Choose..." button to select the font to be used for the active view control. The Preview control will show the final effect for any changes made on these configurations.</li>
+<li>**Inactive view caption** - This configures the color and font for the inactive view controls. It can be changed and previewed in the same way as the active view caption does.</li>
+<li>**Shell window content** - This is the setting for the shell window content. When a shell window is needed, such as the GIT console window mentioned above for the view synchronization, it will be displayed with the colors and font configured here. The settings can be changed and previewed in the same way as the active view caption and inactive view caption.</li>
+</ul>
+
+## Shells
+
+This is the category for configuring the shells to be used in LSB views. The page is composed of a shell list and a set of tool buttons that manages the shell list.
+
+\image html lsb-settings-shells.png
+
+Here are what the tool buttons do,
+<ul>
+<li>**Scan** - This scans all known shells supported by LSB on current Operating System. The found shells will be added into the shell list automatically with default settings.</li>
+<li>**Edit** - This button is enabled only if an item in the shell list is selected. Clicking on the button will trigger the shell setting editor dialog to change the settings for the selected shell. See section below for the details of shell setting editor dialog.</li>
+<li>**Add** - This adds a new shell into the shell list. It also launches the shell setting editor dialog for configuring the settings for the new shell.</li>
+<li>**Delete** - This deletes the currently selected shell from the shell list. It's enabled only if a shell item is selected in the shell list.</li>
+<li>**Clear** - This removes all shells from the shell list.</li>
+</ul>
+
+__Note__: Double click on an item in the shell list has the same effect as clicking the **Edit** button.
+
+### Shell Settings Editor
+
+When user requests to add a new shell or edit an existing shell, following editor dialog will be launched for user to edit the settings,
+
+\image html lsb-shell-editor.png
+
+Here are the settings user can set for a shell,
+<ul>
+<li>**Name** - Name of the shell</li>
+<li>**Path** - The path to the shell executable</li>
+<li>**Reference / Module list** - This is a list of modules to be referenced in the shell. The modules listed here will be automatically loaded when the shell is launched.</li>
+<li>**Placeholders** - These placeholders will be used to embed certain values into the wrapper script that helps to execute the user specified script through the shell process.
+  <ul>
+    <li>**Customized user script** - This is the placeholder for the user script to be executed.</li>
+    <li>**Intermediate data file** - This is the placeholder for the full path of the intermediate data file. The LSB view control will try to load the generated data from this intermediate data file if it is used in the wrapper script.</li>
+    <li>**First half of signature** - To detect the wrapper script execution is completed, the LSB uses two parts of signature, combine them together and output the complete signature at the end of script execution. When LSB finds the full signature in the shell console output, it knows that the script execution completes. This placeholder is for the first half of the signature data. The signature is broken into two parts so the assignment of the data won't mistakenly trigger the recognization of execution complete.</li>
+    <li>**Second half of signature** - This is the placeholder for the second half of signature data.</li>
+    <li>**Path to view file** - This is the placeholder for the full path to the currently open view file.</li>
+  </ul>
+</li>
+<li>**User script wrapper** - This is the script that wraps the actual user script to be executed in the shell. In the wrapper script, it can help to output data into the intermediate data file in specific format, it can help to generate the signature data and output to shell console to enable the determination of script completion, or any other helper function needed for the user script execution.</li>
+<li>**Script execution timeout** - This is the default timeout setting for the user script execution. Each user script could have its own customized timeout set through the script data source configuration, see ScriptData.</li>
+</ul>
+
+## Views
+
+This is the category for configuring the view repositories to be used in LSB. Similiar to the Shells, this page is composed of a view repository list and a set of tool buttons that manages the view repository list.
+
+\image html lsb-settings-views.png
+
+Here are what the tool buttons do,
+<ul>
+<li>**Edit** - This button is enabled only if a view repository is selected in the list. Clicking on the button will open the view repository editor dialog to change the settings for the LSB view repository. See section below for the details of view repository setting editor dialog.</li>
+<li>**Synchronize** - If the currently selected view repository is a GIT repository and the remote GIT repository is provided, this button is enabled. Clicking on the button will trigger the synchronization of the view files (from the remote GIT repository to local copy).</li>
+<li>**Add** - This adds a new view repository into the repository list. It also launches the view repository setting dialog for configuring the settings for the view repository.</li>
+<li>**Delete** - This deletes the currently selected view repository from the repository list. The button is enabled only if a view repository item is selected in the view repository list. </li>
+<li>**Clear** - This removed all view repositories from the repository list.</li>
+</ul>
+
+### View Repository Editor
+
+When user requests to add a new LSB view repository or edit an existing view repository, following editor dialog is open for editing the settings.
+
+\image html lsb-view-repository-editor.png
+
+Settings can be changed in this dialog for a view repository,
+<ul>
+<li>**Name** - Name of the LSB view repository</li>
+<li>**Local view root** - This is the local path to the root folder of the view repository.</li>
+<li>**GIT repository URL** - If a view repository is synchronized from a remote GIT repository, this is the GIT repository URL. If it's empty, then it means this view repository is a local repository, no synchronization is needed for it.</li>
+<li>**Refresh interval** - This is only valid if the view repository is synchronized from a remote GIT repository. And it controls how frequently that the LSB should do synchronization with the remote GIT repository. Please be reminded that this automatic synchronization only happens when LSB is launched. The other thing to mention is that the manual synchronization by clicking on the Synchronize button in the Views configuration page does not honor this interval setting, it does synchronization immediately when the button is clicked.</li>
+<li>**The repository is enabled to use the views hosted in it** - This is a switch that controls if the LSB views in this view repository will be visible in the open view dialog.</li>
+</ul>
+
 */
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*!
-\defgroup section_views The views come with LSB
+\defgroup section_views The LSB views and view repositories
+
+## Default View Repository
+
+The LSB applciation comes with a default view repository that is available at https://github.com/xjluo-lsb/lsb.views. When the LSB is launched, if the default view repository is not available, LSB will automatically clone the repository and make the views available to user. The view repository will be named as DefaultViews. This view repository is automatically configured and available in the view repository configuration dialog.
+
+## User Defined Repositories
+
+Users may also define their own repositories to be used in the LSB. As described in the **View Repository Editor**, user may configure a local only repositor by pointing the local view root to a local folder but not providing a GIT repository URL. In this case, all the views are available locally and not shared with others.
+
+In the other case, user may also configure a remote view repository by providing both the GIT repository URL and local view root folder. In this case, the content in the GIT repository will be automatically synced to the local folder every time the LSB applciation is launched. In this way, user may easily reuse the LSB views created by others or share the views s/he created with others.
+
 */
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1325,22 +1561,88 @@ class LsbView
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*!
-\defgroup section_create How to Create a LSB View
+\defgroup section_create_view How to Create a LSB View
 
-[Note] The recommended editor for composing LSB view file, which is in XML format, is the Visual Studio. It's the only
-editor that I'm aware of that comes with very good support with XML schema, and for free (using the community version).
+## Write a LSB view
 
-The LsbViewSchema.xsd file comes in the views folder is the schema definition for the LSB view file. With Visual Studio,
-it can provide very powerful hint and highlighting to help you composing or modifying a LSB view file.
+The recommended editor for composing LSB view file, in XML format, is the Microsoft [Visual Studio](https://visualstudio.microsoft.com/). With the provided schema definition for the LSB view files, the Visual Studio can provide rich hints on the potential nodes, attribute names, even values when user types in new text. This is the only editor that I'm aware of that comes with this feature, other editors (including Visual Studio Code) support syntax highlighting, but no hints at equivalent level.
 
-With documents on this site, you can get all the necessary information you need to create LSB view, from all data types
-to nodes supported and the explanation of each of them.
+The [LsbViewSchema.xsd](https://github.com/xjluo-lsb/lsb.views/blob/main/LsbViewSchema.xsd) comes in the views folder is the schema definition for the LSB view files. This schema file has all data types and data structures for view controls and values defined. In Visual Studio, it reads all these schema information and provides hinting in the editor. If your editor does not support schema based hinting, please read the type documents along with this page, you will get all the necessary information needed to create a LSB view file.
+
+The LSB view files all contain same structure descibed as below, the detailed schema introduction can be found at LsbView. Please refer to the sample views come in the DefaultViews view repository to understand the file format better.
+
+The file comes with root node named %LsbView, which has attributes named name, author, createTime and lastChangeTime. The node contains following child nodes, you may or may not need all of them to be presented in a LSB view file. The order of these nodes is not significant.
+- **description** is a node contains long description for the LSB view.
+- **version** is a node describing the version of the LSB view.
+- **modules** contains a list of modules that are automatically referenced in the Lua shell for the LSB view.
+- **os** defines which Operating Systems are supported by this LSB view.
+- **about** defines the about information for the view.
+- **view** is the actual root view control for the LSB view. In most cases, this should be a layout control, such as SplitLayout, TabLayout, etc., which could contain multiple child views for input or data view, or another layout control to host even more child views.
+- **procedures** contains a list of procedures that contains separated shell scripts if the LSB view needs them.
+- **launchers** contains a list of launchers that are used to launch another LSB view from current view.
+- **dataFlow** is the node that defines all the input parameter and output parameter mappings to get the view controls well connected.
+
+Here's a sample view that hosts a simple text view for editing plain text,
+
+\code{.xml}
+
+<?xml version="1.0"?>
+
+<LsbView xmlns="https://github.com/xjluo-lsb/lsb.views"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="https://github.com/xjluo-lsb/lsb.views ..\LsbViewSchema.xsd"
+         
+  name="TextView demo"
+  author="Kevin Luo"
+  createTime="2024-10-24T00:00:00Z"
+  lastChangeTime="2024-10-24T00:00:00.000Z">
+
+  <description>A simplest view that demostrates the TextView control.</description>
+  <version major="0" minor="1" build="0" revision="0" />
+
+  <view>
+    <textView id="6d627fac-651b-4815-b0fa-4d584f0bc45e" multiline="false" readOnly="false">
+      <data showProgress="false">
+        <script type="lua">
+<![CDATA[
+return [[This is the default text for the view.]]
+]]>
+        </script>
+      </data>
+    </textView>
+  </view>
+</LsbView>
+
+\endcode
+
+You may save this code snipper into a XML file and the follow the instructions in the next section to test and debug the view.
+
+## Parameter mapping
+
+As mentioned above, the **dataFlow** node is used to define the parameter mappings inside a view, typically connects an output parameter from a view control to an input parameter in another view control.
 */
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*!
-\defgroup section_debug How to Test/Debug a LSB View
+\defgroup section_debug_view How to Test/Debug a LSB View
 
+When you are creating a new LSB view, you definitely want to test it before you release it to other users. Here are the steps on how you can test a LSB view locally through the LSB application.
+
+<ol>
+<li>Create a folder for the view to be created/tested.</li>
+<li>Create or put the view to be tested in the folder.</li>
+<li>Launch LSB and open the settings dialog, create a new view repository points to this folder.</li>
+<li>Open the view to be tested in LSB, now you can see the view content.</li>
+<li>In the logs tab in the view window, you can find how the parameters are populated and how parameters are passed between different view controls in the LSB view.</li>
+<li>In the Lua tab in the view window, you can find all the Lua scripts executed within the view to implement the functionalities, such as parameter check, data generation, etc.</li>
+</ol>
+*/
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*!
+\defgroup section_wrapper_script
+
+The LSB application uses Lua as internal support script to implement many funtionalities, such as 
 */
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
