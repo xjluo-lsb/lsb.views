@@ -16,7 +16,7 @@
   <view>
     <splitLayout id="c5e33d43-fe6c-4511-9989-c5f46154ed34" orientation="Horizontal" size="300" fixedView="Right">
       <left>
-        <splitLayout id="c38801db-d578-4489-a20d-cfda47ff13d1" orientation="Vertical" size="300" fixedView="Top">
+        <splitLayout id="c38801db-d578-4489-a20d-cfda47ff13d1" orientation="Vertical" size="410" fixedView="Top">
           <top>
             <webView id="35a1b0a3-8f69-44d9-bc55-9fde3dbc7872" contentType="Content" loadDataAt="Creating">
               <caption visible="true">WebView with content built from script</caption>
@@ -30,22 +30,21 @@
                 <script type="lua">
                   <![CDATA[
 return [=[
-<h3>Section 1</h3>
-<div>
-content for section 1 
-<button onclick='onClick1()'>Click on me</button><br/>
-<button onClick='onClick2()'>Click for multiple fields</button><br/>
-Count = <span id='count'>?</span>
-</div>
+<h3 style="padding: 10px; background-color: #F09B59; color: #FFFFFF; border-radius: 5px;">
+Section 1 for calling sendValue() an sendObject()
+</h3>
 
-<br/><hr/>
+<p>Here's content for section 1,</p>
+<p><button onclick='onClick1()'>Try a few clicks on me to see result of showMessage() and sendValue()</button></p>
+<p><button onclick='onClick2()'>Click me to see how sendObject() works for multiple fields</button></p>
+<p>Count = <span id='count'>?</span></p>
 
-<h3>Section 2</h3>
-<div>
-content for section 2 
-<button onclick='onClick3()'>Click on me</button>
+<h3 style="padding: 10px; background-color: #818049; color: #FFFFFF; border-radius: 5px;">
+Section 2 for calling sendData()
+</h3>
 
-</div>
+<p>Here's content for section 2,</p>
+<p><button onclick='onClick3()'>Click on me to see the result of sendData()</button></p>
 
 <script>
 var count = 0;

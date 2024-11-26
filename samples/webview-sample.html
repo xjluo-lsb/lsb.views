@@ -1,15 +1,17 @@
-<h3>Section header</h3>
-<hr/>
+<h3 style="padding: 10px; background-color: #059862; color: #FFFFFF; border-radius: 5px;">Section from file webview-sample.html</h3>
 <div>
-This is a paragraph for the sample view content.
+    <p>This is a paragraph for the sample view content.</p>
+</div>
+<hr/>
+<br/>
+<div>
+Prompt for text input: <input type="text" id="textInput" />
 </div>
 <br/>
 <div>
-Text input: <input type="text" id="textInput" />
+Result from text input: <span id="result"></span>
 </div>
-<div>
-Result: <span id="result"></span>
-</div>
+
 <script type="text/javascript">
 let inputControl = document.getElementById("textInput");
 inputControl.addEventListener("input", function(event) {

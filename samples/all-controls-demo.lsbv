@@ -27,9 +27,9 @@
           <propertyInput id="3ebd2027-cae2-4845-b131-653103399c70" trimSpace="Both" loadDataAt="Creating">
             <caption visible="true">Sample of PropertyInput</caption>
             <output>
-              <param name="string" id="ce4a990f-497c-4af6-9912-9f5c2dcc91e1" activation="Default"/>
-              <param name="boolean" id="d69190c7-33dd-4143-8282-94a231280421" activation="Default"/>
-              <param name="longString" id="342a71fc-a372-43ea-a66f-d2c89d7b827d" activation="Default"/>
+              <param name="Caption string for listview" id="ce4a990f-497c-4af6-9912-9f5c2dcc91e1" activation="Default"/>
+              <param name="Boolean" id="d69190c7-33dd-4143-8282-94a231280421" activation="Default"/>
+              <param name="LongString" id="342a71fc-a372-43ea-a66f-d2c89d7b827d" activation="Default"/>
             </output>
             <data showProgress="false">
               <script type="pwsh">
@@ -44,7 +44,7 @@ return @(
     (New-Object PSObject -Property @{ Name = "RemotingProtocolVersion"; Type = "String"; Category = "Versions"; Description = "PS remoting protocol version of the PowerShell"; Default = $version.PSRemotingProtocolVersion.ToString(); }),
     (New-Object PSObject -Property @{ Name = "SerializationVersion"; Type = "String"; Category = "Versions"; Description = "Serialization version of the PowerShell"; Default = $version.SerializationVersion.ToString(); }),
     (New-Object PSObject -Property @{ Name = "Edition"; Type = "String"; Category = "Versions"; Description = "Edition of the PowerShell"; Default = $version.PSEdition }),
-    (New-Object PSObject -Property @{ Name = "String"; Type = "String"; Category = "Others"; Description = "String input" }),
+    (New-Object PSObject -Property @{ Name = "Caption string for listview"; Type = "String"; Category = "Others"; Description = "String input" }),
     (New-Object PSObject -Property @{ Name = "Boolean"; Type = "Boolean"; Category = "Others"; Description = "Boolean input" }),
     (New-Object PSObject -Property @{ Name = "LongString"; Type = "LongString"; Category = "Others"; Description = "Long string input" })
 )
@@ -52,6 +52,7 @@ return @(
               </script>
             </data>
             <properties>
+              <!-- Following property definitions would be overridden by the property definition returned from data source -->
               <property name="string" type="String" category="Test" description="This is sample input for string value" />
               <property name="boolean" type="Boolean" category="Test" description="This is sample input for boolean value" />
               <property name="longString" type="LongString" category="Test" default="This is sample input for long string value" />
@@ -61,15 +62,19 @@ return @(
         <bottom>
           <listView id="d3957d75-e795-4da2-b420-2e8edea5aa9d" sortable="true" multiSelect="false" loadDataAt="Creating">
             <caption visible="true">Caption for ListView: {StringValue}</caption>
-            <input />
+            <input>
+              <param name="StringValue" id="1e5af902-c3b1-4514-9ede-d52f6562262f" />
+            </input>
             <output />
             <data showProgress="false">
               <script type="lua">
                 <![CDATA[
 return {
-  { Name = "StringValue", Value = "This is a string value" },
-  { Name = "BooleanValue", Value = "True" },
-  { Name = "LongStringValue", Value = [[This is a long string value.
+  { Name = "String value", Value = "This is a string value" },
+  { Name = "Boolean value", Value = true },
+  { Name = "Integer value", Value = 818 },
+  { Name = "Float number", Value = 99.33 },
+  { Name = "Long string value", Value = [[This is a long string value.
 A second line here.]] }
 }
 ]]>
@@ -229,9 +234,7 @@ return {
                     <button id="d6b447d1-b331-43ff-b2ae-c171f18c6904" label="Button B">
                       <data showProgress="false">
                         <script type="pwsh">
-                          <![CDATA[
-
-]]>
+<![CDATA[]]>
                         </script>
                       </data>
                     </button>
@@ -321,6 +324,9 @@ return "https://www.wxwidgets.org"
 </view>
   
 <dataFlow>
+  <mapping source="ce4a990f-497c-4af6-9912-9f5c2dcc91e1">
+    <target>1e5af902-c3b1-4514-9ede-d52f6562262f</target>
+  </mapping>
 </dataFlow>
 
 </LsbView>
