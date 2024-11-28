@@ -81,7 +81,7 @@
           ratio="0.5">
           <caption visible="false"></caption>
           <top>
-            <listView id="a1f7ce3a-7c5e-4765-95e6-147049163135" loadDataAt="Default" sortable="true" multiSelect="true">
+            <fileList id="a1f7ce3a-7c5e-4765-95e6-147049163135" loadDataAt="Default" multiSelect="true" filter="true" statis="true" files="true" dirs="true">
               <caption visible="true">Folders and files under selected folder: {path}</caption>
               <input>
                 <param id="837825a3-9853-4318-8211-b0c4b50e5967" name="path" />
@@ -92,11 +92,9 @@
                 <param id="2bfcf265-52cf-4356-a90a-244f727da546" name="CreationTime" />
                 <param id="1a8bde48-cda4-4b84-b716-88c1d4daca91" name="LastWriteTime" />
               </output>
-              <data>
-                <script type="pwsh">
-<![CDATA[
-Get-ChildItem '{path}' | Select-Object -Property @('Name', 'Mode', 'Length', 'CreationTime', 'LastWriteTime')
-]]>
+              <data showProgress="false">
+                <script type="lua">
+                  <![CDATA[return [[{path}]]]]>
                 </script>
               </data>
               <contextMenu copy="true" refresh="true">
@@ -110,23 +108,8 @@ lsb.showMessage("Hello world!")
                   </data>
                 </menuItem>
               </contextMenu>
-              <filter visible="true" prompt="Filter:" placeholder="Type here to filter in the file list" />
-              <status visible="true"
-                singleItemCountPrompt="There is %%ITEM_COUNT%% item in the list"
-                multipleItemCountPrompt="There are %%ITEM_COUNT%% items in the list"
-                noSelectionPrompt="there is no item selected"
-                currentSelectionPrompt="item %%ITEM_INDEX%% is currently selected"
-                singleSelectionPrompt="there is %%ITEM_COUNT%% item selected in the list"
-                multipleSelectionPrompt="there are %%ITEM_COUNT%% items selected in the list" />
-              <columns>
-                <column name="Name" width="160" align="Left" visible="true" />
-                <column name="LastWriteTime" displayName="Last Write Time" width="220" align="Right" />
-                <column name="Mode" width="60" align="Right" />
-                <column name="Length" width="100" align="Right" />
-                <column name="CreationTime" displayName="Creation Time" width="220" align="Right" />
-              </columns>
               <rowStyles />
-            </listView>
+            </fileList>
           </top>
           <bottom>
             <textView id="77962981-c306-460a-a878-dec857d11bf3" loadDataAt="Default" readOnly="false">
