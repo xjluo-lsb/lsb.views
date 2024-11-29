@@ -35,7 +35,7 @@ Section 1 for calling sendValue() an sendObject()
 </h3>
 
 <p>Here's content for section 1,</p>
-<p><button onclick='onClick1()'>Try a few clicks on me to see result of showMessage() and sendValue()</button></p>
+<p><button onclick='onClick1()'>Try a few clicks on me to see result of showInformation() and sendValue()</button></p>
 <p><button onclick='onClick2()'>Click me to see how sendObject() works for multiple fields</button></p>
 <p>Count = <span id='count'>?</span></p>
 
@@ -65,7 +65,7 @@ function onClick1()
     }
     else
     {
-        lsb.showMessage("This is the first click and it triggers this message dialog.\nStarting from next click, it will send value out.");
+        lsb.showInformation("This is the first click and it triggers this message dialog.\nStarting from next click, it will send value out.");
         count = 1;
     }
     

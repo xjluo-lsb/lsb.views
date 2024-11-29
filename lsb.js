@@ -221,7 +221,8 @@ var lsb = /** @class */ (function () {
         if (name.length > 0 && value != null) {
             var queryName = encodeURIComponent(name);
             var queryValue = encodeURIComponent(value);
-            window.location.href = "lsb://sendValue?{0}={1}".format(queryName, queryValue);
+            var dataMessage = "data:value?{0}={1}".format(queryName, queryValue);
+            lsb.sendMessage(dataMessage);
         }
     };
     //! \brief Send out data object through query string in URL
@@ -234,7 +235,8 @@ var lsb = /** @class */ (function () {
                 var queryValue = encodeURIComponent(data[property]);
                 return "{0}={1}".format(queryName, queryValue);
             });
-            window.location.href = "lsb://sendValue?{0}".format(items.join("&"));
+            var dataMessage = "data:value?{0}".format(items.join("&"));
+            lsb.sendMessage(dataMessage);
         }
     };
     //! \brief Send out complicated data object through hidden form
@@ -258,14 +260,30 @@ var lsb = /** @class */ (function () {
                 var queryValue = encodeURIComponent(id);
                 return "{0}={1}".format(queryName, queryValue);
             });
-            window.location.href = "lsb://sendData?{0}".format(items.join("&"));
+            var dataMessage = "data:index?{0}".format(items.join("&"));
+            lsb.sendMessage(dataMessage);
         }
     };
-    //! \brief Show message from the WebView content
-    //! @param message The message to be displayed through LSB view
-    lsb.showMessage = function (message) {
+    //! \brief Send message from the WebView content
+    //! @param message The message to be sent to the LSB view from the WebView content
+    lsb.sendMessage = function (message) {
         // @ts-expect-error The lsbView is defined from the WebView control
         window.lsbView.postMessage(message);
+    };
+    //! \brief Show warning message from the WebView content
+    //! @param message The warning message to be sent
+    lsb.showWarning = function (message) {
+        lsb.sendMessage("warning:" + message);
+    };
+    //! \brief Show error message from the WebView content
+    //! @param message The error message to be sent
+    lsb.showError = function (message) {
+        lsb.sendMessage("error:" + message);
+    };
+    //! \brief Show information message from the WebView content
+    //! @param message The information message to be sent
+    lsb.showInformation = function (message) {
+        lsb.sendMessage("information:" + message);
     };
     //! \brief The method for loading the specified script files. When all the files and their
     //！dependencies are loaded, the callback function will be triggered if it exists.
