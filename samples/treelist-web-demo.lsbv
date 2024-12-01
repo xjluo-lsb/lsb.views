@@ -4,24 +4,28 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="https://github.com/xjluo-lsb/lsb.views ..\LsbViewSchema.xsd"
 
-  name="Demonstrate TreeView and WebView (show page with URL)"
+  name="Demonstrate TreeListView and WebView (show page with URL)"
   author="Kevin Luo"
   createTime="2023-11-26T00:55:28z"
   lastChangeTime="2023-11-26T00:55:28z">
 
-  <description>A sample view that demonstrates tree view and using WebView to display web page with specified URL</description>
+  <description>A sample view that demonstrates the TreeListView and uses WebView to display web page with specified URL</description>
   <version major="0" minor="0" build="1" revision="0" />
 
   <view>
+    <!-- There are two controls in the view, the TreeListView to display the web site list and the WebView for displaying the web
+    content. The two controls are hosted within the SplitLayout so they become resizable. -->
     <splitLayout id="a420f7c9-beb2-48b3-9b4a-58c114d257de" orientation="Horizontal" size="280" fixedView="Left">
       <left>
         <treeListView id="51ebc512-d2ed-4381-806c-bd8be8c3ba90" childProperty="children" loadDataAt="Creating">
           <caption visible="true">Web site list</caption>
+          <!-- There is no input needed for the web site list while two output parameters for the Web site name and URL. -->
           <input />
           <output>
             <param id="ec69540e-ed45-49ca-b13d-645894827c05" name="Name"/>
             <param id="0b1196a2-2953-427f-9e2a-99ba1b510b12" name="URL"/>
           </output>
+          <!-- The view uses lua script to construct the Web site list -->
           <data showProgress="false">
             <script type="lua">
 <![CDATA[
@@ -45,6 +49,7 @@ return
 ]]>
             </script>
           </data>
+          <!-- The columns to show in the TreeListView must be predefined with the name for data and width for column width -->
           <columns>
             <column name="Name" width="120"/>
             <column name="URL" width="260"/>
@@ -52,12 +57,16 @@ return
         </treeListView>
       </left>
       <right>
+        <!-- The WebView control is used for displaying the Web pages specifed with URL. The contentType is set to Url, which means
+        that the data returned from the data source is URL for the WebView to navigate to. -->
         <webView id="243bac14-603b-4127-b1ea-038c7e3fb66d" contentType="Url">
           <caption visible="true">Accessing {Name}</caption>
+          <!-- The name parameter is only used for updating the caption for the view, while URL is used in the lua script. -->
           <input>
             <param id="98fd4496-b48b-461e-be0f-e03d04356570" name="Name"/>
             <param id="aecdbb60-23f6-4f56-8944-e7692120ee2b" name="URL"/>
           </input>
+          <!-- The lua script simply returns the URL passed in from the input parameter -->
           <data showProgress="false">
             <script type="lua">
 <![CDATA[return "{URL}"]]>
@@ -69,9 +78,11 @@ return
   </view>
 
   <dataFlow>
+    <!-- Passes the Name parameter from the TreeListView to the WebView -->
     <mapping source="ec69540e-ed45-49ca-b13d-645894827c05">
       <target>98fd4496-b48b-461e-be0f-e03d04356570</target>
     </mapping>
+    <!-- Passes the URL parameter from the TreeListView to the WebView -->
     <mapping source="0b1196a2-2953-427f-9e2a-99ba1b510b12">
       <target>aecdbb60-23f6-4f56-8944-e7692120ee2b</target>
     </mapping>
