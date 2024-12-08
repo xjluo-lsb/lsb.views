@@ -379,6 +379,18 @@ in the LSB view files. It also defines the file structure of the view files usin
     </xs:restriction>
   </xs:simpleType>
 
+  <xs:simpleType name="HexViewDataType" final="restriction">
+    <xs:annotation>
+      <xs:documentation>
+        This is the enumeration type of data return from data source in HexView
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Data" />
+      <xs:enumeration value="File" />
+    </xs:restriction>
+  </xs:simpleType>
+
   <!-- Following types are non-structure types derived from primitive types -->
 
   <!-- UUID type definition -->
@@ -792,7 +804,7 @@ in the LSB view files. It also defines the file structure of the view files usin
       <xs:element name="chartView" type="ChartView" />
       <xs:element name="fileList" type="FileListView" />
       <xs:element name="fileTree" type="FileTreeView" />
-	  <xs:element name="hexView" type="HexView" />
+	    <xs:element name="hexView" type="HexView" />
       <xs:element name="listView" type="ListView" />
       <xs:element name="textView" type="TextView" />
       <xs:element name="treeListView" type="TreeListView" />
@@ -1010,7 +1022,7 @@ in the LSB view files. It also defines the file structure of the view files usin
 	  </xs:documentation>
 	</xs:annotation>
 	<xs:sequence>
-	  <xs:group ref="ViewElementa" />
+	  <xs:group ref="ViewElements" />
       <xs:element name="font" type="FontDesc" minOccurs="0" maxOccurs="1" />
       <xs:element name="highlights" minOccurs="0" maxOccurs="1">
         <xs:complexType>
@@ -1019,13 +1031,14 @@ in the LSB view files. It also defines the file structure of the view files usin
           </xs:sequence>
         </xs:complexType>
       </xs:element>
-	</xs:sequence>
-	<xs:attributeGroup ref="ViewAttributes" />
-	<xs:attribute name="groupSize" type="xs:unsignedInt" use="optional" default="0" />
-	<xs:attribute name="lineSize" type="xs:unsignedInt" use="optional" default="16" />
-	<xs:attribute name="offsetSize" type="xs:unsignedInt" use="optional" default="8" />
-	<xs:attribute name="showOffset" type="xs:boolean" use="optional" default="true" />
-	<xs:attribute name="showText" type="xs:boolean" use="optional" default="true" />
+	  </xs:sequence>
+	  <xs:attributeGroup ref="ViewAttributes" />
+    <xs:attribute name="dataType" type="HexViewDataType" use="optional" default="Data" />
+	  <xs:attribute name="groupSize" type="xs:unsignedInt" use="optional" default="0" />
+	  <xs:attribute name="lineSize" type="xs:unsignedInt" use="optional" default="16" />
+	  <xs:attribute name="offsetSize" type="xs:unsignedInt" use="optional" default="8" />
+	  <xs:attribute name="showOffset" type="xs:boolean" use="optional" default="true" />
+	  <xs:attribute name="showText" type="xs:boolean" use="optional" default="true" />
   </xs:complexType>
 
   <xs:complexType name="RowStyle">
@@ -1393,34 +1406,65 @@ in the LSB view files. It also defines the file structure of the view files usin
     <xs:attribute name="trimSpace" type="TrimSpace" use="optional" default="None" />
   </xs:complexType>
 
-  <xs:complexType name="Procedure">
+  <xs:complexType name="Procedures">
     <xs:annotation>
       <xs:documentation>
-        This is schema for the Procedure component.
+        This is schema for the Procedure list.
       </xs:documentation>
     </xs:annotation>
     <xs:sequence>
-      <xs:group ref="ComponentElements" />
+      <xs:element name="procedude" minOccurs="1" maxOccurs="unbounded">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:group ref="ComponentElements" />
+          </xs:sequence>
+          <xs:attributeGroup ref="ComponentAttributes" />
+          <xs:attribute name="name" type="xs:string" use="optional" />
+          <xs:attribute name="whenToExecute" type="WhenToExecute" use="optional" default="ParameterChanging" />
+          <xs:attribute name="timerInterval" type="xs:string" use="optional" />
+        </xs:complexType>
+      </xs:element>
     </xs:sequence>
-    <xs:attributeGroup ref="ComponentAttributes" />
-    <xs:attribute name="name" type="xs:string" use="optional" />
-    <xs:attribute name="whenToExecute" type="WhenToExecute" use="optional" default="ParameterChanging" />
-    <xs:attribute name="timerInterval" type="xs:string" use="optional" />
   </xs:complexType>
 
-  <xs:complexType name="ViewLauncher">
+  <xs:complexType name="ViewLaunchers">
     <xs:annotation>
       <xs:documentation>
-        This is the schema for ViewLauncher component.
+        This is the schema for ViewLauncher list.
       </xs:documentation>
     </xs:annotation>
     <xs:sequence>
-      <xs:group ref="ComponentElements" />
-      <xs:element name="connection" type="DataFlow" minOccurs="1" maxOccurs="1" />
+      <xs:element name="launcher" minOccurs="1" maxOccurs="unbounded">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:group ref="ComponentElements" />
+            <xs:element name="connection" type="DataFlow" minOccurs="1" maxOccurs="1" />
+          </xs:sequence>
+          <xs:attributeGroup ref="ComponentAttributes" />
+          <xs:attribute name="repository" type="xs:string" use="required" />
+          <xs:attribute name="view" type="xs:string" use="required" />
+        </xs:complexType>
+      </xs:element>
     </xs:sequence>
-    <xs:attributeGroup ref="ComponentAttributes" />
-    <xs:attribute name="repository" type="xs:string" use="required" />
-    <xs:attribute name="view" type="xs:string" use="required" />
+  </xs:complexType>
+
+  <xs:complexType name="ScriptReferences">
+    <xs:annotation>
+      <xs:documentation>
+        This is the schema for ScriptReferences.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="script" minOccurs="1" maxOccurs="unbounded">
+        <xs:complexType>
+          <xs:simpleContent>
+            <xs:extension base="xs:string">
+              <xs:attribute name="type" type="xs:string" use="optional" default="lua" />
+            </xs:extension>
+          </xs:simpleContent>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
   </xs:complexType>
 
   <xs:element name="LsbView">
@@ -1433,30 +1477,12 @@ in the LSB view files. It also defines the file structure of the view files usin
       <xs:all>
         <xs:element name="description" type="xs:string" minOccurs="0" maxOccurs="1" />
         <xs:element name="version" type="Version" minOccurs="1" maxOccurs="1" />
-        <xs:element name="modules" minOccurs="0" maxOccurs="1">
-          <xs:complexType>
-            <xs:sequence>
-              <xs:element name="module" type="xs:string" minOccurs="1" maxOccurs="unbounded" />
-            </xs:sequence>
-          </xs:complexType>
-        </xs:element>
+        <xs:element name="scripts" type="ScriptReferences" minOccurs="0" maxOccurs="1" />
         <xs:element name="os" type="OS" minOccurs="0" maxOccurs="1" />
         <xs:element name="about" type="About" minOccurs="0" maxOccurs="1" />
         <xs:element name="view" type="ChoiceOfView" minOccurs="1" maxOccurs="1" />
-        <xs:element name="procedures" minOccurs="0" maxOccurs="1">
-          <xs:complexType>
-            <xs:sequence>
-              <xs:element name="procedure" type="Procedure" minOccurs="0" maxOccurs="unbounded" />
-            </xs:sequence>
-          </xs:complexType>
-        </xs:element>
-        <xs:element name="launchers" minOccurs="0" maxOccurs="1">
-          <xs:complexType>
-            <xs:sequence>
-              <xs:element name="launcher" type="ViewLauncher" minOccurs="0" maxOccurs="unbounded" />
-            </xs:sequence>
-          </xs:complexType>
-        </xs:element>
+        <xs:element name="procedures" type="Procedures" minOccurs="0" maxOccurs="1" />
+        <xs:element name="launchers" type="ViewLaunchers" minOccurs="0" maxOccurs="1" />
         <xs:element name="dataFlow" type="DataFlow" minOccurs="0" maxOccurs="1" />
       </xs:all>
       <xs:attribute name="name" type="xs:string" use="required" />

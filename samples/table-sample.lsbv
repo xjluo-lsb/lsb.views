@@ -38,7 +38,7 @@
         <cell row="2" col="0">
           <buttonGroup id="51b2d859-2ec6-468e-813a-ed389af6b1d6" autoFlow="true" buttonsPerRow="2">
             <buttons>
-              <button id="53d9c308-e1a3-4016-b811-52e74b63c0d8" label="Button to launch view" description="This is help text for the first button that lauches a view">
+              <button id="53d9c308-e1a3-4016-b811-52e74b63c0d8" label="Button to launch view" description="This is the first button in the button group, and it will launch another view on click">
                 <output>
                   <param id="b0fa8eec-ea44-45ab-83b0-129a10b2c0e6" name="*"/>
                 </output>
@@ -48,7 +48,7 @@
                   </script>
                 </data>
               </button>
-              <button id="5f99e1d2-7567-4165-a025-7051bad3dafd" label="Second button" description="This is help text for the second button">
+              <button id="5f99e1d2-7567-4165-a025-7051bad3dafd" label="Second button" description="This is the second button in the button group, and it executes some lua script on click">
                 <data showProgress="false">
                   <script type="lua">
 <![CDATA[
@@ -58,9 +58,9 @@ return 0
                   </script>
                 </data>
               </button>
-              <button id="e31839d6-36db-4958-ab69-9d5e783173c7" label="Give it a pretty long name for the third button" description="This is help text for the third button">
+              <button id="e31839d6-36db-4958-ab69-9d5e783173c7" label="Give it a pretty loooooooong name for the third button" description="This is the third button in the button group, nothing will be done on click">
               </button>
-              <button id="0e27519f-0a85-4efc-baeb-8f6e73c6c151" label="OK" description="This is help text for OK button">
+              <button id="0e27519f-0a85-4efc-baeb-8f6e73c6c151" label="OK" description="This is the last button in the button group, nothing hooked to action too.">
               </button>
             </buttons>
           </buttonGroup>
@@ -126,7 +126,7 @@ Sample content for TextView
   </view>
 
   <launchers>
-    <launcher id="70235826-d322-40cc-9231-42c2e6bf8560" repository="DefaultViews" view="chart-sample.lsbv" >
+    <launcher id="70235826-d322-40cc-9231-42c2e6bf8560" repository="DefaultViews" view="chartview-sample.lsbv" >
       <input>
         <param id="d8763834-70ff-41bf-949c-e65a291e2361" name="ready"/>
       </input>

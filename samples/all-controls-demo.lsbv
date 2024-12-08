@@ -11,6 +11,10 @@
   
   <description>This view demostrates all the controls supported in the LSB. It requires pwsh to be configured to run the script.</description>
   <version major="0" minor="9" build="0" revision="0" />
+  <scripts>
+    <script type="lua">demo-lua.lua</script>
+    <script type="pwsh">demo-pwsh.ps1</script>
+  </scripts>
   <os>Any</os>
   <about type="Url">
 <![CDATA[https://www.wxwidgets.org]]>
@@ -33,22 +37,7 @@
             </output>
             <data showProgress="false">
               <script type="pwsh">
-<![CDATA[
-$version = $PSVersionTable
-return @(
-    (New-Object PSObject -Property @{ Name = "Version"; Type = "String"; Category = "Versions"; Description = "Version of the currently running PowerShell"; Default = $version.PSVersion.ToString(); }),
-    (New-Object PSObject -Property @{ Name = "BuildVersion"; Type = "String"; Category = "Versions"; Description = "Build version of the PowerShell"; Default = $version.GitCommitId.ToString(); }),
-    (New-Object PSObject -Property @{ Name = "OS"; Type = "String"; Category = "Versions"; Description = "OS version"; Default = $version.OS.ToString(); }),
-    (New-Object PSObject -Property @{ Name = "Platform"; Type = "String"; Category = "Versions"; Description = "OS version"; Default = $version.Platform.ToString(); }),
-    (New-Object PSObject -Property @{ Name = "WSManStackVersion"; Type = "String"; Category = "Versions"; Description = "WS Man Stack version of the PowerShell"; Default = $version.WSManStackVersion.ToString(); }),
-    (New-Object PSObject -Property @{ Name = "RemotingProtocolVersion"; Type = "String"; Category = "Versions"; Description = "PS remoting protocol version of the PowerShell"; Default = $version.PSRemotingProtocolVersion.ToString(); }),
-    (New-Object PSObject -Property @{ Name = "SerializationVersion"; Type = "String"; Category = "Versions"; Description = "Serialization version of the PowerShell"; Default = $version.SerializationVersion.ToString(); }),
-    (New-Object PSObject -Property @{ Name = "Edition"; Type = "String"; Category = "Versions"; Description = "Edition of the PowerShell"; Default = $version.PSEdition }),
-    (New-Object PSObject -Property @{ Name = "Caption string for listview"; Type = "String"; Category = "Others"; Description = "String input" }),
-    (New-Object PSObject -Property @{ Name = "Boolean"; Type = "Boolean"; Category = "Others"; Description = "Boolean input" }),
-    (New-Object PSObject -Property @{ Name = "LongString"; Type = "LongString"; Category = "Others"; Description = "Long string input" })
-)
-]]>
+<![CDATA[return CreateSamplePropertySettings]]>
               </script>
             </data>
             <properties>
@@ -68,16 +57,7 @@ return @(
             <output />
             <data showProgress="false">
               <script type="lua">
-                <![CDATA[
-return {
-  { Name = "String value", Value = "This is a string value" },
-  { Name = "Boolean value", Value = true },
-  { Name = "Integer value", Value = 818 },
-  { Name = "Float number", Value = 99.33 },
-  { Name = "Long string value", Value = [[This is a long string value.
-A second line here.]] }
-}
-]]>
+<![CDATA[return createSampleDataForListView()]]>
               </script>
             </data>
             <contextMenu copy="true" refresh="true">
@@ -183,24 +163,7 @@ And another loooooooooooooooong line with more words in one single line.
                   <caption visible="true">Caption for TreeView</caption>
                   <data showProgress="false">
                     <script type="lua">
-                      <![CDATA[
-return {
-  name = "Parent item",
-  child = {
-    {
-      name = "Child item",
-      child = {
-        {
-          name = "Grand child 1 item",
-        },
-        {
-          name = "Grand child 2 item",
-        },
-      }
-    }
-  }
-}
-]]>
+<![CDATA[return createSampleDataForTreeView()]]>
                     </script>
                   </data>
                 </treeView>
@@ -222,12 +185,12 @@ return {
                       </output>
                       <data showProgress="false">
                         <script type="Lua">
-                          <![CDATA[
-                          result = {
-                            name = "Name of result",
-                            value = 0818
-                          }
-                        ]]>
+<![CDATA[
+return {
+  name = "Name of result",
+  value = 0818
+}
+]]>
                         </script>
                       </data>
                     </button>
@@ -251,14 +214,7 @@ return {
                 <chartView id="07bbe232-6fed-47f5-8baa-620ee54e382c" chartType="ColumnChart" loadDataAt="Creating" showTooltip="false">
                   <data showProgress="false">
                     <script type="lua">
-                      <![CDATA[
-return {
-    labels = { "January", "February", "March", "April", "May", "June", "July" },
-    dataset_1 = { 3, 2.5, 1.2, 3, 4, 5, 1 },
-    dataset_2 = { 1, 1.33, 2.5, 2, 3, 1.8, 0.4 },
-    dataset_3 = { 2.3, 0.5, 1.5, 4, 1, 0.5, 0.4 }
-}
-]]>
+<![CDATA[return createSamepleDataForColumnChart()]]>
                     </script>
                   </data>
                   <xAxis name="time" displayName="Timestamp" isDateTime="true"/>
@@ -273,28 +229,7 @@ return {
                 <treeListView id="58979c7f-adda-45ea-89f4-f0744a808276" childProperty="child" loadDataAt="Creating">
                   <data showProgress="false">
                     <script type="lua">
-                      <![CDATA[
-return {
-  Name = "Parent item",
-  Value = "Parent value",
-  child = {
-    {
-      Name = "Child item",
-      Value = "Child value",
-      child = {
-        {
-          Name = "Grand child 1 item",
-          Value = "Grand child 1 value"
-        },
-        {
-          Name = "Grand child 2 item",
-          Value = "Grand child 2 value"
-        },
-      }
-    }
-  }
-}
-]]>
+<![CDATA[return createSampleDataForTreeListView()]]>
                     </script>
                   </data>
                   <columns>
@@ -307,9 +242,7 @@ return {
                 <webView id="508c2c51-9e2f-46e4-a8ce-4f0be3a9a670" contentType="Url" loadDataAt="Creating">
                   <data showProgress="false">
                     <script type="lua">
-                      <![CDATA[
-return "https://www.wxwidgets.org"
-]]>
+<![CDATA[return "https://www.wxwidgets.org"]]>
                     </script>
                   </data>
                   <highlights />
