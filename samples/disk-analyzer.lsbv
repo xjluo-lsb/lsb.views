@@ -1,0 +1,180 @@
+<?xml version="1.0"?>
+
+<LsbView xmlns="https://github.com/xjluo-lsb/lsb.views"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="https://github.com/xjluo-lsb/lsb.views ..\LsbViewSchema.xsd"
+
+  name="Disk Usage Analyzer"
+  author="Kevin Luo"
+  createTime="2024-12-09T22:54:45z"
+  lastChangeTime="2024-12-09T22:54:45z">
+
+  <description>A sample view demonstrates using D3 library to visualize data. It uses du to collect folder sizes on Linux/Mac OS X
+machines, and then converts the data into JSON using jq, finally render the data in treemap using D3 library.</description>
+  <version major="0" minor="0" build="1" revision="0" />
+    
+  <view>
+    <splitLayout id="37cdf872-45e5-484a-8e3a-9a5f09df3a23" orientation="Horizontal" fixedView="Left" size="280">
+      <left>
+        <tableLayout id="e1c6943a-ffe9-4da4-84b3-e1fd548fdbda">
+          <rows>
+            <row height="100" sizeType="percentage"/>
+            <row height="238" sizeType="absolute"/>
+            <row height="32" sizeType="absolute"/>
+          </rows>
+          <columns>
+            <column width="100" sizeType="percentage"/>
+          </columns>
+          <cells>
+            <cell row="0" col="0">
+              <fileTree id="3fc5559b-73eb-4449-8f7f-998b217bbeee" loadDataAt="Creating" root="/">
+                <caption visible="true">Select a folder to check</caption>
+                <input />
+                <output>
+                  <param id="8c083ef1-7d39-4040-81cf-8aaec29d6117" name="__path__" activation="Default"/>
+                </output>
+                <data showProgress="false">
+                  <script type="lua">
+<![CDATA[]]>
+                  </script>
+                </data>
+              </fileTree>
+            </cell>
+            <cell row="1" col="0">
+              <propertyInput id="6d8d3fab-f3f6-46be-a0e6-6a9405e5248e">
+                <caption visible="true">Parameters for the treemap</caption>
+                <output>
+                  <param id="26c5490c-b1c3-464e-ad91-c205448f397a" name="threshold"/>
+                  <param id="bdf10ef6-ed3c-437a-9868-2e73b4545cbc" name="colorScheme"/>
+                </output>
+                <properties>
+                  <property name="threshold" label="Size threshold" category="Treemap" type="UnsignedInteger" description="This is size threshold for the tree map. Any folder has size smallers than this threshold won't be shown." default="1024" />
+                  <property name="colorScheme" label="Color scheme" category="Treemap" type="Enumeration" description="The color scheme for the tree map" default="schemePastel1">
+                    <options>
+                      <option>schemeCategory10</option>
+                      <option>schemeAccent</option>
+                      <option>schemeDark2</option>
+                      <option>schemeObservable10</option>
+                      <option>schemePaired</option>
+                      <option>schemePastel1</option>
+                      <option>schemePastel2</option>
+                      <option>schemeSet1</option>
+                      <option>schemeSet2</option>
+                      <option>schemeSet3</option>
+                      <option>schemeTableau10</option>
+                    </options>
+                  </property>
+                </properties>
+              </propertyInput>
+            </cell>
+            <cell row="2" col="0">
+              <button id="ce082e87-7fee-4d74-88b6-ad18ce948dfc" label="Check" description="Start checking the folder sizes under the specified path" dock="None">
+                <input>
+                  <param id="5108add4-e94d-4206-b711-d443f9f917d0" name="rootPath" />
+                </input>
+                <output>
+                  
+                </output>
+                <condition></condition>
+                <data showProgress="false">
+                  <script type="lua">
+                    <![CDATA[]]>
+                  </script>
+                </data>
+              </button>
+            </cell>
+          </cells>
+        </tableLayout>
+      </left>
+      <right>
+        <splitLayout id="9918fec4-ca92-415d-996d-eec993ebe983" orientation="Vertical" fixedView="Bottom" size="280">
+          <top>
+            <webView id="1a0cc862-dc53-4d73-b919-a9016e66055c" contentType="Content" loadDataAt="Default">
+              <!-- Modified from D3 example at https://observablehq.com/@d3/treemap/2 -->
+              <caption visible="true">Folders have size larger than {threshold} MB</caption>
+              <input>
+                <param id="ee74da62-badf-4ef4-83c0-12c3d56d18d8" name="rootPath"/>
+                <param id="43d3be30-e814-4be9-934b-420b8beadfa1" name="threshold"/>
+                <param id="99d09bad-e860-4314-acf2-614fea64cd3a" name="colorScheme"/>
+              </input>
+              <output>
+                <param id="66101b57-b0e5-4b06-a1e7-f9af3495e338" name="path"/>
+              </output>
+              <data showProgress="false">
+                <script type="lua">
+                  <![CDATA[
+return [[
+<div style="display:block;">
+  <svg id="container"></svg>
+</div>
+
+<script type="text/javascript">
+var tree = Node.buildTree(data, 0);
+tree.filter({threshold} * 1024);
+window.onresize = function(event) { renderTreemap(tree, {colorScheme}); }
+window.onresize();
+</script>
+]]
+                    ]]>
+                </script>
+              </data>
+              <scripts>
+                <file>https://d3js.org/d3.v6.js</file>
+                <file path="Temp">disk-analyzer-data.js</file>
+                <file path="View">disk-analyzer.js</file>
+              </scripts>
+            </webView>
+          </top>
+          <bottom>
+            <fileList id="7334bc5a-06a7-4da8-b57e-0c51776f7152" dirs="true" files="true" filter="true" status="true">
+              <caption visible="true">Folders and files under {path}</caption>
+              <input>
+                <param id="a4a16b8e-66a8-4791-aee0-c3d0d5d80fe3" name="path"/>
+              </input>
+              <data showProgress="false">
+                <script type="lua">
+<![CDATA[return [[{path}]]]]>
+                </script>
+              </data>
+            </fileList>
+          </bottom>
+        </splitLayout>
+      </right>
+    </splitLayout>
+  </view>
+
+  <procedures>
+    <procedude id="bea58ecb-dd07-47b1-9807-86e944d06a8d" name="Collect folder size data">
+      <input>
+        <param id="2ef80e1a-6a89-4edf-9911-152a112ed80c" name="rootPath"/>
+      </input>
+      <output>
+        
+      </output>
+      <condition>not rootPath.IsEmpty</condition>
+      <data showProgress="true">
+        <script type="bash">
+<![CDATA[
+echo 'var data = ' > size-result.js
+du -m /usr | jq -R 'split("\t") | { path: .[1], size: .[0] }' | jq -s 'sort_by(.path)' >> size-result.js
+echo ';' >> size-result.js
+]]>
+        </script>
+      </data>
+    </procedude>
+  </procedures>
+  
+  <dataFlow>
+    <!-- The root path selected from fileTree -->
+    <mapping source="8c083ef1-7d39-4040-81cf-8aaec29d6117">
+      <target>5108add4-e94d-4206-b711-d443f9f917d0</target>
+    </mapping>
+    <mapping source="26c5490c-b1c3-464e-ad91-c205448f397a">
+      <target>43d3be30-e814-4be9-934b-420b8beadfa1</target>
+    </mapping>
+    <mapping source="bdf10ef6-ed3c-437a-9868-2e73b4545cbc">
+      <target>99d09bad-e860-4314-acf2-614fea64cd3a</target>
+    </mapping>
+  </dataFlow>
+
+</LsbView>
