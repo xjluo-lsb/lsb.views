@@ -97,32 +97,53 @@ machines, and then converts the data into JSON using jq, finally render the data
               <!-- Modified from D3 example at https://observablehq.com/@d3/treemap/2 -->
               <caption visible="true">Folders have size larger than {threshold} MB</caption>
               <input>
-                <param id="ee74da62-badf-4ef4-83c0-12c3d56d18d8" name="rootPath"/>
                 <param id="43d3be30-e814-4be9-934b-420b8beadfa1" name="threshold"/>
                 <param id="99d09bad-e860-4314-acf2-614fea64cd3a" name="colorScheme"/>
-                <param id="f0799976-ab9a-4cdd-88bb-c356a04f0983" name="dataReady"/>
+                <param id="f0799976-ab9a-4cdd-88bb-c356a04f0983" name="dataFile"/>
               </input>
               <output>
                 <param id="66101b57-b0e5-4b06-a1e7-f9af3495e338" name="path"/>
               </output>
               <condition>
 <![CDATA[
-return dataReady.IsTrigger and (not dataReady.IsEmpty) and threshold.IsPositive and (not colorScheme.IsNegative)
+return dataFile.IsTrigger and (not dataFile.IsEmpty) and threshold.IsPositive and (not colorScheme.IsNegative)
 ]]>
               </condition>
               <data showProgress="false">
                 <script type="lua">
                   <![CDATA[
 return [[
-<div style="display:block;">
-  <svg id="container"></svg>
-</div>
+<div style="display:block;"><svg id="container"></svg></div>
 
 <script type="text/javascript">
-var tree = Node.buildTree(data, 0);
-tree.filter({threshold} * 1024);
-window.onresize = function(event) { renderTreemap(tree, {colorScheme}); }
-window.onresize();
+var flag = 0;
+window.onresize = function(event)
+{
+  flag |= 1;
+  render();
+}
+
+var files = [ "{dataFile}" ];
+ScriptFile.load(files, function()
+{
+  flag |= 2;
+  render();
+});
+
+var tree = null;
+function render()
+{
+  if (flag == 3)
+  {
+    if (tree == null)
+    {
+      tree = Node.buildTree(data, 0);
+      tree.filter({threshold} * 1024);
+    }
+    
+    renderTreemap(tree, {colorScheme});
+  }
+}
 </script>
 ]]
                     ]]>
@@ -130,7 +151,6 @@ window.onresize();
               </data>
               <scripts>
                 <file>https://d3js.org/d3.v6.js</file>
-                <file path="Temp">disk-analyzer-data.js</file>
                 <file path="View">disk-analyzer.js</file>
               </scripts>
             </webView>
@@ -160,7 +180,7 @@ window.onresize();
         <param id="b2102c0f-bb6d-404a-a094-24f02ce4abbb" name="inputReady"/>
       </input>
       <output>
-        
+        <param id="7a7cb9a3-b4eb-4fcd-aeb3-ac65853f8823" name="*"/>
       </output>
       <condition>
 <![CDATA[return (not rootPath.IsEmpty) and inputReady.IsTrigger]]>
@@ -168,9 +188,11 @@ window.onresize();
       <data showProgress="true">
         <script type="bash">
 <![CDATA[
-echo 'var data = ' > size-result.js
-du -m /usr | jq -R 'split("\t") | { path: .[1], size: .[0] }' | jq -s 'sort_by(.path)' >> size-result.js
-echo ';' >> size-result.js
+temp_data_file=$(mktemp)
+echo 'var data = ' > $temp_data_file
+du -k {rootPath} | jq -R 'split("\t") | { path: .[1], size: .[0] }' | jq -s 'sort_by(.path)' >> $temp_data_file
+echo ';' >> $temp_data_file
+echo $temp_data_file
 ]]>
         </script>
       </data>
@@ -195,6 +217,11 @@ echo ';' >> size-result.js
     <!-- Button click sends inputReady to procedure to do folder size analysis -->
     <mapping source="4e86e289-c3d4-4e1e-b560-6a835e085739">
       <target>b2102c0f-bb6d-404a-a094-24f02ce4abbb</target>
+    </mapping>
+
+    <!-- The data file generated from procedure sent to treemap view -->
+    <mapping source="7a7cb9a3-b4eb-4fcd-aeb3-ac65853f8823">
+      <target>f0799976-ab9a-4cdd-88bb-c356a04f0983</target>
     </mapping>
   </dataFlow>
 
