@@ -68,17 +68,21 @@ machines, and then converts the data into JSON using jq, finally render the data
               </propertyInput>
             </cell>
             <cell row="2" col="0">
-              <button id="ce082e87-7fee-4d74-88b6-ad18ce948dfc" label="Check" description="Start checking the folder sizes under the specified path" dock="None">
+              <button id="ce082e87-7fee-4d74-88b6-ad18ce948dfc" label="Analyze folder size" description="Start analyzing on the folder sizes under the specified path" dock="None">
                 <input>
                   <param id="5108add4-e94d-4206-b711-d443f9f917d0" name="rootPath" />
+                  <param id="041091dc-9881-42d7-8537-992ef9492c22" name="threshold"/>
+                  <param id="63926637-3d69-4219-91e5-16c8fb96a366" name="colorScheme"/>
                 </input>
                 <output>
-                  
+                  <param id="4e86e289-c3d4-4e1e-b560-6a835e085739" name="*"/>
                 </output>
-                <condition></condition>
+                <condition>
+<![CDATA[return (not rootPath.IsEmpty) and threshold.IsPositive and (not colorScheme.IsNegative)]]>
+                </condition>
                 <data showProgress="false">
                   <script type="lua">
-                    <![CDATA[]]>
+<![CDATA[return 1]]>
                   </script>
                 </data>
               </button>
@@ -150,14 +154,17 @@ window.onresize();
   </view>
 
   <procedures>
-    <procedude id="bea58ecb-dd07-47b1-9807-86e944d06a8d" name="Collect folder size data">
+    <procedure id="bea58ecb-dd07-47b1-9807-86e944d06a8d" name="Collect folder size data" whenToExecute="ParameterChanging">
       <input>
         <param id="2ef80e1a-6a89-4edf-9911-152a112ed80c" name="rootPath"/>
+        <param id="b2102c0f-bb6d-404a-a094-24f02ce4abbb" name="inputReady"/>
       </input>
       <output>
         
       </output>
-      <condition>not rootPath.IsEmpty</condition>
+      <condition>
+<![CDATA[return (not rootPath.IsEmpty) and inputReady.IsTrigger]]>
+      </condition>
       <data showProgress="true">
         <script type="bash">
 <![CDATA[
@@ -167,7 +174,7 @@ echo ';' >> size-result.js
 ]]>
         </script>
       </data>
-    </procedude>
+    </procedure>
   </procedures>
   
   <dataFlow>
@@ -177,10 +184,17 @@ echo ';' >> size-result.js
       <target>2ef80e1a-6a89-4edf-9911-152a112ed80c</target>
     </mapping>
     <mapping source="26c5490c-b1c3-464e-ad91-c205448f397a">
+      <target>041091dc-9881-42d7-8537-992ef9492c22</target>
       <target>43d3be30-e814-4be9-934b-420b8beadfa1</target>
     </mapping>
     <mapping source="bdf10ef6-ed3c-437a-9868-2e73b4545cbc">
+      <target>63926637-3d69-4219-91e5-16c8fb96a366</target>
       <target>99d09bad-e860-4314-acf2-614fea64cd3a</target>
+    </mapping>
+
+    <!-- Button click sends inputReady to procedure to do folder size analysis -->
+    <mapping source="4e86e289-c3d4-4e1e-b560-6a835e085739">
+      <target>b2102c0f-bb6d-404a-a094-24f02ce4abbb</target>
     </mapping>
   </dataFlow>
 
