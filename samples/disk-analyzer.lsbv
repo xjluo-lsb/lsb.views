@@ -93,7 +93,7 @@ machines, and then converts the data into JSON using jq, finally render the data
       <right>
         <splitLayout id="9918fec4-ca92-415d-996d-eec993ebe983" orientation="Vertical" fixedView="Bottom" size="280">
           <top>
-            <webView id="1a0cc862-dc53-4d73-b919-a9016e66055c" contentType="Content" loadDataAt="Default">
+            <webView id="1a0cc862-dc53-4d73-b919-a9016e66055c" contentType="Content" enableDevTools="true" loadDataAt="Default">
               <!-- Modified from D3 example at https://observablehq.com/@d3/treemap/2 -->
               <caption visible="true">Folders have size larger than {threshold} MB</caption>
               <input>
