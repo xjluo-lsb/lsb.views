@@ -163,13 +163,14 @@ function getColor(index)
 
 function renderTreemap(tree, schemeIndex)
 {
-    const borderDelta = document.documentElement.clientWidth - svg.node().clientWidth + 4;
+    const container = d3.select('#container');
+    const borderDelta = document.documentElement.clientWidth - container.node().clientWidth + 4;
     const width = document.documentElement.clientWidth - borderDelta;
     const height = document.documentElement.clientHeight - borderDelta;
     const color = d3.scaleOrdinal(tree.children.map(d => d.name), getColor(schemeIndex));
 
     // Update the SVG container.
-    const svg = d3.select('#container')
+    const svg = d3.select('#svg')
         .attr("width", width)
         .attr("height", height)
         .attr("style", "max-width: 100%; height: auto; font: 10px sans-serif;");
@@ -218,3 +219,44 @@ function renderTreemap(tree, schemeIndex)
 
     Object.assign(svg.node(), {scales: {color}});
 };
+
+function safeRender(threshold, schemeIndex)
+{
+    var messageText = document.getElementById("message");
+
+    // If the data is not ready yet, output message and return
+    //if (data == null || data.length == 0)
+
+if (null == data)
+    {
+        alert("Data is null.");
+        return;
+    }
+
+    if (data.length == 0)
+    {
+        messageText.innerHTML = "There is no data loaded!";
+        messageText.style.color = "#800000";
+        return;
+    }
+
+    // If the tree data is not built yet, build the tree now
+    if (tree == null)
+    {
+        tree = Node.buildTree(data, 0);
+    }
+
+    tree.filter(threshold * 1024);
+
+    // If there is no children, it means all folder sizes are below the threshold
+    if (tree.children == undefined)
+    {
+        messageText.innerHTML = "No folder has size above the threshold, please adjust the threshold and retry.";
+        messageText.style.color = "#808000";
+    }
+    else
+    {
+        messageText.innerHTML = "";
+        renderTreemap(tree, schemeIndex);
+    }
+}

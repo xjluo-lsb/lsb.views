@@ -113,37 +113,12 @@ return dataFile.IsTrigger and (not dataFile.IsEmpty) and threshold.IsPositive an
                 <script type="lua">
                   <![CDATA[
 return [[
-<div style="display:block;"><svg id="container"></svg></div>
+<div id="container"><svg id="svg"></svg><div id="message"></div></div>
 
 <script type="text/javascript">
-var flag = 0;
-window.onresize = function(event)
-{
-  flag |= 1;
-  render();
-}
-
-var files = [ "{dataFile}" ];
-ScriptFile.load(files, function()
-{
-  flag |= 2;
-  render();
-});
-
 var tree = null;
-function render()
-{
-  if (flag == 3)
-  {
-    if (tree == null)
-    {
-      tree = Node.buildTree(data, 0);
-      tree.filter({threshold} * 1024);
-    }
-    
-    renderTreemap(tree, {colorScheme});
-  }
-}
+window.onresize = function(event) { safeRender({threshold}, {colorScheme}); }
+ScriptFile.load([ new ScriptFile("{dataFile}") ], function() { safeRender({threshold}, {colorScheme}); });
 </script>
 ]]
                     ]]>
