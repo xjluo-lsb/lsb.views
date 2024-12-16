@@ -4,7 +4,7 @@ function Node(name, path)
     this.path = path;
     this.size = 0;                  // This is the actual size of the folder, including child folders
     this.value = undefined;         // This is the value field for treemap
-    this.children = [];      // This is for visible children
+    this.children = [];             // This is for visible children
     this.hidden = undefined;        // This is for hidden children (that does not meet size filter)
 }
 
@@ -28,7 +28,10 @@ Node.prototype.getOrCreateChild = function(paths)
 
     if (activeNode == null)
     {
-        activeNode = new Node(name, this.path + '/' + name);
+        var childPath = this.path.startsWith('/') ?
+            (this.path + (this.path.endsWith('/') ? '' : '/') + name) :
+            (this.path + (this.path.endsWith('\\') ? '' : '\\') + name);
+        activeNode = new Node(name, childPath);
         this.children.push(activeNode);
     }
 
@@ -100,7 +103,8 @@ Node.buildTree = function(arrayData, rootIndex)
         var rootData = arrayData[rootIndex];
         var rootPath = rootData.path;
         var pathLength = rootPath.length;
-        var nameIndex = rootPath.lastIndexOf('/');
+        var delimeter = rootPath.startsWith('/') ? '/' : '\\';
+        var nameIndex = rootPath.lastIndexOf(delimeter);
 
         // In case the root node is /, we want to use the / as name. Otherwise, we extract the last directory as name
         var rootPathLen, name;
@@ -127,7 +131,7 @@ Node.buildTree = function(arrayData, rootIndex)
             var itemData = arrayData[index];
 
             // First remove the root path and then extra each segments from the path
-            var paths = itemData.path.substring(rootPathLen).split('/');
+            var paths = itemData.path.substring(rootPathLen).split(delimeter);
             var treeNode = treeRoot.getOrCreateChild(paths);
             treeNode.setSize(itemData.size);
         }
@@ -225,15 +229,7 @@ function safeRender(threshold, schemeIndex)
     var messageText = document.getElementById("message");
 
     // If the data is not ready yet, output message and return
-    //if (data == null || data.length == 0)
-
-if (null == data)
-    {
-        alert("Data is null.");
-        return;
-    }
-
-    if (data.length == 0)
+    if (data == null || data.length == 0)
     {
         messageText.innerHTML = "There is no data loaded!";
         messageText.style.color = "#800000";
@@ -243,6 +239,7 @@ if (null == data)
     // If the tree data is not built yet, build the tree now
     if (tree == null)
     {
+        data.sort((a, b) => a.path.localeCompare(b.path));
         tree = Node.buildTree(data, 0);
     }
 

@@ -48,7 +48,7 @@ machines, and then converts the data into JSON using jq, finally render the data
                   <param id="bdf10ef6-ed3c-437a-9868-2e73b4545cbc" name="colorScheme"/>
                 </output>
                 <properties>
-                  <property name="threshold" label="Size threshold" category="Treemap" type="UnsignedInteger" description="This is size threshold for the tree map. Any folder has size smallers than this threshold won't be shown." default="1024" />
+                  <property name="threshold" label="Size threshold (KB)" category="Treemap" type="UnsignedInteger" description="This is size threshold for the tree map. Any folder has size smallers than this threshold won't be shown." default="1024" />
                   <property name="colorScheme" label="Color scheme" category="Treemap" type="Enumeration" description="The color scheme for the tree map" default="schemePastel1">
                     <options>
                       <option>schemeCategory10</option>
@@ -93,9 +93,9 @@ machines, and then converts the data into JSON using jq, finally render the data
       <right>
         <splitLayout id="9918fec4-ca92-415d-996d-eec993ebe983" orientation="Vertical" fixedView="Bottom" size="280">
           <top>
-            <webView id="1a0cc862-dc53-4d73-b919-a9016e66055c" contentType="Content" enableDevTools="true" loadDataAt="Default">
+            <webView id="1a0cc862-dc53-4d73-b919-a9016e66055c" contentType="Content" loadDataAt="Default" enableDevTools="true">
               <!-- Modified from D3 example at https://observablehq.com/@d3/treemap/2 -->
-              <caption visible="true">Folders have size larger than {threshold} MB</caption>
+              <caption visible="true">Folders have size larger than {threshold} KB</caption>
               <input>
                 <param id="43d3be30-e814-4be9-934b-420b8beadfa1" name="threshold"/>
                 <param id="99d09bad-e860-4314-acf2-614fea64cd3a" name="colorScheme"/>
@@ -162,14 +162,30 @@ window.onresize();
 <![CDATA[return (not rootPath.IsEmpty) and inputReady.IsTrigger]]>
       </condition>
       <data showProgress="true">
-        <script type="bash">
+        <script type="pwsh">
 <![CDATA[
-temp_file_name="$(uuidgen | head -c 13).json"
-temp_data_file="{LSBTEMP}/$temp_file_name"
-echo 'var data = ' > $temp_data_file
-du -k {rootPath} | jq -R 'split("\t") | { path: .[1], size: .[0] }' >> $temp_data_file
-echo ';' >> $temp_data_file
-echo $temp_file_name
+function getFolderSize($path, $file)
+{
+    $totalSize = 0;
+    $childFolders = Get-ChildItem -Path $path -Directory
+    $childFolders | ForEach-Object {
+        $childPath = Join-Path -Path $path -ChildPath $_.Name
+        $totalSize += getFolderSize -path $childPath -file $file
+    }
+    
+    $totalSize += (Get-ChildItem -Path $path -File | Measure-Object -Property Length -Sum).Sum
+    @{ size = [int][Math]::Floor($totalSize / 1024); path = $path; } | ConvertTo-JSON -Compress | Out-File $file -Append -NoNewLine
+    "," | Out-File $file -Append
+
+    return $totalSize
+}
+
+$tempFileName = "{0:X8}{1:X4}.js" -f (Get-Random), (Get-Date).Microsecond
+$tempFile = "{LSBTEMP}\$tempFileName"
+"var data = [" | Out-File $tempFile
+getFolderSize -path "{rootPath}" -file $tempFile | Out-Null
+"];" | Out-File $tempFile -Append
+return $tempFileName
 ]]>
         </script>
       </data>
