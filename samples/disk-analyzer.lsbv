@@ -156,7 +156,7 @@ window.onresize();
         <param id="b2102c0f-bb6d-404a-a094-24f02ce4abbb" name="inputReady"/>
       </input>
       <output>
-        <param id="7a7cb9a3-b4eb-4fcd-aeb3-ac65853f8823" name="*"/>
+        <param id="7a7cb9a3-b4eb-4fcd-aeb3-ac65853f8823" name="file"/>
       </output>
       <condition>
 <![CDATA[return (not rootPath.IsEmpty) and inputReady.IsTrigger]]>
@@ -164,12 +164,12 @@ window.onresize();
       <data showProgress="true">
         <script type="bash">
 <![CDATA[
-temp_file_name="$(uuidgen | head -c 13).json"
+temp_file_name="disk-$(uuidgen | head -c 8).js"
 temp_data_file="{LSBTEMP}/$temp_file_name"
 echo 'var data = ' > $temp_data_file
-du -k {rootPath} | jq -R 'split("\t") | { path: .[1], size: .[0] }' >> $temp_data_file
+du -k {rootPath} | jq -R 'split("\t") | { path: .[1], size: .[0] }' | jq -s 'sort_by(.path)' >> $temp_data_file
 echo ';' >> $temp_data_file
-echo $temp_file_name
+echo "{ \"file\": \"$temp_file_name\" }"
 ]]>
         </script>
       </data>
