@@ -12,8 +12,8 @@
   <description>This view demostrates all the controls supported in the LSB. It requires pwsh to be configured to run the script.</description>
   <version major="0" minor="9" build="0" revision="0" />
   <scripts>
-    <script type="lua">demo-lua.lua</script>
-    <script type="pwsh">demo-pwsh.ps1</script>
+    <script type="lua">all-controls-demo.lua</script>
+    <script type="pwsh">all-controls-demo.ps1</script>
   </scripts>
   <os>Any</os>
   <about type="Url">
