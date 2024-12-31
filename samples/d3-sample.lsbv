@@ -9,7 +9,18 @@
   createTime="2024-03-23T17:23:45z"
   lastChangeTime="2024-03-23T17:12:45z">
 
-  <description>A sample view demonstrates using D3 library to visualize data.</description>
+  <description>
+<![CDATA[
+This is a sample view that demonstrates how to use the <a href="https://d3js.org/">D3</a> library to visualize data. It contains
+three examples copied and modified from the <a href="https://d3js.org/">D3</a> samples. Please refer to the links below to find
+the original examples on <a href="https://d3js.org/">D3</a>.
+<ul>
+<li>The Scatterplot is modified from D3 example at <a href="https://observablehq.com/@d3/scatterplot-tour">Scatterplot tour</a>
+<li>The Disjoint force-directed graph is modified from D3 example at <a href="https://observablehq.com/@d3/disjoint-force-directed-graph/2">Disjoint force-directed graph</a>
+<li>The Zoomable circle packing is modified from D3 example at <a href="https://observablehq.com/@d3/zoomable-circle-packing">Zoomable circle packing</a>
+</ul>
+]]>
+  </description>
   <version major="0" minor="0" build="1" revision="0" />
     
   <view>
@@ -66,7 +77,6 @@
           <pages>
             <page title="Scatterplot">
               <webView id="ec8a532a-d2e6-4010-9b30-dd40aa29ae8d" contentType="Content" loadDataAt="Default">
-                <!-- Modified from D3 example at https://observablehq.com/@d3/scatterplot-tour -->
                 <input>
                   <param id="a1cfcb16-b339-4408-9a9c-a51cfe80b394" name="randomSigma"/>
                   <param id="251531e3-915d-4947-bb75-5e125c9ca5f4" name="xoffset"/>
@@ -77,61 +87,20 @@
                   <script type="lua">
                     <![CDATA[
 return [[
-<div style="display:block;">
-  <svg id="container" style="width: 100%; cursor: pointer;"></svg>
-</div>
-<script type="text/javascript">
-const svg = d3.select('#container');
-const borderDelta = document.documentElement.clientWidth - svg.node().clientWidth + 4;
-function getWidth() { return document.documentElement.clientWidth - borderDelta; }
-function getHeight() { return document.documentElement.clientHeight - borderDelta; }
-
-const g = svg.append("g").attr("stroke-linecap", "round").attr("stroke-width", 5);
-var data = [];
-var color = null;
-
-window.onresize = function(event)
-{
-  var graphWidth = getWidth();
-  var graphHeight = getHeight();
-  svg.attr("width", graphWidth).attr("height", graphHeight)
-    .attr("viewBox", [- graphWidth / 2, - graphHeight / 2, graphWidth, graphHeight])
-  if (g && data && data.length > 0)
-  {
-    g.selectAll("path").data(data).join("path")
-      .attr("d", d => "M" + (d[0] * graphWidth / 2) + "," + (d[1] * graphHeight / 2) + "h0")
-      .attr("stroke", d => color(d[2]));
-  }
-};
-
-const sigma = {randomSigma};
-const xoffset = {xoffset};
-const yoffset = {yoffset};
-const count = {pointCount};
-const random = d3.randomNormal(0, sigma);
-
-data = [].concat(
-  Array.from({length: count}, () => [random() + xoffset, random() - yoffset, 0]),
-  Array.from({length: count}, () => [random() - xoffset, random() - yoffset, 1]),
-  Array.from({length: count}, () => [random() + xoffset, random() + yoffset, 2]),
-  Array.from({length: count}, () => [random() - xoffset, random() + yoffset, 3])
-);
-color = d3.scaleOrdinal().domain(data.map(d => d[2])).range(d3.schemeCategory10);
-
-window.onresize();
-</script>
+<div style="display:block;"><svg id="container" style="width: 100%; cursor: pointer;"></svg></div>
+<script type="text/javascript">initializeScatterplot({randomSigma}, {xoffset}, {yoffset}, {pointCount})</script>
 ]]
                     ]]>
                   </script>
                 </data>
                 <scripts>
                   <file>https://d3js.org/d3.v7.min.js</file>
+                  <file path="View">d3-sample-support.js</file>
                 </scripts>
               </webView>
             </page>
             <page title="Disjoint force-directed graph">
               <webView id="4c2af572-c01d-4bbe-8dbe-4794592acec5" contentType="Content" loadDataAt="Default">
-                <!-- Modified from D3 example at https://observablehq.com/@d3/disjoint-force-directed-graph/2 -->
                 <input>
                   <param id="a60d3981-4e59-43c0-894b-6cd3cd4c39c9" name="parentCount"/>
                   <param id="54620bb9-8401-47f7-927f-be033e863f8b" name="childCount"/>
@@ -141,57 +110,8 @@ window.onresize();
                   <script type="lua">
                     <![CDATA[
 return [[
-<div style="display:block;">
-  <svg id="container" style="width: 100%; cursor: pointer;"></svg>
-</div>
-<script type="text/javascript">
-const parentBase = 1000;
-const parentCount = {parentCount};
-const childCount = {childCount};
-const childBase = Math.floor((parentBase + parentCount) / parentBase + 1) * parentBase;
-const extraCount = {extraCount};
-
-const svg = d3.select('#container');
-const borderDelta = document.documentElement.clientWidth - svg.node().clientWidth + 4;
-function getWidth() { return document.documentElement.clientWidth - borderDelta; }
-function getHeight() { return document.documentElement.clientHeight - borderDelta; }
-
-const linkGroup = svg.append("g").attr("stroke", "#999").attr("stroke-opacity", 0.6);
-const nodeGroup = svg.append("g").attr("stroke", "#fff").attr("stroke-width", 1.5);
-const color = d3.scaleOrdinal(d3.schemeCategory10);
-
-window.onresize = function(event)
-{
-  var graphWidth = getWidth();
-  var graphHeight = getHeight();
-  svg.attr("width", graphWidth).attr("height", graphHeight)
-    .attr("viewBox", [- graphWidth / 2, - graphHeight / 2, graphWidth, graphHeight])
-}
-
-var data = GenerateDataForForceSimularion(parentBase, parentCount, childBase, childCount, extraCount);
-simulation = d3.forceSimulation(data.nodes)
-  .force("link", d3.forceLink(data.links).id(d => d.id))
-  .force("charge", d3.forceManyBody())
-  .force("x", d3.forceX())
-  .force("y", d3.forceY());
-var links = linkGroup.selectAll("line").data(data.links)
-  .join("line").attr("stroke-width", d => Math.sqrt(d.value));
-var nodes = nodeGroup.selectAll("circle").data(data.nodes)
-  .join("circle").attr("r", 5).attr("fill", d => color(d.group));
-nodes.append("title").text(d => d.id);
-nodes.call(d3.drag()
-  .on("start", onForceSimulationDragStarted)
-  .on("drag", onForceSimulationDragged)
-  .on("end", onForceSimulationDragEnded));
-  
-simulation.on("tick", () => {
-  links.attr("x1", d => d.source.x).attr("y1", d => d.source.y)
-        .attr("x2", d => d.target.x).attr("y2", d => d.target.y);
-  nodes.attr("cx", d => d.x).attr("cy", d => d.y);
-});
-  
-window.onresize();
-</script>
+<div style="display:block;"><svg id="container" style="width: 100%; cursor: pointer;"></svg></div>
+<script type="text/javascript">initializeForceDirectedGraph({parentCount}, {childCount}, {extraCount})</script>
 ]]
                     ]]>
                   </script>
@@ -204,7 +124,6 @@ window.onresize();
             </page>
             <page title="Zoomable circle packing">
               <webView id="b93df36a-d37b-45c4-82a4-77e7a8794a88" contentType="Content" loadDataAt="Visualizing">
-                <!-- Modified from D3 example at https://observablehq.com/@d3/zoomable-circle-packing?intent=fork -->
                 <input>
                   <param id="43121e3c-98b7-4d3c-95e1-cf09f215eeb4" name="colorScheme"/>
                 </input>
@@ -212,83 +131,8 @@ window.onresize();
                   <script type="lua">
                     <![CDATA[
 return [[
-<div style="display:block;">
-  <svg id="container" style="width: 100%; cursor: pointer;"></svg>
-</div>
-
-<script type="text/javascript">
-const svg = d3.select('#container');
-const borderDelta = document.documentElement.clientWidth - svg.node().clientWidth + 4;
-function getWidth() { return document.documentElement.clientWidth - borderDelta; }
-function getHeight() { return document.documentElement.clientHeight - borderDelta; }
-function getColor(index)
-{
-  var schemes = [ d3.schemeCategory10, d3.schemeAccent, d3.schemeDark2, d3.schemeObservable10, d3.schemePaired,
-    d3.schemePastel1, d3.schemePastel2, d3.schemeSet1, d3.schemeSet2, d3.schemeSet3, d3.schemeTableau10 ];
-  return (index >= 0 && index < schemes.length) ? schemes[index] : schemes[0];
-}
-
-const color = d3.scaleOrdinal(getColor({colorScheme}));
-svg.attr("style", "background: " + color(0) + ";");
-svg.on("click", (event) => zoom(event, root));
-
-const pack = data => d3.pack().size([getWidth(), getHeight()]).padding(3)(d3.hierarchy(data).sum(d => d.value).sort((a, b) => b.value - a.value));
-const root = pack(data);
-const node = svg.append("g").selectAll("circle").data(root.descendants().slice(1))
-  .join("circle")
-    .attr("fill", d => d.children ? color(d.depth) : "white")
-    .attr("pointer-events", d => !d.children ? "none" : null)
-    .on("mouseover", function() { d3.select(this).attr("stroke", "#000"); })
-    .on("mouseout", function() { d3.select(this).attr("stroke", null); })
-    .on("click", (event, d) => focus !== d && (zoom(event, d), event.stopPropagation()));
-const label = svg.append("g").style("font", "10px sans-serif").attr("pointer-events", "none").attr("text-anchor", "middle")
-  .selectAll("text")
-  .data(root.descendants())
-  .join("text")
-    .style("fill-opacity", d => d.parent === root ? 1 : 0)
-    .style("display", d => d.parent === root ? "inline" : "none")
-    .text(d => d.data.name);
-
-window.onresize = function(event)
-{
-  var graphWidth = getWidth();
-  var graphHeight = getHeight();
-  svg.attr("width", graphWidth).attr("height", graphHeight)
-    .attr("viewBox", [- graphWidth / 2, - graphHeight / 2, graphWidth, graphHeight])
-  zoomTo([focus.x, focus.y, focus.r * 2]);
-}
-
-let focus = root;
-let view;
-
-function zoomTo(v)
-{
-  const k = getWidth() / v[2];
-  view = v;
-
-  label.attr("transform", d => `translate(${(d.x - v[0]) * k},${(d.y - v[1]) * k})`);
-  node.attr("transform", d => `translate(${(d.x - v[0]) * k},${(d.y - v[1]) * k})`);
-  node.attr("r", d => d.r * k);
-}
-
-function zoom(event, d)
-{
-  focus = d;
-  const transition = svg.transition()
-    .duration(event.altKey ? 7500 : 750)
-    .tween("zoom", d => {
-      const i = d3.interpolateZoom(view, [focus.x, focus.y, focus.r * 2]);
-      return t => zoomTo(i(t));
-    });
-  label.filter(function(d) { return d.parent === focus || this.style.display === "inline"; })
-    .transition(transition)
-      .style("fill-opacity", d => d.parent === focus ? 1 : 0)
-      .on("start", function(d) { if (d.parent === focus) this.style.display = "inline"; })
-      .on("end", function(d) { if (d.parent !== focus) this.style.display = "none"; });
-}
-
-window.onresize();
-</script>
+<div style="display:block;"><svg id="container" style="width: 100%; cursor: pointer;"></svg></div>
+<script type="text/javascript">initializeZoomableCiircle({colorScheme})</script>
 ]]
                     ]]>
                   </script>
@@ -305,9 +149,6 @@ window.onresize();
     </splitLayout>
   </view>
 
-  <procedures />
-  <launchers />
-  
   <dataFlow>
     <mapping source="7a7270d8-85be-4147-af41-d3e87608f222">
       <target>a1cfcb16-b339-4408-9a9c-a51cfe80b394</target>

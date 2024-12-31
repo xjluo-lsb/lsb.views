@@ -379,3 +379,78 @@ var data = {
   }
  ]
 };
+
+function initializeZoomableCiircle(colorScheme)
+{
+    const svg = d3.select('#container');
+    const borderDelta = document.documentElement.clientWidth - svg.node().clientWidth + 4;
+    function getWidth() { return document.documentElement.clientWidth - borderDelta; }
+    function getHeight() { return document.documentElement.clientHeight - borderDelta; }
+    function getColor(index)
+    {
+        var schemes = [ d3.schemeCategory10, d3.schemeAccent, d3.schemeDark2, d3.schemeObservable10, d3.schemePaired,
+            d3.schemePastel1, d3.schemePastel2, d3.schemeSet1, d3.schemeSet2, d3.schemeSet3, d3.schemeTableau10 ];
+        return (index >= 0 && index < schemes.length) ? schemes[index] : schemes[0];
+    }
+
+    const color = d3.scaleOrdinal(getColor(colorScheme));
+    svg.attr("style", "background: " + color(0) + ";");
+    svg.on("click", (event) => zoom(event, root));
+
+    const pack = data => d3.pack().size([getWidth(), getHeight()]).padding(3)(d3.hierarchy(data).sum(d => d.value).sort((a, b) => b.value - a.value));
+    const root = pack(data);
+    const node = svg.append("g").selectAll("circle").data(root.descendants().slice(1))
+        .join("circle")
+            .attr("fill", d => d.children ? color(d.depth) : "white")
+            .attr("pointer-events", d => !d.children ? "none" : null)
+            .on("mouseover", function() { d3.select(this).attr("stroke", "#000"); })
+            .on("mouseout", function() { d3.select(this).attr("stroke", null); })
+            .on("click", (event, d) => focus !== d && (zoom(event, d), event.stopPropagation()));
+    const label = svg.append("g").style("font", "10px sans-serif").attr("pointer-events", "none").attr("text-anchor", "middle")
+        .selectAll("text")
+        .data(root.descendants())
+        .join("text")
+            .style("fill-opacity", d => d.parent === root ? 1 : 0)
+            .style("display", d => d.parent === root ? "inline" : "none")
+            .text(d => d.data.name);
+
+    window.onresize = function(event)
+    {
+        var graphWidth = getWidth();
+        var graphHeight = getHeight();
+        svg.attr("width", graphWidth).attr("height", graphHeight)
+            .attr("viewBox", [- graphWidth / 2, - graphHeight / 2, graphWidth, graphHeight])
+        zoomTo([focus.x, focus.y, focus.r * 2]);
+    }
+
+    let focus = root;
+    let view;
+
+    function zoomTo(v)
+    {
+        const k = getWidth() / v[2];
+        view = v;
+
+        label.attr("transform", d => `translate(${(d.x - v[0]) * k},${(d.y - v[1]) * k})`);
+        node.attr("transform", d => `translate(${(d.x - v[0]) * k},${(d.y - v[1]) * k})`);
+        node.attr("r", d => d.r * k);
+    }
+
+    function zoom(event, d)
+    {
+        focus = d;
+        const transition = svg.transition()
+            .duration(event.altKey ? 7500 : 750)
+            .tween("zoom", d => {
+            const i = d3.interpolateZoom(view, [focus.x, focus.y, focus.r * 2]);
+            return t => zoomTo(i(t));
+            });
+        label.filter(function(d) { return d.parent === focus || this.style.display === "inline"; })
+            .transition(transition)
+            .style("fill-opacity", d => d.parent === focus ? 1 : 0)
+            .on("start", function(d) { if (d.parent === focus) this.style.display = "inline"; })
+            .on("end", function(d) { if (d.parent !== focus) this.style.display = "none"; });
+        }
+
+    window.onresize();
+}

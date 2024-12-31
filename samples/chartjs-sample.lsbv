@@ -11,8 +11,9 @@
 
   <description>
 <![CDATA[
-A sample view demonstrates using the Chart.js library to visualize data. Credit to the contributors of Chart.js.
-Please visit <a href="https://www.chartjs.org/">https://www.chartjs.org/</a> to find more details about the library.
+This is a sample view that demonstrates how to use the Chart.js library to visualize data. Credit to the contributors of the
+Chart.js library. Please visit <a href="https://www.chartjs.org/">https://www.chartjs.org/</a> to find more details about the 
+library.
 ]]>
   </description>
   <version major="0" minor="0" build="1" revision="0" />
@@ -60,7 +61,7 @@ Please visit <a href="https://www.chartjs.org/">https://www.chartjs.org/</a> to 
         <tabLayout id="1074ec49-5cd1-4b57-80f6-a8ab5e52065b" tabPosition="Top">
           <pages>
             <page title="Acquisitions bar chart">
-              <webView id="187662e9-8170-4e1b-a10b-20359278deec" contentType="Content" loadDataAt="Default">
+              <webView id="187662e9-8170-4e1b-a10b-20359278deec" contentType="Content" loadDataAt="Default" enableDevTools="true">
                 <!-- Modified from chart.js example at https://www.chartjs.org/docs/latest/getting-started/usage.html -->
                 <input>
                   <param id="a1cfcb16-b339-4408-9a9c-a51cfe80b394" name="d2010"/>
@@ -76,45 +77,19 @@ Please visit <a href="https://www.chartjs.org/">https://www.chartjs.org/</a> to 
                     <![CDATA[
 return [[
 <canvas id="container" style="display:inline-block; width:660px; height:500px;"></canvas>
- 
-<script>
-const ctx = document.getElementById('container');
-const data = [
-  { year: 2010, count: {d2010} },
-  { year: 2011, count: {d2011} },
-  { year: 2012, count: {d2012} },
-  { year: 2013, count: {d2013} },
-  { year: 2014, count: {d2014} },
-  { year: 2015, count: {d2015} },
-  { year: 2016, count: {d2016} },
-];
-  
-new Chart(ctx, {
-  type: 'bar',
-  data: {
-    labels: data.map(row => row.year),
-    datasets: [
-      {
-        label: 'Acquisitions by year',
-        data: data.map(row => row.count),
-        borderWidth: 1
-      }
-    ]
-  },
-  options: { scales: { y: { beginAtZero: true } } }
-});
-</script>
+<script type="text/javascript">createBarChart({d2010}, {d2011}, {d2012}, {d2013}, {d2014}, {d2015}, {d2016})</script>
 ]]
                     ]]>
                   </script>
                 </data>
                 <scripts>
                   <file>https://cdn.jsdelivr.net/npm/chart.js</file>
+                  <file path="View">chartjs-sample.js</file>
                 </scripts>
               </webView>
             </page>
             <page title="Dimension bubble chart">
-              <webView id="85402862-c5cb-413b-9863-c85836df0b38" contentType="Content" loadDataAt="Default">
+              <webView id="85402862-c5cb-413b-9863-c85836df0b38" contentType="Content" loadDataAt="Default" enableDevTools="true">
                 <!-- Modified from chart.js example at https://www.chartjs.org/docs/latest/getting-started/usage.html -->
                 <input>
                   <param id="a60d3981-4e59-43c0-894b-6cd3cd4c39c9" name="xrange"/>
@@ -127,54 +102,14 @@ new Chart(ctx, {
                     <![CDATA[
 return [[
 <canvas id="container" style="display:inline-block; width:660px; height:500px;"></canvas>
-
-<script>
-const ctx = document.getElementById('container');
-const xrange = {xrange};
-const yrange = {yrange};
-const rrange = {rrange};
-const count = {count};
-function getRadius(x, y)
-{
-  var r = Math.round(Math.random() * rrange * 20 / Math.sqrt(x * x + y * y));
-  return r < 1 ? 1 : (r > rrange / 2 ? (rrange / 2) : r);
-}
-const data = [].concat(
-  Array.from({ length: count * 2 / 3 }, () => {
-    var x = Math.random() * xrange;
-    var y = Math.random() * yrange;
-    var d = (y - x) / 3;
-    return { x: Math.round(x + d), y: Math.round(y - d), r: getRadius(x, y) };
-  }),
-  Array.from({ length: count / 3 }, () => {
-    var m = Math.min(xrange, yrange);
-    var x = Math.round(Math.random() * m);
-    return { x: x, y: x, r: getRadius(x, x) };
-  })
-);
-
-new Chart(ctx, {
-  type: 'bubble',
-  options: {
-    aspectRatio: 1,
-    scales: { x: { max: xrange }, y: { max: yrange } }
-  },
-  data: {
-    label: "Dimensions",
-    datasets: [
-      { label: 'x = y', data: data.filter(row => row.x === row.y) },
-      { label: 'x > y', data: data.filter(row => row.x > row.y) },
-      { label: 'x < y', data: data.filter(row => row.x < row.y) }
-    ]
-  }
-});
-</script>
+<script type="text/javascript">createBubbleChart({xrange}, {yrange}, {rrange}, {count})</script>
 ]]
                     ]]>
                   </script>
                 </data>
                 <scripts>
                   <file>https://cdn.jsdelivr.net/npm/chart.js</file>
+                  <file path="View">chartjs-sample.js</file>
                 </scripts>
               </webView>
             </page>
@@ -184,9 +119,6 @@ new Chart(ctx, {
     </splitLayout>
   </view>
 
-  <procedures />
-  <launchers />
-  
   <dataFlow>
     <mapping source="7a7270d8-85be-4147-af41-d3e87608f222">
       <target>a1cfcb16-b339-4408-9a9c-a51cfe80b394</target>
