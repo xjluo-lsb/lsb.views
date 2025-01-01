@@ -7,10 +7,17 @@
   name="Disk Usage Analyzer"
   author="Kevin Luo"
   createTime="2024-12-09T22:54:45z"
-  lastChangeTime="2024-12-09T22:54:45z">
+  lastChangeTime="2024-12-31T22:54:45z">
 
-  <description>A sample view demonstrates using D3 library to visualize data. It uses du to collect folder sizes on Linux/Mac OS X
-machines, and then converts the data into JSON using jq, finally render the data in treemap using D3 library.</description>
+  <description>
+<![CDATA[
+This is a sample view that demonstrates how to use the <a href="https://d3js.org/d3-hierarchy/treemap">Treemap</a> in the
+<a href="">D3</a> library to visualize the disk usage of selected folder. This is a PowerShell version that uses Get-ChildItem
+and Measure-Object to collect the disk space usage data for folders. The data is then converted into JSON using the
+ConvertTo-JSON cmdlet. And then the view renders the JSON data using code copied and modified from the
+<a href="https://observablehq.com/@d3/treemap/2">Treemap</a> example.
+]]>
+  </description>
   <version major="0" minor="0" build="1" revision="0" />
     
   <view>

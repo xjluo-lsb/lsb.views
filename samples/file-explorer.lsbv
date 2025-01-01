@@ -7,9 +7,17 @@
   name="File Explorer View"
   author="Kevin Luo"
   createTime="2021-10-17T10:36:00z"
-  lastChangeTime="2024-05-22T21:26:45z">
+  lastChangeTime="2024-12-31T21:26:45z">
 
-  <description>A file explorer like sample view to demonstrate the capabilities of LeaveScriptBehind. This one works on all OSes.</description>
+  <description>
+<![CDATA[
+<p>This sample view demonstrates the FileTree and FileList controls provided in LSB to compose a view with functionality
+similar to the file managers (such as File Explorer on Windows, Finder on Mac OS X, GNOME Files on Fedora, etc).</p>
+<p>Besides, this view also demonstrates the context menu configuration on the FileList and how to call into function
+lsb.showMessage in the Lua script to show message from the context menu. Double click on a plain text files listed in the
+FileList will show the content in the TextView.</p>
+]]>
+    A file explorer like sample view to demonstrate the capabilities of LeaveScriptBehind. This one works on all OSes.</description>
   <version major="0" minor="0" build="1" revision="0" />
   <os>Any</os>
 
@@ -47,9 +55,9 @@
               </data>
               <contextMenu copy="true" refresh="true">
                 <menuItem text="Hello world!">
-                  <data>
+                  <data showProgress="false">
                     <script type="lua">
-<![CDATA[]]>
+<![CDATA[lsb.showMessage("Hello world!")]]>
                     </script>
                   </data>
                 </menuItem>
@@ -92,9 +100,6 @@ return content
       </right>
     </splitLayout>
   </view>
-
-  <procedures />
-  <launchers />
 
   <dataFlow>
     <mapping source="a02b668e-3550-4421-8e1d-9a4cdd740ac5">
