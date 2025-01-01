@@ -9,7 +9,13 @@
   createTime="2023-11-26T00:55:28z"
   lastChangeTime="2023-11-26T00:55:28z">
 
-  <description>A sample view that demonstrates the TreeListView and uses WebView to display web page with specified URL</description>
+  <description>
+<![CDATA[
+This sample view demonstrates how to use Lua script to generate the initial configuration - a set of search engines in a tree
+hierachy - and display it in a TreeListView control. When user clicks on any of the items in the TreeListView, the corresponding
+URL is sent to the WebView to display the content at the URL.
+]]>
+  </description>
   <version major="0" minor="0" build="1" revision="0" />
 
   <view>

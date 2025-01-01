@@ -9,7 +9,21 @@
   createTime="2024-09-06T00:00:00Z"
   lastChangeTime="2024-12-01T00:00:00.000Z">
 
-  <description>A sample view that demostrates the HexView control - use the control the show file content in hexadecimal.</description>
+  <description>
+<![CDATA[
+This sample view demostrates the HexView control - it is a control provided by the LSB to display any content in the hexadecimal
+format. This view supports,
+<ul>
+<li>Open any file to be display in hexadecimal.
+<li>Demonstrates two different ways to load the content into HexView,
+  <ol>
+    <li>Load file in Lua code, convert the content into hexadecimal string and send to the HexView control.
+    <li>Send the file path to the HexView control and load the content directly in HexView.
+  </ol>
+</li>
+</ul>
+]]>
+  </description>
   <scripts>
     <script type="lua">hexview.lua</script>
   </scripts>

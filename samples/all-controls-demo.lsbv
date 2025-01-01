@@ -11,7 +11,7 @@
   
   <description>
 <![CDATA[
-This sample view demostrates all the controls supported in the LSB. It requires pwsh (PowerShell or PowerShell 7+) to be 
+This sample view demostrates majority of the controls supported in the LSB. It requires pwsh (PowerShell or PowerShell 7+) to be
 configured to run the scripts and demostrates following features,
 <ul>
 <li>Using Lua scripts defined in script reference, using PowerShell scripts defined in script reference.

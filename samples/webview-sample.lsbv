@@ -9,7 +9,20 @@
   createTime="2021-12-12T20:55:28z"
   lastChangeTime="2023-09-09T23:07:45z">
 
-  <description>A sample view to demonstrate WebView on the support library functionality tests and the parameter operation capability</description>
+  <description>
+<![CDATA[
+This sample view demonstrates different ways to construct the content for WebView control as well as how to send value changes
+out from the WebView control. Here are a few things it touched,
+<ul>
+<li>Use data returned from data source together with CSS style reference and JavaScript reference to construct page.
+<li>Use Web content defined in external file combined with CSS files and JS files to construct page.
+<li>Demonstrate the showInformation() function in the LSB provided support library to show message from WebView.
+<li>Call sendValue() in JavaScript to send single value from WebView to other control(s).
+<li>Call sendObject() in JavaScript to send multiple values from WebView to other control(s).
+<li>Call sendData() in JavaScript to send more complicated value or huge content from WebView to other control(s).
+</ul>
+]]>
+  </description>
   <version major="0" minor="0" build="1" revision="0" />
   <os>Any</os>
 

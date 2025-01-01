@@ -11,11 +11,11 @@
 
   <description>
 <![CDATA[
-<p>This sample view demonstrates the FileTree and FileList controls provided in LSB to compose a view with functionality
-similar to the file managers (such as File Explorer on Windows, Finder on Mac OS X, GNOME Files on Fedora, etc).</p>
-<p>Besides, this view also demonstrates the context menu configuration on the FileList and how to call into function
+This sample view demonstrates the FileTree and FileList controls provided in LSB to compose a view with functionality
+similar to the file managers (such as File Explorer on Windows, Finder on Mac OS X, GNOME Files on Fedora, etc).</br>
+Besides, this view also demonstrates the context menu configuration on the FileList and how to call into function
 lsb.showMessage in the Lua script to show message from the context menu. Double click on a plain text files listed in the
-FileList will show the content in the TextView.</p>
+FileList will show the content in the TextView.
 ]]>
     A file explorer like sample view to demonstrate the capabilities of LeaveScriptBehind. This one works on all OSes.</description>
   <version major="0" minor="0" build="1" revision="0" />
