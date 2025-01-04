@@ -7,10 +7,17 @@
   name="Disk Usage Analyzer"
   author="Kevin Luo"
   createTime="2024-12-09T22:54:45z"
-  lastChangeTime="2024-12-09T22:54:45z">
+  lastChangeTime="2024-12-31T22:54:45z">
 
-  <description>A sample view demonstrates using D3 library to visualize data. It uses du to collect folder sizes on Linux/Mac OS X
-machines, and then converts the data into JSON using jq, finally render the data in treemap using D3 library.</description>
+  <description>
+<![CDATA[
+This is a sample view that demonstrates how to use the <a href="https://d3js.org/d3-hierarchy/treemap">Treemap</a> in the
+<a href="">D3</a> library to visualize the disk usage of selected folder. This is a PowerShell version that uses Get-ChildItem
+and Measure-Object to collect the disk space usage data for folders. The data is then converted into JSON using the
+ConvertTo-JSON cmdlet. And then the view renders the JSON data using code copied and modified from the
+<a href="https://observablehq.com/@d3/treemap/2">Treemap</a> example.
+]]>
+  </description>
   <version major="0" minor="0" build="1" revision="0" />
     
   <view>
@@ -48,7 +55,7 @@ machines, and then converts the data into JSON using jq, finally render the data
                   <param id="bdf10ef6-ed3c-437a-9868-2e73b4545cbc" name="colorScheme"/>
                 </output>
                 <properties>
-                  <property name="threshold" label="Size threshold" category="Treemap" type="UnsignedInteger" description="This is size threshold for the tree map. Any folder has size smallers than this threshold won't be shown." default="1024" />
+                  <property name="threshold" label="Size threshold (KB)" category="Treemap" type="UnsignedInteger" description="This is size threshold for the tree map. Any folder has size smallers than this threshold won't be shown." default="1024" />
                   <property name="colorScheme" label="Color scheme" category="Treemap" type="Enumeration" description="The color scheme for the tree map" default="schemePastel1">
                     <options>
                       <option>schemeCategory10</option>
@@ -93,35 +100,31 @@ machines, and then converts the data into JSON using jq, finally render the data
       <right>
         <splitLayout id="9918fec4-ca92-415d-996d-eec993ebe983" orientation="Vertical" fixedView="Bottom" size="280">
           <top>
-            <webView id="1a0cc862-dc53-4d73-b919-a9016e66055c" contentType="Content" loadDataAt="Default">
+            <webView id="1a0cc862-dc53-4d73-b919-a9016e66055c" contentType="Content" loadDataAt="Default" enableDevTools="true">
               <!-- Modified from D3 example at https://observablehq.com/@d3/treemap/2 -->
-              <caption visible="true">Folders have size larger than {threshold} MB</caption>
+              <caption visible="true">Folders have size larger than {threshold} KB</caption>
               <input>
-                <param id="ee74da62-badf-4ef4-83c0-12c3d56d18d8" name="rootPath"/>
                 <param id="43d3be30-e814-4be9-934b-420b8beadfa1" name="threshold"/>
                 <param id="99d09bad-e860-4314-acf2-614fea64cd3a" name="colorScheme"/>
-                <param id="f0799976-ab9a-4cdd-88bb-c356a04f0983" name="dataReady"/>
+                <param id="f0799976-ab9a-4cdd-88bb-c356a04f0983" name="dataFile"/>
               </input>
               <output>
                 <param id="66101b57-b0e5-4b06-a1e7-f9af3495e338" name="path"/>
               </output>
               <condition>
 <![CDATA[
-return dataReady.IsTrigger and (not dataReady.IsEmpty) and threshold.IsPositive and (not colorScheme.IsNegative)
+return dataFile.IsTrigger and (not dataFile.IsEmpty) and threshold.IsPositive and (not colorScheme.IsNegative)
 ]]>
               </condition>
               <data showProgress="false">
                 <script type="lua">
                   <![CDATA[
 return [[
-<div style="display:block;">
-  <svg id="container"></svg>
-</div>
+<div id="container"><svg id="svg"></svg><div id="message"></div></div>
 
 <script type="text/javascript">
-var tree = Node.buildTree(data, 0);
-tree.filter({threshold} * 1024);
-window.onresize = function(event) { renderTreemap(tree, {colorScheme}); }
+var tree = null;
+window.onresize = function(event) { safeRender({threshold}, {colorScheme}); }
 window.onresize();
 </script>
 ]]
@@ -130,8 +133,8 @@ window.onresize();
               </data>
               <scripts>
                 <file>https://d3js.org/d3.v6.js</file>
-                <file path="Temp">disk-analyzer-data.js</file>
                 <file path="View">disk-analyzer.js</file>
+                <file path="Temp">{dataFile}</file>
               </scripts>
             </webView>
           </top>
@@ -160,17 +163,36 @@ window.onresize();
         <param id="b2102c0f-bb6d-404a-a094-24f02ce4abbb" name="inputReady"/>
       </input>
       <output>
-        
+        <param id="7a7cb9a3-b4eb-4fcd-aeb3-ac65853f8823" name="*"/>
       </output>
       <condition>
 <![CDATA[return (not rootPath.IsEmpty) and inputReady.IsTrigger]]>
       </condition>
       <data showProgress="true">
-        <script type="bash">
+        <script type="pwsh">
 <![CDATA[
-echo 'var data = ' > size-result.js
-du -m /usr | jq -R 'split("\t") | { path: .[1], size: .[0] }' | jq -s 'sort_by(.path)' >> size-result.js
-echo ';' >> size-result.js
+function getFolderSize($path, $file)
+{
+    $totalSize = 0;
+    $childFolders = Get-ChildItem -Path $path -Directory
+    $childFolders | ForEach-Object {
+        $childPath = Join-Path -Path $path -ChildPath $_.Name
+        $totalSize += getFolderSize -path $childPath -file $file
+    }
+    
+    $totalSize += (Get-ChildItem -Path $path -File | Measure-Object -Property Length -Sum).Sum
+    @{ size = [int][Math]::Floor($totalSize / 1024); path = $path; } | ConvertTo-JSON -Compress | Out-File $file -Append -NoNewLine
+    "," | Out-File $file -Append
+
+    return $totalSize
+}
+
+$tempFileName = "{0:X8}{1:X4}.js" -f (Get-Random), (Get-Date).Microsecond
+$tempFile = "{LSBTEMP}\$tempFileName"
+"var data = [" | Out-File $tempFile
+getFolderSize -path "{rootPath}" -file $tempFile | Out-Null
+"];" | Out-File $tempFile -Append
+return $tempFileName
 ]]>
         </script>
       </data>
@@ -195,6 +217,15 @@ echo ';' >> size-result.js
     <!-- Button click sends inputReady to procedure to do folder size analysis -->
     <mapping source="4e86e289-c3d4-4e1e-b560-6a835e085739">
       <target>b2102c0f-bb6d-404a-a094-24f02ce4abbb</target>
+    </mapping>
+
+    <!-- The data file generated from procedure sent to treemap view -->
+    <mapping source="7a7cb9a3-b4eb-4fcd-aeb3-ac65853f8823">
+      <target>f0799976-ab9a-4cdd-88bb-c356a04f0983</target>
+    </mapping>
+
+    <mapping source="66101b57-b0e5-4b06-a1e7-f9af3495e338">
+      <target>a4a16b8e-66a8-4791-aee0-c3d0d5d80fe3</target>
     </mapping>
   </dataFlow>
 

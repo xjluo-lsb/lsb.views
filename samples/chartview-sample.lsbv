@@ -10,20 +10,19 @@
   lastChangeTime="2023-08-28T22:00:00.000Z">
 
   <description>
-    <![CDATA[
-    This is a sample view that demonstrates the TabLayout, TableLayout and ChartView in the LSB.
-    The ChartView is the view control that is used to show all the types of charts supported, which includes,
-    <ul>
-      <li> Bar chart          <li> Stacked bar chart  <li> Column chart   <li> Stacked column chart
-      <li> Candlestick chart  <li> Box plot           <li> OHLC chart     <li> Histogram
-      <li> Pie chart          <li> Polar area chart   <li> Doughnut chart <li> Bubble chart
-      <li> Scatter plot       <li> Line chart         <li> Math2D plot    <li> Area chart
-    </ul>
-    The data used in this sample view are generated using the embedded Lua scripts.
-    <p>More details about the wxCharts library used to display the charts can be found at
-      https://github.com/wxIshiko/wxCharts</P
-    <p>And the Lua script information can be found at https://www.lua.org/</p>
-    ]]>
+<![CDATA[
+This is a sample view that demonstrates the TabLayout, TableLayout and ChartView in the LSB.
+The ChartView is the view control that is used to show different types of charts supported, which includes,
+<ul>
+  <li> Bar chart          <li> Stacked bar chart  <li> Column chart   <li> Stacked column chart
+  <li> Candlestick chart  <li> Box plot           <li> OHLC chart     <li> Histogram
+  <li> Pie chart          <li> Polar area chart   <li> Doughnut chart <li> Bubble chart
+  <li> Scatter plot       <li> Line chart         <li> Math2D plot    <li> Area chart
+</ul>
+The data used in this sample view are generated using the Lua script that is defined in the script reference.
+<p>More details about how the wxCharts library is used to display the charts can be found at https://github.com/wxIshiko/wxCharts</P
+<p>And the Lua script information can be found at https://www.lua.org/</p>
+]]>
   </description>
   <version major="0" minor="1" build="1" revision="0" />
   <scripts>

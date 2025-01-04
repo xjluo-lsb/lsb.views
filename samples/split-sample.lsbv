@@ -9,7 +9,14 @@
   createTime="2023-09-09T01:23:45z"
   lastChangeTime="2023-09-09T16:07:45z">
 
-  <description>A sample view demonstrates the SplitLayout / PropertyInput / ListView / TextView and PowerShell code to list files in a folder</description>
+  <description>
+<![CDATA[
+This sample view demonstrates how to use the SplitLayout to manage the control layout in a LSB view, it also illustrates all
+the different property value types supported in the PropertyInput control as input for other controls. The "Select a folder"
+value will be sent to the FileList control to show all the files and sub-folders under the selected folder. Many other values
+in the PropertyInput control are sent to a TextView to show how the value changes triggers update of content in the TextView.
+]]>
+  </description>
   <version major="0" minor="0" build="1" revision="0" />
     
   <view>
@@ -81,7 +88,7 @@
           ratio="0.5">
           <caption visible="false"></caption>
           <top>
-            <fileList id="a1f7ce3a-7c5e-4765-95e6-147049163135" loadDataAt="Default" multiSelect="true" filter="true" statis="true" files="true" dirs="true">
+            <fileList id="a1f7ce3a-7c5e-4765-95e6-147049163135" loadDataAt="Default" multiSelect="true" filter="true" status="true" files="true" dirs="true">
               <caption visible="true">Folders and files under selected folder: {path}</caption>
               <input>
                 <param id="837825a3-9853-4318-8211-b0c4b50e5967" name="path" />

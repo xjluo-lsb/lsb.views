@@ -9,7 +9,20 @@
   createTime="2021-12-12T20:55:28z"
   lastChangeTime="2023-09-09T23:07:45z">
 
-  <description>A sample view to demonstrate WebView on the support library functionality tests and the parameter operation capability</description>
+  <description>
+<![CDATA[
+This sample view demonstrates different ways to construct the content for WebView control as well as how to send value changes
+out from the WebView control. Here are a few things it touched,
+<ul>
+<li>Use data returned from data source together with CSS style reference and JavaScript reference to construct page.
+<li>Use Web content defined in external file combined with CSS files and JS files to construct page.
+<li>Demonstrate the showInformation() function in the LSB provided support library to show message from WebView.
+<li>Call sendValue() in JavaScript to send single value from WebView to other control(s).
+<li>Call sendObject() in JavaScript to send multiple values from WebView to other control(s).
+<li>Call sendData() in JavaScript to send more complicated value or huge content from WebView to other control(s).
+</ul>
+]]>
+  </description>
   <version major="0" minor="0" build="1" revision="0" />
   <os>Any</os>
 
@@ -28,80 +41,27 @@
               </output>
               <data showProgress="false">
                 <script type="lua">
-                  <![CDATA[
+<![CDATA[
 return [=[
-<h3 style="padding: 10px; background-color: #F09B59; color: #FFFFFF; border-radius: 5px;">
-Section 1 for calling sendValue() an sendObject()
-</h3>
-
+<h3 style="background-color: #F09B59;">Section 1 for calling sendValue() an sendObject()</h3>
 <p>Here's content for section 1,</p>
 <p><button onclick='onClick1()'>Try a few clicks on me to see result of showInformation() and sendValue()</button></p>
 <p><button onclick='onClick2()'>Click me to see how sendObject() works for multiple fields</button></p>
 <p>Count = <span id='count'>?</span></p>
 
-<h3 style="padding: 10px; background-color: #818049; color: #FFFFFF; border-radius: 5px;">
-Section 2 for calling sendData()
-</h3>
-
+<h3 style="background-color: #818049;">Section 2 for calling sendData()</h3>
 <p>Here's content for section 2,</p>
 <p><button onclick='onClick3()'>Click on me to see the result of sendData()</button></p>
-
-<script>
-var count = 0;
-function onClick1()
-{
-    if (lsb == null)
-    {
-        alert("lsb is null");
-    }
-    else if (lsb.sendValue == null)
-    {
-        alert("lsb.sendValue is null");
-    }
-    else if (count > 0)
-    {
-        lsb.sendValue("SimpleValue", "This have been {0} clicks on the button.".format(count + 1));
-        count ++;
-    }
-    else
-    {
-        lsb.showInformation("This is the first click and it triggers this message dialog.\nStarting from next click, it will send value out.");
-        count = 1;
-    }
-    
-    document.getElementById('count').innerHTML = count;
-}
-
-function onClick2()
-{
-    lsb.sendObject({
-        SimpleValue: count + 1,
-        ComplexValue: "{ a: 1, b: 'string' }"
-    });
-    
-    if (count > 0) count ++;
-    document.getElementById('count').innerHTML = count;
-}
-
-function onClick3()
-{
-    lsb.sendData({
-        BooleanValue: true,
-        NumberValue: (count + 1) * (count + 1),
-        StringValue: "{ a: " + count + ", b: 'string' }"
-    });
-    
-    if (count > 0) count ++;
-    document.getElementById('count').innerHTML = count;
-
-    lsb.sendValue("DataReady", true);
-}
-
-</script>
 ]=]
 ]]>
                 </script>
               </data>
+              <styles>
+                <file path="View">webview-sample.css</file>
+              </styles>
+              <scripts>
+                <file path="View">webview-sample.js</file>
+              </scripts>
             </webView>
           </top>
           <bottom>
@@ -110,7 +70,7 @@ function onClick3()
               <input />
               <output />
               <styles>
-                <file path="Libs">css\lsb.css</file>
+                <file path="View">webview-sample.css</file>
               </styles>
               <body path="View">webview-sample.html</body>
             </webView>
@@ -128,7 +88,7 @@ function onClick3()
               </input>
               <data showProgress="false">
                 <script type="lua">
-                  <![CDATA[
+<![CDATA[
 return [[
 Simple value = {SimpleValue}
 Complex value = {ComplexValue}

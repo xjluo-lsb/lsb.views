@@ -9,8 +9,24 @@
   createTime="2023-11-23T00:00:00Z"
   lastChangeTime="2023-11-23T00:00:00.000Z">
 
-  <description>A sample view that demostrates Graphviz file creation/editing, open/save file and preview the result.</description>
+  <description>
+<![CDATA[
+This sample view demostrates how to use LSB to create a <a href="https://graphviz.org/">Graphviz</a> file editor. It provides
+following functionalities,
+<ul>
+<li>Clicking on the New button to create a default Graphviz file with two nodes.
+<li>Clicking on the Open button to open an existing Graphviz and load the content for modification.
+<li>Clicking on the Save button to save the current content into user selected file.
+<li>The view automatically converts the Graphviz content into SVG for preview.
+</ul>
+Please be reminded to configure the path properly in the system pointing to the folder contains the Graphviz dot tool.
+]]>
+  </description>
   <version major="0" minor="9" build="0" revision="0" />
+
+  <scripts>
+    <script type="lua">graphviz.lua</script>
+  </scripts>
 
   <view>
     <tableLayout id="9948ab12-48c0-4932-b732-a664fb277464">
@@ -33,17 +49,7 @@
             </output>
             <data showProgress="false">
               <script type="lua">
-<![CDATA[
-return {
-  content = [[
-digraph
-{
-    node1 -> node2
-}
-]],
-  fileName = ""
-}
-]]>
+<![CDATA[return createDefaultContent()]]>
               </script>
             </data>
           </button>
@@ -56,19 +62,7 @@ digraph
             </output>
             <data showProgress="false">
               <script type="lua">
-<![CDATA[
-local filePath = lsb.openFile("Open file", "Open GraphViz file (*.dot;*.gv)|*.dot;*.gv")
-if (filePath ~= nil and filePath ~= '') then
-  local fileHandle = io.open(filePath, "rb")    -- r read mode and b binary mode
-  if (fileHandle ~= nil) then
-    local fileContent = fileHandle:read("*a")   -- *a or *all reads the whole file
-    fileHandle:close()
-    return { filePath = filePath, fileContent = fileContent }
-  end
-end
-
-return nil
-]]>
+<![CDATA[return openGraphvizFile()]]>
               </script>
             </data>
           </button>
@@ -80,9 +74,7 @@ return nil
             </input>
             <data showProgress="false">
               <script type="lua">
-<![CDATA[
-return [[{fileName}]]
-]]>
+<![CDATA[return [[{fileName}]]]]>
               </script>
             </data>
           </textView>
@@ -94,23 +86,11 @@ return [[{fileName}]]
             </input>
             <output />
             <condition>
-<![CDATA[
-return not content.IsEmpty
-]]>
+<![CDATA[return not content.IsEmpty]]>
               </condition>
             <data showProgress="false">
               <script type="lua">
-<![CDATA[
-local content = [[{content}]]
-local filePath = lsb.saveFile("Save file", "Save GraphViz file (*.dot;*.gv)|*.dot;*.gv")
-if (filePath ~= nil and filePath ~= '') then
-  local fileHandle = io.open(filePath, "w")     -- w write mode
-  if (fileHandle ~= nil) then
-    fileHandle:write(content)
-    fileHandle:close()
-  end
-end
-]]>
+<![CDATA[saveGraphvizFile([[{content}]])]]>
               </script>
             </data>
           </button>
@@ -166,20 +146,7 @@ return "file://{fileName}"
       </output>
       <data showProgress="false">
         <script type="lua">
-<![CDATA[
-local content = [[{source}]]
-local sourceFile = lsb.getTempFile("intermediate.dot")
-local targetFile = lsb.getTempFile("result.svg")
-local file = io.open(sourceFile, "w")
-if file then
-  file:write(content)
-  file:close()
-end
-
-local command = "dot -Tsvg " .. sourceFile .. " -o " .. targetFile
-os.execute(command)
-return targetFile:gsub("\\", "/")
-]]>
+<![CDATA[return graphvizToSvg([[{source}]])]]>
         </script>
       </data>
     </procedure>

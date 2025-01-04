@@ -9,7 +9,13 @@
   createTime="2021-09-09T01:23:45z"
   lastChangeTime="2023-09-10T10:14:45z">
 
-  <description>A sample view that demonstrates the TableLayout, ButtonGroup, and Launcher.</description>
+  <description>
+<![CDATA[
+This sample view demonstrates how to use the TableLayout to manage the control layout in a view, and it also shows how to use
+the ButtonGroup to simplify the definition of multiple buttons and manage the layout of a set of buttons. Besides, the "Button
+to launch view" button provides an example on how to use the Launcher component to launch another LSB view from a LSB view.
+]]>
+  </description>
   <version major="0" minor="0" build="1" revision="0" />
 
   <view>

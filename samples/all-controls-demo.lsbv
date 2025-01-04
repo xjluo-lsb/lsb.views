@@ -9,11 +9,26 @@
   createTime="2023-05-13T00:00:00.000Z"
   lastChangeTime="2023-05-13T00:00:00.000Z">
   
-  <description>This view demostrates all the controls supported in the LSB. It requires pwsh to be configured to run the script.</description>
+  <description>
+<![CDATA[
+This sample view demostrates majority of the controls supported in the LSB. It requires pwsh (PowerShell or PowerShell 7+) to be
+configured to run the scripts and demostrates following features,
+<ul>
+<li>Using Lua scripts defined in script reference, using PowerShell scripts defined in script reference.
+<li>Using PowerShell script for generating setting data for the PropertyInput control, which overrides the property definitions configured in the view file.
+<li>String input in the PropertyInput is sent to the ListView for updating the caption for the ListView.
+<li>Demonstrates the context menu in the ListView.
+<li>Uses external Web site page as the help page.
+<li>Data controls used in the view: ListView / TextView / TreeView / ChartView / TreeListView / WebView
+<li>Input controls used in the view: TextInput / ComboBox / PropertyInput / ButtonGroup
+<li>Layout controls used in the view: SplitLayout / TableLayout / TabLayout
+</ul>
+]]>
+  </description>
   <version major="0" minor="9" build="0" revision="0" />
   <scripts>
-    <script type="lua">demo-lua.lua</script>
-    <script type="pwsh">demo-pwsh.ps1</script>
+    <script type="lua">all-controls-demo.lua</script>
+    <script type="pwsh">all-controls-demo.ps1</script>
   </scripts>
   <os>Any</os>
   <about type="Url">
@@ -238,7 +253,7 @@ return {
                   </columns>
                 </treeListView>
               </page>
-              <page title="WebView demo">
+              <page title="WebView">
                 <webView id="508c2c51-9e2f-46e4-a8ce-4f0be3a9a670" contentType="Url" loadDataAt="Creating">
                   <data showProgress="false">
                     <script type="lua">
@@ -257,6 +272,7 @@ return {
 </view>
   
 <dataFlow>
+  <!-- Send data from PropertyInput to ListView -->
   <mapping source="ce4a990f-497c-4af6-9912-9f5c2dcc91e1">
     <target>1e5af902-c3b1-4514-9ede-d52f6562262f</target>
   </mapping>
