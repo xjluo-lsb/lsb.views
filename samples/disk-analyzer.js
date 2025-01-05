@@ -224,6 +224,8 @@ function renderTreemap(tree, schemeIndex)
     Object.assign(svg.node(), {scales: {color}});
 };
 
+var tree = null;
+
 function safeRender(threshold, schemeIndex)
 {
     var messageText = document.getElementById("message");
