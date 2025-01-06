@@ -123,7 +123,6 @@ return [[
 <div id="container"><svg id="svg"></svg><div id="message"></div></div>
 
 <script type="text/javascript">
-var tree = null;
 window.onresize = function(event) { safeRender({threshold}, {colorScheme}); }
 window.onresize();
 </script>
@@ -181,7 +180,7 @@ function getFolderSize($path, $file)
     }
     
     $totalSize += (Get-ChildItem -Path $path -File | Measure-Object -Property Length -Sum).Sum
-    @{ size = [int][Math]::Floor($totalSize / 1024); path = $path; } | ConvertTo-JSON -Compress | Out-File $file -Append -NoNewLine
+    @{ size = $totalSize; path = $path; } | ConvertTo-JSON -Compress | Out-File $file -Append -NoNewLine
     "," | Out-File $file -Append
 
     return $totalSize
@@ -192,6 +191,7 @@ $tempFile = "{LSBTEMP}\$tempFileName"
 "var data = [" | Out-File $tempFile
 getFolderSize -path "{rootPath}" -file $tempFile | Out-Null
 "];" | Out-File $tempFile -Append
+
 return $tempFileName
 ]]>
         </script>

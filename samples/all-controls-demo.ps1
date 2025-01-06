@@ -1,4 +1,6 @@
+#
 # Function that creates property definitions for the PropertyGrid input control
+#
 function CreateSamplePropertySettings()
 {
     $version = $PSVersionTable
@@ -17,6 +19,9 @@ function CreateSamplePropertySettings()
     )
 }
 
+#
+# Following lines are needed for any PowerShell script reference to tell LSB that the loading is completed
+#
 $sig1 = "990303"
 $sig2 = "040616"
 Write-Host "$sig1$sig2"

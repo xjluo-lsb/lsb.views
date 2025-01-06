@@ -36,247 +36,260 @@ configured to run the scripts and demostrates following features,
   </about>
 
   <view>
-  <splitLayout id="a8bd3ffa-35b5-4b85-8cf9-31b8038eec52" loadDataAt="Default" orientation="Horizontal" fixedView="None" ratio="0.36">
-    <caption visible="false">This is the root SplitLayout</caption>
-    <input />
-    <output />
-    <left>
-      <splitLayout id="f4a4bdd4-ff81-4350-924c-36a91b62a4f0" orientation="Vertical" fixedView="None" ratio="0.5">
-        <top>
-          <propertyInput id="3ebd2027-cae2-4845-b131-653103399c70" trimSpace="Both" loadDataAt="Creating">
-            <caption visible="true">Sample of PropertyInput</caption>
-            <output>
-              <param name="Caption string for listview" id="ce4a990f-497c-4af6-9912-9f5c2dcc91e1" activation="Default"/>
-              <param name="Boolean" id="d69190c7-33dd-4143-8282-94a231280421" activation="Default"/>
-              <param name="LongString" id="342a71fc-a372-43ea-a66f-d2c89d7b827d" activation="Default"/>
-            </output>
-            <data showProgress="false">
-              <script type="pwsh">
+    <!-- The layout of the view is firstly split horizontally into left and right parts -->
+    <splitLayout id="a8bd3ffa-35b5-4b85-8cf9-31b8038eec52" loadDataAt="Default" orientation="Horizontal" fixedView="None" ratio="0.36">
+      <caption visible="false">This is the root SplitLayout</caption>
+      <input />
+      <output />
+      <left>
+        <!-- The left part is then split vertically with PropertyInput in the top section and a list view in the bottom section -->
+        <splitLayout id="f4a4bdd4-ff81-4350-924c-36a91b62a4f0" orientation="Vertical" fixedView="None" ratio="0.5">
+          <top>
+            <!-- Though the PropertyInput has several properties defined, they won't be used. We will use the property definitions
+            returned from the data source, thus we set the loadDataAt to Creating - the data source is evaluated at control creation -->
+            <propertyInput id="3ebd2027-cae2-4845-b131-653103399c70" trimSpace="Both" loadDataAt="Creating">
+              <caption visible="true">Sample of PropertyInput</caption>
+              <output>
+                <param name="Caption string for listview" id="ce4a990f-497c-4af6-9912-9f5c2dcc91e1" activation="Default"/>
+                <param name="Boolean" id="d69190c7-33dd-4143-8282-94a231280421" activation="Default"/>
+                <param name="LongString" id="342a71fc-a372-43ea-a66f-d2c89d7b827d" activation="Default"/>
+              </output>
+              <!-- Call the PowerShell method defined in the script reference to create the property definitions -->
+              <data showProgress="false">
+                <script type="pwsh">
 <![CDATA[return CreateSamplePropertySettings]]>
-              </script>
-            </data>
-            <properties>
-              <!-- Following property definitions would be overridden by the property definition returned from data source -->
-              <property name="string" type="String" category="Test" description="This is sample input for string value" />
-              <property name="boolean" type="Boolean" category="Test" description="This is sample input for boolean value" />
-              <property name="longString" type="LongString" category="Test" default="This is sample input for long string value" />
-            </properties>
-          </propertyInput>
-        </top>
-        <bottom>
-          <listView id="d3957d75-e795-4da2-b420-2e8edea5aa9d" sortable="true" multiSelect="false" loadDataAt="Creating">
-            <caption visible="true">Caption for ListView: {StringValue}</caption>
-            <input>
-              <param name="StringValue" id="1e5af902-c3b1-4514-9ede-d52f6562262f" />
-            </input>
-            <output />
-            <data showProgress="false">
-              <script type="lua">
+                </script>
+              </data>
+              <properties>
+                <!-- Following property definitions would be overridden by the property definition returned from data source -->
+                <property name="string" type="String" category="Test" description="This is sample input for string value" />
+                <property name="boolean" type="Boolean" category="Test" description="This is sample input for boolean value" />
+                <property name="longString" type="LongString" category="Test" default="This is sample input for long string value" />
+              </properties>
+            </propertyInput>
+          </top>
+          <bottom>
+            <!-- The ListView accepts the string value from PropertyInput to update the caption, and uses data returned from the
+            Lua script for the content -->
+            <listView id="d3957d75-e795-4da2-b420-2e8edea5aa9d" sortable="true" multiSelect="false" loadDataAt="Creating">
+              <caption visible="true">Caption for ListView: {StringValue}</caption>
+              <input>
+                <param name="StringValue" id="1e5af902-c3b1-4514-9ede-d52f6562262f" />
+              </input>
+              <output />
+              <!-- Call the Lua method defined in the script reference to create the data for the ListView -->
+              <data showProgress="false">
+                <script type="lua">
 <![CDATA[return createSampleDataForListView()]]>
-              </script>
-            </data>
-            <contextMenu copy="true" refresh="true">
-              <menuItem text="Menu item 1">
-                <data>
-                  <script type="lua">
-<![CDATA[return "Text from menu item 1"]]>
-                  </script>
-                </data>
-              </menuItem>
-              <menuItem text="Menu item 2">
-                <data>
-                  <script type="lua">
-<![CDATA[return "Text from menu item 2"]]>
-                  </script>
-                </data>
-              </menuItem>
-              <separator />
-              <subMenu text="Child menu">
-                <menuItem text="Menu item 1-1">
+                </script>
+              </data>
+              <!-- Define the context menu for the ListView, copy menu items and refresh menu item can be enabled with attributes,
+              others need to be defined through text and have script associated with them -->
+              <contextMenu copy="true" refresh="true">
+                <menuItem text="Menu item 1">
                   <data>
                     <script type="lua">
-<![CDATA[return "Text from menu item 1-1"]]>
+<![CDATA[return "Text from menu item 1"]]>
+                    </script>
+                  </data>
+                </menuItem>
+                <menuItem text="Menu item 2">
+                  <data>
+                    <script type="lua">
+<![CDATA[return "Text from menu item 2"]]>
                     </script>
                   </data>
                 </menuItem>
                 <separator />
-                <menuItem text="Menu item 1-2">
-                  <data>
-                    <script type="lua">
+                <subMenu text="Child menu">
+                  <menuItem text="Menu item 1-1">
+                    <data>
+                      <script type="lua">
+<![CDATA[return "Text from menu item 1-1"]]>
+                      </script>
+                    </data>
+                  </menuItem>
+                  <separator />
+                  <menuItem text="Menu item 1-2">
+                    <data>
+                      <script type="lua">
 <![CDATA[return "Text from menu item 1-2"]]>
-                    </script>
-                  </data>
-                </menuItem>
-              </subMenu>
-            </contextMenu>
-            <filter visible="true" prompt="Filter:" placeholder="Type here to filter in the ListView" />
-            <status visible="true"
-              singleItemCountPrompt="There is %%ITEM_COUNT%% item in the list"
-              multipleItemCountPrompt="There are %%ITEM_COUNT%% items in the list"
-              noSelectionPrompt="there are no items selected"
-              currentSelectionPrompt="item %%ITEM_INDEX%% is currently selected"
-              singleSelectionPrompt="there is %%ITEM_COUNT%% item selected in the list"
-              multipleSelectionPrompt="there are %%ITEM_COUNT%% items selected in the list" />
-            <columns>
-              <column name="Name" width="120" visible="true" />
-              <column name="value" width="260" visible="true" />
-            </columns>
-            <rowStyles>
-            </rowStyles>
-          </listView>
-        </bottom>
-      </splitLayout>
-    </left>
-    <right>
-      <splitLayout id="1a18576d-750c-4eac-99ac-f606802d96a5" orientation="Vertical" fixedView="None" ratio="0.5">
-        <top>
-          <tableLayout id="539cb26a-eaa8-40a2-8f67-3b873629b111">
-            <rows>
-              <row height="56" sizeType="absolute"/>
-              <row height="100" sizeType="percentage"/>
-            </rows>
-            <columns>
-              <column width="50" sizeType="percentage"/>
-              <column width="50" sizeType="percentage"/>
-            </columns>
-            <cells>
-              <cell row="0" col="0">
-                <textInput id="865b1288-2f04-4d81-bbfa-67a362cbbb8b" multiline="false">
-                  <caption visible="true">Caption for TextInput</caption>
-                  <prompt visible="true">Prompt for TextInput:</prompt>
-                </textInput>
-              </cell>
-              <cell row="0" col="1">
-                <comboBox id="7bf19695-912e-4176-9388-3ec9c4165008" selectOnly="true">
-                  <caption visible="true">Caption for ComboBox</caption>
-                  <prompt visible="true">Prompt for ComboBox:</prompt>
-                  <options>
-                    <option>This is option 1</option>
-                    <option>This is option 2</option>
-                    <option>This is option 3</option>
-                    <option>This is option 4</option>
-                    <option>This is option 5</option>
-                  </options>
-                </comboBox>
-              </cell>
-              <cell row="1" col="0">
-                <textView id="aeea6bba-e937-4b29-8719-989ddc1f0d92" readOnly="true" noWrap="true">
-                  <caption visible="true">Caption for TextView</caption>
-                  <input />
-                  <output />
-                  <content>
-                    <![CDATA[Sample content for the text view
+                      </script>
+                    </data>
+                  </menuItem>
+                </subMenu>
+              </contextMenu>
+              <filter visible="true" prompt="Filter:" placeholder="Type here to filter in the ListView" />
+              <status visible="true"
+                singleItemCountPrompt="There is %%ITEM_COUNT%% item in the list"
+                multipleItemCountPrompt="There are %%ITEM_COUNT%% items in the list"
+                noSelectionPrompt="there are no items selected"
+                currentSelectionPrompt="item %%ITEM_INDEX%% is currently selected"
+                singleSelectionPrompt="there is %%ITEM_COUNT%% item selected in the list"
+                multipleSelectionPrompt="there are %%ITEM_COUNT%% items selected in the list" />
+              <columns>
+                <column name="Name" width="120" visible="true" />
+                <column name="value" width="260" visible="true" />
+              </columns>
+              <rowStyles>
+              </rowStyles>
+            </listView>
+          </bottom>
+        </splitLayout>
+      </left>
+      <right>
+        <!-- The right section is another SplitLayout that has a TableLayout on the top and a TabLayout on the bottom -->
+        <splitLayout id="1a18576d-750c-4eac-99ac-f606802d96a5" orientation="Vertical" fixedView="None" ratio="0.5">
+          <top>
+            <tableLayout id="539cb26a-eaa8-40a2-8f67-3b873629b111">
+              <rows>
+                <row height="56" sizeType="absolute"/>
+                <row height="100" sizeType="percentage"/>
+              </rows>
+              <columns>
+                <column width="50" sizeType="percentage"/>
+                <column width="50" sizeType="percentage"/>
+              </columns>
+              <cells>
+                <cell row="0" col="0">
+                  <textInput id="865b1288-2f04-4d81-bbfa-67a362cbbb8b" multiline="false">
+                    <caption visible="true">Caption for TextInput</caption>
+                    <prompt visible="true">Prompt for TextInput:</prompt>
+                  </textInput>
+                </cell>
+                <cell row="0" col="1">
+                  <comboBox id="7bf19695-912e-4176-9388-3ec9c4165008" selectOnly="true">
+                    <caption visible="true">Caption for ComboBox</caption>
+                    <prompt visible="true">Prompt for ComboBox:</prompt>
+                    <options>
+                      <option>This is option 1</option>
+                      <option>This is option 2</option>
+                      <option>This is option 3</option>
+                      <option>This is option 4</option>
+                      <option>This is option 5</option>
+                    </options>
+                  </comboBox>
+                </cell>
+                <cell row="1" col="0">
+                  <!-- The TextView has content predefined here in the view definition -->
+                  <textView id="aeea6bba-e937-4b29-8719-989ddc1f0d92" readOnly="true" noWrap="true">
+                    <caption visible="true">Caption for TextView</caption>
+                    <input />
+                    <output />
+                    <content>
+<![CDATA[Sample content for the text view
 This is line 2
 Line 3
 And another loooooooooooooooong line with more words in one single line.
 ]]>
-                  </content>
-                </textView>
-              </cell>
-              <cell row="1" col="1">
-                <treeView id="0bdf3139-12fe-4a54-b5e2-6a780a75befa" childProperty="child" labelProperty="name" loadDataAt="Creating">
-                  <caption visible="true">Caption for TreeView</caption>
-                  <data showProgress="false">
-                    <script type="lua">
+                    </content>
+                  </textView>
+                </cell>
+                <cell row="1" col="1">
+                  <treeView id="0bdf3139-12fe-4a54-b5e2-6a780a75befa" childProperty="child" labelProperty="name" loadDataAt="Creating">
+                    <caption visible="true">Caption for TreeView</caption>
+                    <data showProgress="false">
+                      <script type="lua">
 <![CDATA[return createSampleDataForTreeView()]]>
-                    </script>
-                  </data>
-                </treeView>
-              </cell>
-            </cells>
-          </tableLayout>
-        </top>
-        <bottom>
-          <tabLayout id="f2ca943a-5c36-45e9-abbc-d197a7f749bc">
-            <pages>
-              <page title="ButtonGroup">
-                <buttonGroup id="42ce8def-625a-44a3-bea6-b76b564b429f" buttonsPerRow="3">
-                  <caption visible="true">Caption for button group</caption>
-                  <buttons>
-                    <button id="55c97ca2-f63b-49fb-ac12-9ad37355cdca" label="Button A" description="This is description for button A.">
-                      <output>
-                        <param name="name" id="49D81987-5DEF-4F6B-A279-2D1BC05F6851" />
-                        <param name="value" id="62F802B0-FA53-447E-996A-F04AF95FEA46" />
-                      </output>
-                      <data showProgress="false">
-                        <script type="Lua">
+                      </script>
+                    </data>
+                  </treeView>
+                </cell>
+              </cells>
+            </tableLayout>
+          </top>
+          <bottom>
+            <tabLayout id="f2ca943a-5c36-45e9-abbc-d197a7f749bc">
+              <pages>
+                <page title="ButtonGroup">
+                  <buttonGroup id="42ce8def-625a-44a3-bea6-b76b564b429f" buttonsPerRow="3">
+                    <caption visible="true">Caption for button group</caption>
+                    <buttons>
+                      <button id="55c97ca2-f63b-49fb-ac12-9ad37355cdca" label="Button A" description="This is description for button A.">
+                        <output>
+                          <param name="name" id="49D81987-5DEF-4F6B-A279-2D1BC05F6851" />
+                          <param name="value" id="62F802B0-FA53-447E-996A-F04AF95FEA46" />
+                        </output>
+                        <data showProgress="false">
+                          <script type="Lua">
 <![CDATA[
 return {
   name = "Name of result",
   value = 0818
 }
 ]]>
-                        </script>
-                      </data>
-                    </button>
-                    <button id="d6b447d1-b331-43ff-b2ae-c171f18c6904" label="Button B">
-                      <data showProgress="false">
-                        <script type="pwsh">
+                          </script>
+                        </data>
+                      </button>
+                      <button id="d6b447d1-b331-43ff-b2ae-c171f18c6904" label="Button B">
+                        <data showProgress="false">
+                          <script type="pwsh">
 <![CDATA[]]>
-                        </script>
-                      </data>
-                    </button>
-                    <button id="ad34c3ae-e331-4ab6-b360-9134ab2c4491" label="Button C">
-                    </button>
-                    <button id="9f1eb558-677a-4894-98d7-a89fb5c2a803" label="Button D">
-                    </button>
-                    <button id="95d9abda-75fa-4650-bc9e-c1c62b5341fc" label="Button E">
-                    </button>
-                  </buttons>
-                </buttonGroup>
-              </page>
-              <page title="ChartView">
-                <chartView id="07bbe232-6fed-47f5-8baa-620ee54e382c" chartType="ColumnChart" loadDataAt="Creating" showTooltip="false">
-                  <data showProgress="false">
-                    <script type="lua">
+                          </script>
+                        </data>
+                      </button>
+                      <button id="ad34c3ae-e331-4ab6-b360-9134ab2c4491" label="Button C">
+                      </button>
+                      <button id="9f1eb558-677a-4894-98d7-a89fb5c2a803" label="Button D">
+                      </button>
+                      <button id="95d9abda-75fa-4650-bc9e-c1c62b5341fc" label="Button E">
+                      </button>
+                    </buttons>
+                  </buttonGroup>
+                </page>
+                <page title="ChartView">
+                  <chartView id="07bbe232-6fed-47f5-8baa-620ee54e382c" chartType="ColumnChart" loadDataAt="Creating" showTooltip="false">
+                    <data showProgress="false">
+                      <script type="lua">
 <![CDATA[return createSamepleDataForColumnChart()]]>
-                    </script>
-                  </data>
-                  <xAxis name="time" displayName="Timestamp" isDateTime="true"/>
-                  <colors>
-                    <color lineColor="#7FFFD4" borderColor="#FFFFFF" fillColor="rgba(127,255,212,0.45)" />
-                    <color lineColor="#A9A9A9" borderColor="#FFFFFF" fillColor="rgba(169,169,169,0.6)" />
-                    <color lineColor="#FF7F50" borderColor="#FFFFFF" fillColor="rgba(255,127,80,0.38)" />
-                  </colors>
-                </chartView>
-              </page>
-              <page title="TreeListView">
-                <treeListView id="58979c7f-adda-45ea-89f4-f0744a808276" childProperty="child" loadDataAt="Creating">
-                  <data showProgress="false">
-                    <script type="lua">
+                      </script>
+                    </data>
+                    <xAxis name="time" displayName="Timestamp" isDateTime="true"/>
+                    <colors>
+                      <color lineColor="#7FFFD4" borderColor="#FFFFFF" fillColor="rgba(127,255,212,0.45)" />
+                      <color lineColor="#A9A9A9" borderColor="#FFFFFF" fillColor="rgba(169,169,169,0.6)" />
+                      <color lineColor="#FF7F50" borderColor="#FFFFFF" fillColor="rgba(255,127,80,0.38)" />
+                    </colors>
+                  </chartView>
+                </page>
+                <page title="TreeListView">
+                  <treeListView id="58979c7f-adda-45ea-89f4-f0744a808276" childProperty="child" loadDataAt="Creating">
+                    <data showProgress="false">
+                      <script type="lua">
 <![CDATA[return createSampleDataForTreeListView()]]>
-                    </script>
-                  </data>
-                  <columns>
-                    <column name="Name" align="Left" width="160"/>
-                    <column name="Value" align="Right" width="260"/>
-                  </columns>
-                </treeListView>
-              </page>
-              <page title="WebView">
-                <webView id="508c2c51-9e2f-46e4-a8ce-4f0be3a9a670" contentType="Url" loadDataAt="Creating">
-                  <data showProgress="false">
-                    <script type="lua">
+                      </script>
+                    </data>
+                    <columns>
+                      <column name="Name" align="Left" width="160"/>
+                      <column name="Value" align="Right" width="260"/>
+                    </columns>
+                  </treeListView>
+                </page>
+                <page title="WebView">
+                  <!-- The WebView uses the data returned from Lua data source as URL to display the content -->
+                  <webView id="508c2c51-9e2f-46e4-a8ce-4f0be3a9a670" contentType="Url" loadDataAt="Creating">
+                    <data showProgress="false">
+                      <script type="lua">
 <![CDATA[return "https://www.wxwidgets.org"]]>
-                    </script>
-                  </data>
-                  <highlights />
-                </webView>
-              </page>
-            </pages>
-          </tabLayout>
-        </bottom>
-      </splitLayout>
-    </right>
-  </splitLayout>
-</view>
+                      </script>
+                    </data>
+                    <highlights />
+                  </webView>
+                </page>
+              </pages>
+            </tabLayout>
+          </bottom>
+        </splitLayout>
+      </right>
+    </splitLayout>
+  </view>
   
-<dataFlow>
-  <!-- Send data from PropertyInput to ListView -->
-  <mapping source="ce4a990f-497c-4af6-9912-9f5c2dcc91e1">
-    <target>1e5af902-c3b1-4514-9ede-d52f6562262f</target>
-  </mapping>
-</dataFlow>
+  <dataFlow>
+    <!-- Send data from PropertyInput to ListView -->
+    <mapping source="ce4a990f-497c-4af6-9912-9f5c2dcc91e1">
+      <target>1e5af902-c3b1-4514-9ede-d52f6562262f</target>
+    </mapping>
+  </dataFlow>
 
 </LsbView>
  
