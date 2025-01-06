@@ -173,7 +173,7 @@ window.onresize();
 temp_file_name="disk-$(uuidgen | head -c 8).js"
 temp_data_file="{LSBTEMP}/$temp_file_name"
 echo 'var data = ' > $temp_data_file
-du -b {rootPath} | jq -R 'split("\t") | { path: .[1], size: .[0] }' | jq -s 'sort_by(.path)' >> $temp_data_file
+du -k {rootPath} | jq -R 'split("\t") | { path: .[1], size: .[0] }' | jq -s 'sort_by(.path)' >> $temp_data_file
 echo ';' >> $temp_data_file
 echo "{ \"file\": \"$temp_file_name\" }"
 ]]>

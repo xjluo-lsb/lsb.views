@@ -180,7 +180,7 @@ function getFolderSize($path, $file)
     }
     
     $totalSize += (Get-ChildItem -Path $path -File | Measure-Object -Property Length -Sum).Sum
-    @{ size = $totalSize; path = $path; } | ConvertTo-JSON -Compress | Out-File $file -Append -NoNewLine
+    @{ size = [int][Math]::Truncate($totalSize / 1024); path = $path; } | ConvertTo-JSON -Compress | Out-File $file -Append -NoNewLine
     "," | Out-File $file -Append
 
     return $totalSize
