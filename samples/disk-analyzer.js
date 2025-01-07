@@ -197,7 +197,7 @@ function renderTreemap(tree, schemeIndex)
 
     // Append a tooltip.
     const format = d3.format(",d");
-    leaf.append("title").text(d => d.data.path + ' : ' + d.data.value + ' MB');
+    leaf.append("title").text(d => d.data.path + ' : ' + d.data.value + ' KB');
 
     // Append a color rectangle. 
     leaf.append("rect")
@@ -214,7 +214,7 @@ function renderTreemap(tree, schemeIndex)
     // Append multiline text. The last line shows the value and has a specific formatting.
     leaf.append("text").attr("clip-path", d => d.clipUid)
     .selectAll("tspan")
-    .data(d => d.data.name.split(/(?=[A-Z][a-z])|\s+/g).concat(format(d.value) + ' MB'))
+    .data(d => d.data.name.split(/(?=[A-Z][a-z])|\s+/g).concat(format(d.value) + ' KB'))
     .join("tspan")
         .attr("x", 3)
         .attr("y", (d, i, nodes) => `${(i === nodes.length - 1) * 0.3 + 1.1 + i * 0.9}em`)
@@ -245,7 +245,7 @@ function safeRender(threshold, schemeIndex)
         tree = Node.buildTree(data, 0);
     }
 
-    tree.filter(threshold * 1024);
+    tree.filter(threshold);
 
     // If there is no children, it means all folder sizes are below the threshold
     if (tree.children == undefined)

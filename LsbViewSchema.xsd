@@ -1180,6 +1180,7 @@ in the LSB view files. It also defines the file structure of the view files usin
     </xs:sequence>
     <xs:attributeGroup ref="ViewAttributes" />
     <xs:attribute name="root" type="xs:string" use="required" />
+    <xs:attribute name="endWithDelimeter" type="xs:boolean" use="optional" default="false" />
   </xs:complexType>
 
   <xs:complexType name="TreeListView">
