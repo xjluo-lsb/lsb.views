@@ -329,6 +329,29 @@ in the LSB view files. It also defines the file structure of the view files usin
     </xs:restriction>
   </xs:simpleType>
 
+  <xs:simpleType name="DefaultPathType" final="restriction">
+    <xs:annotation>
+      <xs:documentation>
+        This is the enumeration type for default path type for FileTreeView
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="None" />
+      <xs:enumeration value="SystemConfig" />
+      <xs:enumeration value="UserConfig" />
+      <xs:enumeration value="GlobalData" />
+      <xs:enumeration value="TemporaryFolder" />
+      <xs:enumeration value="ApplicationData" />
+      <xs:enumeration value="ApplicationDocuments" />
+      <xs:enumeration value="ApplicationResources" />
+      <xs:enumeration value="Plugins" />
+      <xs:enumeration value="SharedLibraries" />
+      <xs:enumeration value="UserDocuments" />
+      <xs:enumeration value="UserData" />
+      <xs:enumeration value="UserLocalData" />
+    </xs:restriction>
+  </xs:simpleType>
+
   <xs:simpleType name="FontFamily" final="restriction">
     <xs:annotation>
       <xs:documentation>
@@ -1177,6 +1200,15 @@ in the LSB view files. It also defines the file structure of the view files usin
     </xs:annotation>
     <xs:sequence>
       <xs:group ref="ViewElements" />
+      <xs:element name="defaultPath" minOccurs="1" maxOccurs="1">
+        <xs:complexType>
+          <xs:simpleContent>
+            <xs:extension base="xs:string">
+              <xs:attribute name="type" type="DefaultPathType" use="optional" default="None" />
+            </xs:extension>
+          </xs:simpleContent>
+        </xs:complexType>
+      </xs:element>
     </xs:sequence>
     <xs:attributeGroup ref="ViewAttributes" />
     <xs:attribute name="startPath" type="xs:string" use="optional" />

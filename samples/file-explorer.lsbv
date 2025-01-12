@@ -35,6 +35,7 @@ FileList will show the content in the TextView.
 <![CDATA[]]>
             </script>
           </data>
+          <defaultPath type="None"></defaultPath>
         </fileTree>
       </left>
       <right>

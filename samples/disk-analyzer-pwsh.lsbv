@@ -45,6 +45,7 @@ ConvertTo-JSON cmdlet. And then the view renders the JSON data using code copied
 <![CDATA[]]>
                   </script>
                 </data>
+                <defaultPath type="None"></defaultPath>
               </fileTree>
             </cell>
             <cell row="1" col="0">

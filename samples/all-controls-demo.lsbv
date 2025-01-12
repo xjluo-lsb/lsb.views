@@ -160,13 +160,16 @@ configured to run the scripts and demostrates following features,
                 <cell row="0" col="1">
                   <comboBox id="7bf19695-912e-4176-9388-3ec9c4165008" selectOnly="true">
                     <caption visible="true">Caption for ComboBox</caption>
+                    <output>
+                      <param id="708fa79e-1892-471e-8f23-e5dc0871fe49" name="*"/>
+                    </output>
                     <prompt visible="true">Prompt for ComboBox:</prompt>
                     <options>
-                      <option>This is option 1</option>
-                      <option>This is option 2</option>
-                      <option>This is option 3</option>
-                      <option>This is option 4</option>
-                      <option>This is option 5</option>
+                      <option group="1">This is option 1-1</option>
+                      <option group="2">This is option 2-1</option>
+                      <option group="1">This is option 1-2</option>
+                      <option group="2">This is option 2-2</option>
+                      <option group="3">This is option 3-1</option>
                     </options>
                   </comboBox>
                 </cell>
