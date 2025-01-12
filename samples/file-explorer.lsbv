@@ -24,7 +24,7 @@ FileList will show the content in the TextView.
   <view>
     <splitLayout id="f535783a-d8ae-47db-99d1-ca9669a297ec" orientation="Horizontal" fixedView="Left" size="240">
       <left>
-        <fileTree id="00aa9ad2-15d4-4368-b2cd-12afb389ee55" loadDataAt="Creating" root="/">
+        <fileTree id="00aa9ad2-15d4-4368-b2cd-12afb389ee55" loadDataAt="Creating">
           <caption visible="true">Folders</caption>
           <input />
           <output>

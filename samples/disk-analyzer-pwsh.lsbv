@@ -34,7 +34,7 @@ ConvertTo-JSON cmdlet. And then the view renders the JSON data using code copied
           </columns>
           <cells>
             <cell row="0" col="0">
-              <fileTree id="3fc5559b-73eb-4449-8f7f-998b217bbeee" loadDataAt="Creating" root="/">
+              <fileTree id="3fc5559b-73eb-4449-8f7f-998b217bbeee" loadDataAt="Creating">
                 <caption visible="true">Select a folder to check</caption>
                 <input />
                 <output>
