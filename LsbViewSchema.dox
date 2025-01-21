@@ -7,8 +7,8 @@ This is the main document for Leave Script Behind (aka LSB). It includes introdu
 - \ref section_intro
 - Using LSB
   - \ref section_ui
-  - \ref section_views
   - \ref section_settings
+  - \ref section_views
   - \ref section_wrapper_script
 - Use LSB in a better way
   - \ref section_smart_time
@@ -152,7 +152,7 @@ The **About** page displays information about the LSB view. The content on this 
 
 \image html lsb-view-about.png
 
-### 2.5 Other tabs
+### 2.5 Other pages
 
 If the view author uses shells like PowerShell, Bash, or Zsh to implement functionalities for the LSB view, new pages will be added for each type of shells used. This per shell page displays the executed shell scripts along with their outputs. Both the view author and end users can use this page to review the executed shell commands and their generated outputs.
 
@@ -188,43 +188,21 @@ This is the dialog that manages how the view history is displayed.
 
 ### 3.3 Select view
 
-This dialog is launcher when user clicks on the **View** button in the main toolbar. It shows the full list of currently open views. If user selects a view from the list and clicks **OK" button, this selected view will be brought into fron and become a active view.
+This dialog is launched when user clicks on the **View** button in the main toolbar. It shows the full list of currently open LSB views. If user selects a view from the list and clicks **OK** button, the selected view will be brought into front and become an active view.
 
 \image html lsb-view-list.png
 
-### 3.4 Edit shell settings
+### 3.4 Settings
 
-This is the dialog used for creating and editing the settings for a shell to be used within the LSB application. The LSB views can execute shell scripts only if the corresponding shell setting exists, which must be created using this dialog.
-
-\image html lsb-shell-editor.png
-
-<ul>
-<li>**Name** - Name of the shell. This value becomes the shell type in the view associated with any shell scripts.</li>
-<li>**Path** - Path to the shell executable.</li>
-<li>**Reference / Module list** - This is a list of shell script files. These files will be automatically loaded into the corresponding shell when the shell process is created, thus the scripts in these files will be executed before any other scripts defines in the LSB view file. The shell scripts defined in the LSB view file can use the variables and functions created in these references or modules.</li>
-<li>**Placeholders** - These are placeholders to be used in the script wrapper which will be replaced by actual values before script execution.
-  <ul>
-    <li>**Custom user script** - This is the placeholder for the shell script defined in the LSB view file.</li>
-    <li>**Intermediate data file** - This is the placeholder for the intermediate data file path to store the data output from the user scripts defined in LSB view, and then LSB application will load the data from the file to be used in the LSB view.
-    <li>**First half of signature** - This is placeholder for first half of randomly generated signature data. The signature data will be used by LSB application to determine if the user defined shell script execution is completed or not.
-    <li>**Second half of signature** - This is placeholder for second half of the randomly generated signature data. It's used together with the first half of signature to form the complete signature.
-    <li>**Path to view file** - This is placeholder for the full path to the view file.
-  </ul>
-</li>
-
-</ul>
-
-### 3.5 View repository settings
-
-\image html lsb-view-repository-editor.png
+The LSB settings dialog is explained in the next section \ref section_settings.
 
 */
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*!
-\defgroup section_settings The LSB settings
+\defgroup section_settings The LSB Settings
 
-LSB has a dedicated settings dialog to configure the various settings for the application. All the settings are categorized in 4 groups. Check the following sections to learn what they are and how they changes the the LSB application behaves.
+The LSB settings dialog allows user to configure various aspects of the LSB application. The settings are organized into four categories: **General**, **Colors & Fonts**, **Shells**, and **Views**. Refer to the following sections to learn about each setting and understand how they affect the behavior of the LSB application.
 
 ## General
 
@@ -233,9 +211,9 @@ This is the general setting category for LSB. The settings included in this cate
 \image html lsb-settings-general.png
 
 <ul>
-<li>**Aggregation time window for multiple input parameter changes** - This defines length of a time window in unit of milliseconds. For a LSB view control, it could have multiple input parameters, and there might multiple parameters have the values chaged at the same time (or in a very short time range). If this time window length is set to 0, that means every parameter value change will trigger data load and content refresh in the view control. This is not expected behavior in most cases. By setting this time window to a short length, then all the parameter value changes happened within this window will be recognized as one action and trigger one data load and content refresh only. Please be reminded that this time window is a moving window. Assuming this time window is set to D, and the first input parameter value gets changed at T0, and then a second parameter gets changed at T1, where T1 - T0 <= D, these two input parameter changes will be recognized as one action, and the actual data load/content refresh will be triggered at time T1 + D. In general, if there are n parameters have their values changed around same time (with time gap between each adjecent two parameters less than D), then the actual data load/content refresh will happen at Tn + D.</li>
+<li>**Aggregation time window for multiple input parameter changes** - This defines the length of a time window in milliseconds. For an LSB view control, there might be multiple input parameters, and several of these parameters might have their values changed simultaneously (or within a very short time frame). If this time window length is set to 0, every parameter value change will trigger a data load and content refresh in the view control, which is generally not the expected behavior. By setting this time window to a short duration, all parameter value changes occurring within this window will be recognized as one action, triggering a single data load and content refresh. Please note that this time window is a moving window. For instance, if the time window length is set to D and the first input parameter value changes at T0, and a second parameter changes at T1 (where T1 - T0 <= D), these two input parameter changes will be recognized as one action, and the actual data load/content refresh will be triggered at T1 + D. If there is a third parameter value changes at T2 where T2 - T1 <= D, then the action will deferred again to T2 + D, until no parameter value change happens within the D duration after the last parameter value change. In general, if n parameters have their values changed around the same time (with the time gap between each adjacent two parameters being less than D), the actual data load/content refresh will happen at Tn + D.
 <li>**Default view size** - This defines the default window size for LSB view. When a LSB view is open, it will be set to this size by default.</li>
-<li>**Show the GIT client window during execution for enlistment or refresh** - The LSB application uses GIT to synchronize the default view repository and the help document repository. It calls the git command to get the files synced. This setting controls if the console window is shown during the synchronization.</li>
+<li>**Show the GIT client window during execution for enlistment or refresh** - The LSB application uses GIT to synchronize the default view repository, the help document repository, as well as other user configured view repositories. It calls the `git` command to get the files synced. This setting controls if a console window is shown during the synchronization.</li>
 </ul>
 
 ## Color & Fonts
@@ -245,80 +223,84 @@ This category contains the configurations for LSB UI, including colors and fonts
 \image html lsb-settings-ui.png
 
 <ul>
-<li>**Active view caption** - This configures the color and font for the active view controls. User may click on the foreground color, background color to chage the colors, and click on the "Choose..." button to select the font to be used for the active view control. The Preview control will show the final effect for any changes made on these configurations.</li>
-<li>**Inactive view caption** - This configures the color and font for the inactive view controls. It can be changed and previewed in the same way as the active view caption does.</li>
+<li>**Active view caption** - This setting allows user to configure the colors and font for the caption of active view controls. Users can click on the foreground or background color to change them, and click on the "Choose..." button to select the font for the active view control. The Preview control will display the final effect of any changes made to these configurations.
+
+
+This configures the colors and font for the caption for the active view controls. User may click on the foreground color, background color to chage the colors, and click on the "Choose..." button to select the font for the active view control. The Preview control will show the final effect for any changes made on these configurations.</li>
+<li>**Inactive view caption** - This configures the colors and font for the caption for the inactive view controls. It can be changed and previewed in the same way as the active view caption does.</li>
 <li>**Shell window content** - This is the setting for the shell window content. When a shell window is needed, such as the GIT console window mentioned above for the view synchronization, it will be displayed with the colors and font configured here. The settings can be changed and previewed in the same way as the active view caption and inactive view caption.</li>
 </ul>
 
 ## Shells
 
-This is the category for configuring the shells to be used in LSB views. The page is composed of a shell list and a set of tool buttons that manages the shell list.
+This category allows the user to configure the shells used in LSB views. The page consists of a shell list and a set of tool buttons that manage the shell list.
 
 \image html lsb-settings-shells.png
 
-Here are what the tool buttons do,
+Here are the tool buttons,
 <ul>
-<li>**Scan** - This scans all known shells supported by LSB on current Operating System. The found shells will be added into the shell list automatically with default settings.</li>
-<li>**Edit** - This button is enabled only if an item in the shell list is selected. Clicking on the button will trigger the shell setting editor dialog to change the settings for the selected shell. See section below for the details of shell setting editor dialog.</li>
-<li>**Add** - This adds a new shell into the shell list. It also launches the shell setting editor dialog for configuring the settings for the new shell.</li>
-<li>**Delete** - This deletes the currently selected shell from the shell list. It's enabled only if a shell item is selected in the shell list.</li>
-<li>**Clear** - This removes all shells from the shell list.</li>
+<li>**Scan** - This scans shells in the host Operating System. The found shells will be added into the shell list automatically with default settings.</li>
+<li>**Edit** - This button is enabled only if an item in the shell list is selected. Clicking on the button will trigger the shell setting editor dialog to change the settings for the selected shell. See the "Shell Settings Editor" section below for the more details on how to customize the settings for a shell.</li>
+<li>**Add** - This adds a new shell into the shell list. It launches the shell setting editor dialog with empty settings for the new shell to be added.</li>
+<li>**Delete** - This deletes the currently selected shell from the shell list. It's only enabled if a shell item is selected in the shell list.</li>
+<li>**Clear** - This button removes all shells from the shell list.</li>
 </ul>
 
-__Note__: Double click on an item in the shell list has the same effect as clicking the **Edit** button.
+__Note__: Double click on an item in the shell list has the same effect as clicking the **Edit** button - it launches the shell setting editor dialog for futher customization on the shell settings.
 
 ### Shell Settings Editor
 
-When user requests to add a new shell or edit an existing shell, following editor dialog will be launched for user to edit the settings,
+This is the dialog used for creating and editing the settings for a shell to be used within the LSB application. The LSB views can execute shell scripts only if the corresponding shell setting exists, which must be created using this dialog.
 
 \image html lsb-shell-editor.png
 
 Here are the settings user can set for a shell,
 <ul>
-<li>**Name** - Name of the shell</li>
+<li>**Name** - Name of the shell. This value becomes the shell type in the view associated with any shell scripts.</li>
 <li>**Path** - The path to the shell executable</li>
-<li>**Reference / Module list** - This is a list of modules to be referenced in the shell. The modules listed here will be automatically loaded when the shell is launched.</li>
-<li>**Placeholders** - These placeholders will be used to embed certain values into the wrapper script that helps to execute the user specified script through the shell process.
+<li>**Reference / Module list** - This is is a list of shell script files. These files will be automatically loaded into the corresponding shell when the shell process is created, so the scripts in these files will be executed before any other scripts defined in the LSB view file. The shell scripts defined in the LSB view file can use the variables and functions created in these references or modules.</li>
+
+<li>**Placeholders** - These are placeholders to be used in the script wrapper which will be replaced by actual values before script execution. They are used to help the execution of the user specified script in the shell process, and collect data back to the LSB application.
   <ul>
-    <li>**Customized user script** - This is the placeholder for the user script to be executed.</li>
-    <li>**Intermediate data file** - This is the placeholder for the full path of the intermediate data file. The LSB view control will try to load the generated data from this intermediate data file if it is used in the wrapper script.</li>
-    <li>**First half of signature** - To detect the wrapper script execution is completed, the LSB uses two parts of signature, combine them together and output the complete signature at the end of script execution. When LSB finds the full signature in the shell console output, it knows that the script execution completes. This placeholder is for the first half of the signature data. The signature is broken into two parts so the assignment of the data won't mistakenly trigger the recognization of execution complete.</li>
-    <li>**Second half of signature** - This is the placeholder for the second half of signature data.</li>
+    <li>**Customized user script** - This is the placeholder for the shell script defined in the LSB view file.</li>
+    <li>**Intermediate data file** - This is the placeholder for the intermediate data file full path to store the data output from the user scripts defined in the LSB view file. The LSB application will try to load the script generated data from this intermediate data file and use the data in the LSB view.</li>
+    <li>**First half of signature** - To detect the completion of the wrapper script execution in the shell process, the LSB uses randomly generated signature data that is split into two parts. These parts are combined and output as a complete signature at the end of the wrapper script. When LSB finds the full signature in the shell output, it knows that the script execution is complete. By splitting the signature into two parts, it ensures that no other part of the script contains/outputs the full signature, preventing LSB from mistakenly thinking the script execution is complete before the last step in the wrapper script. This placeholder is for the first half of the signature data.</li>
+    <li>**Second half of signature** - This is placeholder for second half of the randomly generated signature data. It's used together with the first half of signature to form the complete signature.</li>
     <li>**Path to view file** - This is the placeholder for the full path to the currently open view file.</li>
   </ul>
 </li>
-<li>**User script wrapper** - This is the script that wraps the actual user script to be executed in the shell. In the wrapper script, it can help to output data into the intermediate data file in specific format, it can help to generate the signature data and output to shell console to enable the determination of script completion, or any other helper function needed for the user script execution.</li>
-<li>**Script execution timeout** - This is the default timeout setting for the user script execution. Each user script could have its own customized timeout set through the script data source configuration, see ScriptData.</li>
+<li>**User script wrapper** - This script wraps the user-defined script in an LSB view to be executed in the shell process. The wrapper script facilitates outputting data generated from the user-defined script into an intermediate data file, generating signature data, and outputting the signature data to the shell console to determine script completion. It can also add any other helper functions needed for the user script execution.</li>
+<li>**Script execution timeout** - This is the default timeout setting for the user script execution. Each user defined script could have its own customized timeout set through the script data source configuration, see ScriptData.</li>
 </ul>
 
 ## Views
 
-This is the category for configuring the view repositories to be used in LSB. Similiar to the Shells, this page is composed of a view repository list and a set of tool buttons that manages the view repository list.
+This category allows users to configure the view repositories used in LSB. Similar to the Shells, this page consists of a view repository list and a set of tool buttons that manage the view repository list.
 
 \image html lsb-settings-views.png
 
-Here are what the tool buttons do,
+Here are the tool buttons,
 <ul>
-<li>**Edit** - This button is enabled only if a view repository is selected in the list. Clicking on the button will open the view repository editor dialog to change the settings for the LSB view repository. See section below for the details of view repository setting editor dialog.</li>
-<li>**Synchronize** - If the currently selected view repository is a GIT repository and the remote GIT repository is provided, this button is enabled. Clicking on the button will trigger the synchronization of the view files (from the remote GIT repository to local copy).</li>
-<li>**Add** - This adds a new view repository into the repository list. It also launches the view repository setting dialog for configuring the settings for the view repository.</li>
+<li>**Edit** - This button is enabled only if a view repository is selected in the repository list. Clicking on the button will open the view repository editor dialog to update the settings for the LSB view repository. See section below for the details of how to customize the settings for a view repository.</li>
+<li>**Synchronize** - If the currently selected view repository is a GIT repository and the remote GIT repository URL is provided, this button will be enabled. Clicking on the button will trigger the synchronization of the view files (from the remote GIT repository to the local enlistment).</li>
+<li>**Add** - This is to add a new view repository into the repository list. It launches the view repository setting dialog with empty settings for the new view repository.</li>
 <li>**Delete** - This deletes the currently selected view repository from the repository list. The button is enabled only if a view repository item is selected in the view repository list. </li>
-<li>**Clear** - This removed all view repositories from the repository list.</li>
+<li>**Clear** - This removes all view repositories from the repository list.</li>
 </ul>
 
 ### View Repository Editor
 
-When user requests to add a new LSB view repository or edit an existing view repository, following editor dialog is open for editing the settings.
+When user requests to add a new LSB view repository or edit an existing view repository, this editor dialog is launched for customizing the settings for the view repository.
 
 \image html lsb-view-repository-editor.png
 
-Settings can be changed in this dialog for a view repository,
+Here are the settings can be customized for a view repository though this dialog,
 <ul>
 <li>**Name** - Name of the LSB view repository</li>
 <li>**Local view root** - This is the local path to the root folder of the view repository.</li>
-<li>**GIT repository URL** - If a view repository is synchronized from a remote GIT repository, this is the GIT repository URL. If it's empty, then it means this view repository is a local repository, no synchronization is needed for it.</li>
-<li>**Refresh interval** - This is only valid if the view repository is synchronized from a remote GIT repository. And it controls how frequently that the LSB should do synchronization with the remote GIT repository. Please be reminded that this automatic synchronization only happens when LSB is launched. The other thing to mention is that the manual synchronization by clicking on the Synchronize button in the Views configuration page does not honor this interval setting, it does synchronization immediately when the button is clicked.</li>
-<li>**The repository is enabled to use the views hosted in it** - This is a switch that controls if the LSB views in this view repository will be visible in the open view dialog.</li>
+<li>**GIT repository URL** - If a view repository is synchronized from a remote GIT repository, this is the GIT repository URL. If it's empty, then the view repository becomes a local repository, no synchronization will be executed for it.</li>
+<li>**Refresh interval** - This setting is only applicable if the view repository is synchronized from a remote GIT repository. It controls the frequency of synchronization between the LSB local enlistment and the remote GIT repository. Please note that automatic synchronization only occurs when LSB is launched. Additionally, manual synchronization by clicking the Synchronize button in the Views configuration page does not adhere to this interval setting; it performs the synchronization immediately when the button is clicked.</li>
+<li>**The repository is enabled to use the views hosted in it** - This is a switch that controls if the LSB views in this view repository should be visible in the open view dialog or not.</li>
 </ul>
 
 */
