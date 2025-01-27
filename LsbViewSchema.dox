@@ -10,7 +10,7 @@ This is the main document for Leave Script Behind (aka LSB). It includes introdu
   - \ref section_settings
   - \ref section_views
   - \ref section_wrapper_script
-- Use LSB in a better way
+- Using LSB in a better way
   - \ref section_smart_time
   - \ref section_smart_filter
 - Schema - this section explains the schema for the LSB view files,
@@ -264,8 +264,8 @@ Here are the settings user can set for a shell,
   <ul>
     <li>**Customized user script** - This is the placeholder for the shell script defined in the LSB view file.</li>
     <li>**Intermediate data file** - This is the placeholder for the intermediate data file full path to store the data output from the user scripts defined in the LSB view file. The LSB application will try to load the script generated data from this intermediate data file and use the data in the LSB view.</li>
-    <li>**First half of signature** - To detect the completion of the wrapper script execution in the shell process, the LSB uses randomly generated signature data that is split into two parts. These parts are combined and output as a complete signature at the end of the wrapper script. When LSB finds the full signature in the shell output, it knows that the script execution is complete. By splitting the signature into two parts, it ensures that no other part of the script contains/outputs the full signature, preventing LSB from mistakenly thinking the script execution is complete before the last step in the wrapper script. This placeholder is for the first half of the signature data.</li>
-    <li>**Second half of signature** - This is placeholder for second half of the randomly generated signature data. It's used together with the first half of signature to form the complete signature.</li>
+    <li>**First half of signature** - This placeholder is for the first half of the randomly generated signature data. Details about the signature data can be dound in the section \ref section_wrapper_script.</li>
+    <li>**Second half of signature** - This is placeholder for the second half of the randomly generated signature data. It's used together with the first half of signature data to form the complete signature.</li>
     <li>**Path to view file** - This is the placeholder for the full path to the currently open view file.</li>
   </ul>
 </li>
@@ -307,23 +307,46 @@ Here are the settings can be customized for a view repository though this dialog
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*!
-\defgroup section_views The LSB Views and View Repositories
+\defgroup section_views The LSB View Repositories
 
-The LSB application comes with a set of sample views. There could be many more views added by the author and users. These views will be managed through GIT repositories.
-
-## Sample Views
+The LSB views are managed through view repositories, either locally or remotely. In each of view repositories, the views can be futher categorized through folders (and sub-folders). The LSB will recursively find all the view files under the root folder of a view repository and show them in the Open View dialog. There could be multiple views with the same name in the same view repository, as long as they are put in different folders.
 
 ## Default View Repository
 
-The LSB applciation comes with a default view repository that is available at https://github.com/xjluo-lsb/lsb.views. When the LSB is launched, if the default view repository is not available, LSB will automatically clone the repository and make the views available to user. The view repository will be named as DefaultViews. This view repository is automatically configured and available in the view repository configuration dialog.
+The LSB applciation comes with a default view repository that is available at https://github.com/xjluo-lsb/lsb.views. When the LSB is launched, if the default view repository is not available, LSB will automatically clone the repository and make the views available to user. The view repository will be named as DefaultViews. This view repository is automatically configured and it's invisible in the view repository configuration dialog.
 
-## User Defined Repositories
+## User Configured View Repositories
 
-Users may also define their own repositories to be used in the LSB. As described in the **View Repository Editor**, user may configure a local only repositor by pointing the local view root to a local folder but not providing a GIT repository URL. In this case, all the views are available locally and not shared with others.
+Users can configure their own repositories for use in LSB. As described in the **View Repository Editor**, users can configure a local-only repository by pointing the local view root to a local folder without providing a GIT repository URL. In this case, all views from this repository are available locally and not shared with others.
 
-In the other case, user may also configure a remote view repository by providing both the GIT repository URL and local view root folder. In this case, the content in the GIT repository will be automatically synced to the local folder every time the LSB applciation is launched. In this way, user may easily reuse the LSB views created by others or share the views s/he created with others.
+Users can also configure a remote view repository by providing both the GIT repository URL and the local view root folder. In this case, all LSB views in the GIT repository will be automatically synced to the local folder each time the LSB application is launched. This allows users to easily reuse LSB views created by others or share their own views with others.
 
-For community version, users are allowed to use the default view repository which syncs from the repository hosted on GitHub. Besides, user may add one local repository for creating and managing his/her own views. It's not supported to add neither remote repositories nor more than one local repositories. For the paid version, there is no limitation. User may add as many remote repositories as the user wants, all these repositories will be automatically synced during the launch of LSB. User may also add as many local repositories as the user wants, though this might be not a strong need.
+For the community version, users can use the default view repository that syncs from a repository hosted on GitHub. Additionally, users can add one local repository for creating and managing LSB views. However, adding remote repositories or more than one local repository is not supported. For the paid version, there are no limitations. Users can add as many remote repositories as they want, and all these repositories will be automatically synced during the launch of LSB. Users can also add as many local repositories as they want, although this might not be a strong need.
+
+In the view repository setting, user may also temporarily enable/disable a view repository by check/uncheck "The repository is enabled to use the views hosted in it". When there are too many views available through multiple view repository, this might be helpful to shorten the view list in the Open View dialog.
+
+## Sample Views
+
+In the DefaultViews view repository, the LSB application already provides a set of sample views under the samples folder. These views are used to demonstrate what view controls are available in LSB, what a LSB view can do, how parameters are transmitted around, etc. They are good examples for learning how to create your down LSB view.
+
+*/
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*!
+\defgroup section_wrapper_script The Wrapper Script for Shells
+
+In the shell settings, there is a script wrapper used for connecting the user defined script and the LSB view. The user defined script is not sent to the shell process directly. Instead, the script wrapper is the script will be executed, after the placeholders in the wrapper script are replaced with the actual values.
+
+The LSB predefined several placeholders for establishing the connection. As described in the Shell Setting Editor dialog,
+<ul>
+  <li>Customized user script - this placeholder is used for including the user defined script in the LSB view. If user wants to sent the scripts defined in the LSB view directly to the shell process, user may set the script wrapper to contain this placeholder only.</li>
+  <li>Intermediate data file - for many shells, there is no good way to convert script output in plain text into structured data. LSB provides this intermediate data file to capture all the outputs (must be in JSON format) from the user defined script, and then LSB will load and parse the data file to create structure data to be used in the LSB view. If the output from the user defined script is not in JSON format, then the whole output will be recognized as a single string.</li>
+  <li>First half of signature and Second half of signature - to detect the completion of the wrapper script execution in the shell process, the LSB uses randomly generated signature data that is split into two parts. The two parts are combined and output as a complete signature at the end of the wrapper script. When LSB finds the full signature in the shell output, it knows that the script execution is complete. By splitting the signature into two parts, it ensures that no other part of the script contains/outputs the full signature, preventing LSB from mistakenly thinking the script execution is complete before the last step in the wrapper script.</li>
+  <li>Path to view file - this placeholder can be used in the wrapper script if it needs to access any file sitting in the same folder where the LSB view file stays.</li>
+</ul>
+
+When the LSB receives a request to execute a user-defined script, it loads the wrapper script and replaces all the placeholders with actual values. The resulting script is then sent to the shell process for execution, while the LSB continuously monitors the shell output for the full signature. When the full signature appears in the shell output, the LSB recognizes that the script execution is complete. It then attempts to load the intermediate data file, parse the result data from it, and use the result data to refresh the view content and/or update the output parameters. If the full signature is not detected before the timeout, the LSB terminates the script execution, attempts to parse the result data, and refreshes the view content. If failures are captured during script execution, an error message is displayed.
+
 */
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -379,6 +402,24 @@ enum class ContentType
   Url,      //!< The page should be loaded from the URL returned from the data source.
   Content,  //!< The page should be loaded from the raw content returned from the data source.
   File      //!< The page should be loaded from the files defined.
+};
+
+//! \brief This is the enumeration type for attribute defaultPath that is used in FileTreeView.
+enum class DefaultPathType
+{
+  None,                         //!< User to specify the path directly in the node content
+  SystemConfig,                 //!< Path for the system configuration
+  UserConfig,                   //!< Path for the user configuration
+  GlobalData,                   //!< Path for the global data folder
+  TemporaryFolder,              //!< Path for the temporarily files
+  ApplicationData,              //!< Path for application specific data folder
+  ApplicationDocuments,         //!< Path for application documents folder
+  ApplicationResources,         //!< Path for application resources folder
+  Plugins,                      //!< Path for plugins folder
+  SharedLibraries,              //!< Path for shared libraries folder
+  UserDocuments,                //!< Path for user's documents folder
+  UserData,                     //!< Path for user's data folder
+  UserLocalData,                //!< Path for user's local data folder
 };
 
 //! \brief This is the enumeration type for the view parameter direction.
@@ -475,6 +516,13 @@ enum class FontWeight
   ExtraBold,    //!< Extra Bold (Ultra Bold) font (weight = 800).
   Heavy,        //!< Heavy (Black) font (weight = 900).
   ExtraHeavy    //!< Extra Heavy font (weight = 1000).
+};
+
+//! \brief This is the enumeration type for HextView to configure the type of data returned from data source.
+enum class HexVuewDataType
+{
+  Data,        //!< The HexView uses data returned from data source directly
+  File         //!< The hexView uses data returned from data source as file name
 };
 
 //! \brief This is the enumeration type used for the align attribute in the Column.
@@ -1674,14 +1722,9 @@ When you are creating a new LSB view, you definitely want to test it before you 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*!
-\defgroup section_wrapper_script The Wrapper Script for Shells
-
-The LSB application uses Lua as internal support script to implement many funtionalities, such as 
-*/
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/*!
 \defgroup section_faq Frequently Asked Questions
+
+This page is under construction.
 
 */
 
