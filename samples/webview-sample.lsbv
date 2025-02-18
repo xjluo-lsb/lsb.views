@@ -27,10 +27,10 @@ out from the WebView control. Here are a few things it touched,
   <os>Any</os>
 
   <view>
-    <splitLayout id="c5e33d43-fe6c-4511-9989-c5f46154ed34" orientation="Horizontal" size="300" fixedView="Right">
-      <left>
-        <splitLayout id="c38801db-d578-4489-a20d-cfda47ff13d1" orientation="Vertical" size="420" fixedView="Top">
-          <top>
+    <splitLayout id="459fbf74-e038-4694-8516-36ea99b57936" orientation="Vertical" size="420" fixedView="Top">
+      <top>
+        <splitLayout id="c5e33d43-fe6c-4511-9989-c5f46154ed34" orientation="Horizontal" size="300" fixedView="Right">
+          <left>
             <webView id="35a1b0a3-8f69-44d9-bc55-9fde3dbc7872" contentType="Content" loadDataAt="Creating">
               <caption visible="true">WebView with content built from script</caption>
               <input />
@@ -41,7 +41,7 @@ out from the WebView control. Here are a few things it touched,
               </output>
               <data showProgress="false">
                 <script type="lua">
-<![CDATA[
+                  <![CDATA[
 return [=[
 <h3 style="background-color: #F09B59;">Section 1 for calling sendValue() an sendObject()</h3>
 <p>Here's content for section 1,</p>
@@ -63,62 +63,88 @@ return [=[
                 <file path="View">webview-sample.js</file>
               </scripts>
             </webView>
-          </top>
-          <bottom>
-            <webView id="d5ee4af8-1282-4d23-8ded-70d4a43cc91c" contentType="Files">
-              <caption visible="true">Web view built from files</caption>
-              <input />
-              <output />
-              <styles>
-                <file path="View">webview-sample.css</file>
-              </styles>
-              <body path="View">webview-sample.html</body>
-            </webView>
-          </bottom>
-        </splitLayout>
-      </left>
-      <right>
-        <splitLayout id="0d0d0b69-be6d-4dd6-a0b8-2ecc73989d34" orientation="Vertical" ratio="0.4" fixedView="None">
-          <top>
-            <textView id="f50d65c0-e06e-4fd4-bb61-1b9d7ac2f046">
-              <caption visible="true">Show section 1 result come from WebView</caption>
-              <input>
-                <param id="1184df54-fdd4-400f-a7a9-a9876fd55f9f" name="SimpleValue"/>
-                <param id="9ad76209-0181-407c-9486-bfaac76c8cff" name="ComplexValue"/>
-              </input>
-              <data showProgress="false">
-                <script type="lua">
-<![CDATA[
+          </left>
+          <right>
+            <splitLayout id="0d0d0b69-be6d-4dd6-a0b8-2ecc73989d34" orientation="Vertical" ratio="0.5" fixedView="None">
+              <top>
+                <textView id="f50d65c0-e06e-4fd4-bb61-1b9d7ac2f046">
+                  <caption visible="true">Show section 1 result come from WebView</caption>
+                  <input>
+                    <param id="1184df54-fdd4-400f-a7a9-a9876fd55f9f" name="SimpleValue"/>
+                    <param id="9ad76209-0181-407c-9486-bfaac76c8cff" name="ComplexValue"/>
+                  </input>
+                  <data showProgress="false">
+                    <script type="lua">
+                      <![CDATA[
 return [[
 Simple value = {SimpleValue}
 Complex value = {ComplexValue}
 ]]
 ]]>
-                </script>
-              </data>
-            </textView>
-          </top>
-          <bottom>
-            <textView id="6f53436e-4a0c-4b31-973f-7058426df395">
-              <caption visible="true">Show section 2 result come from WebView</caption>
-              <input>
-                <param id="3139098a-3881-4437-b584-f11487384573" name="DataReady"/>
-              </input>
-              <data showProgress="false">
-                <script type="lua">
-<![CDATA[
+                    </script>
+                  </data>
+                </textView>
+              </top>
+              <bottom>
+                <textView id="6f53436e-4a0c-4b31-973f-7058426df395">
+                  <caption visible="true">Show section 2 result come from WebView</caption>
+                  <input>
+                    <param id="3139098a-3881-4437-b584-f11487384573" name="DataReady"/>
+                  </input>
+                  <data showProgress="false">
+                    <script type="lua">
+                      <![CDATA[
 return [[
 BooleanValue = ]] .. BooleanValue .. [[;
 NumberValue = ]] .. NumberValue .. [[;
 StringValue = ]] .. StringValue .. [[;
 ]]
 ]]>
-                </script>
-              </data>
-            </textView>
-          </bottom>
+                    </script>
+                  </data>
+                </textView>
+              </bottom>
+            </splitLayout>
+          </right>
         </splitLayout>
-      </right>
+      </top>
+      <bottom>
+        <splitLayout id="c38801db-d578-4489-a20d-cfda47ff13d1" orientation="Horizontal" size="220" fixedView="Left">
+          <left>
+            <propertyInput id="b65a5d02-0c87-47b5-8023-e1174d9bb1cf">
+              <caption visible="true">Value inputs for Web view built from files</caption>
+              <output>
+                <param id="d9d0a3b8-5db7-40e0-a08c-9145acf17e71" name="textContent"/>
+                <param id="a0f49afd-9983-4614-985a-662f55d431b3" name="intValue"/>
+                <param id="2255283e-dfd0-4425-84b4-dbd68d06646d" name="boolValue"/>
+              </output>
+              <properties>
+                <property name="textContent" label="Text" category="Default" type="String" description="This is the text value that will be sent to the WebView." />
+                <property name="intValue" label="Integer" category="Default" type="Integer" description="This is the integer value that will be sent to the WebView." default="0" />
+                <property name="boolValue" label="Boolean" category="Default" type="Boolean" description="This is the integer value that will be sent to the WebView." default="false" />
+              </properties>
+            </propertyInput>
+          </left>
+          <right>
+            <webView id="d5ee4af8-1282-4d23-8ded-70d4a43cc91c" contentType="Files">
+              <caption visible="true">Web view built from files</caption>
+              <input>
+                <param id="ae2d1d7a-c267-4d6b-9373-5869853673f1" name="textValue"/>
+                <param id="ca8ceed6-1563-4eb3-a2fc-6b2f931dc90b" name="intValue"/>
+                <param id="8d0ea0ac-8872-4d27-b04c-f1da5a0f3771" name="boolValue"/>
+              </input>
+              <output />
+              <styles>
+                <file path="View">webview-sample.css</file>
+              </styles>
+              <body path="View">webview-sample.html</body>
+              <scriptForChange>
+<![CDATA[refreshData({ "textValue": "{textValue}", "intValue": {intValue}, "boolValue": {boolValue} });]]>
+              </scriptForChange>
+            </webView>
+          </right>
+        </splitLayout>
+      </bottom>
     </splitLayout>
   </view>
 
@@ -132,6 +158,16 @@ StringValue = ]] .. StringValue .. [[;
 
     <mapping source="b6f95eff-6959-415c-ab60-402f87671ecc">
       <target>3139098a-3881-4437-b584-f11487384573</target>
+    </mapping>
+
+    <mapping source="d9d0a3b8-5db7-40e0-a08c-9145acf17e71">
+      <target>ae2d1d7a-c267-4d6b-9373-5869853673f1</target>
+    </mapping>
+    <mapping source="a0f49afd-9983-4614-985a-662f55d431b3">
+      <target>ca8ceed6-1563-4eb3-a2fc-6b2f931dc90b</target>
+    </mapping>
+    <mapping source="2255283e-dfd0-4425-84b4-dbd68d06646d">
+      <target>8d0ea0ac-8872-4d27-b04c-f1da5a0f3771</target>
     </mapping>
   </dataFlow>
 </LsbView>

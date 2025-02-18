@@ -15,8 +15,19 @@ Result from text input: <span id="result"></span>
 <script type="text/javascript">
 let inputControl = document.getElementById("textInput");
 inputControl.addEventListener("input", function(event) {
-    let value = event.target.value;
+    updateResult(event.target.value);
+});
+
+function updateResult(value)
+{
     var resultSpan = document.getElementById("result");
     resultSpan.innerHTML = value;
-});
+}
+
+function refreshData(data)
+{
+    let value = data.textValue + " / " + data.intValue + " / " + data.boolValue;
+    document.getElementById("textInput").value = value;
+    updateResult(value);
+}
 </script>

@@ -2,7 +2,7 @@
 /*!
 \mainpage Leave Script Behind Explained
 
-This is the main document for Leave Script Behind (aka LSB). It includes introduction on how to use the LSB application, schema of LSB view files, how to create new LSB views, how to debug and publish LSB view files, as well as answers for a list of frequently asked questions.
+This is the document for Leave Script Behind (aka LSB). It includes introduction on how to use the LSB application, schema of LSB view files, how to create new LSB views, how to debug and publish LSB view files, as well as answers for other questions.
 
 - \ref section_intro
 - Using LSB
@@ -30,29 +30,29 @@ This is the main document for Leave Script Behind (aka LSB). It includes introdu
 
 # Welcome to Leave Script Behind (LSB)!
 
-Leave Script Behind (aka LSB) is a tool developed mainly for developers.
+Leave Script Behind (aka LSB) is a tool developed for developers, more specifically, DevOps.
 
-Since from the invention of the Internet, more and more services are moved to the online world. This implies that developers are now working in the DevOps mode, they inevitably need to work with shells and command line tools for their daily work, from product rollout to live site investigation/mitigation. Depends on which %OS they are using on their devbox, they may need to interact with different types of command-line shells, such as **PowerShell** on **Windows**, __GNU bash__ on **Linux**, and __zsh__ on **Mac %OS X**, etc.
+Since from the invention of the Internet, more and more services are moved to the online world. This implies that developers are now working in the DevOps mode, they inevitably need to work with shells and command line tools for their daily work, from service deployment to live site investigation and mitigation. Depends on which operating systems they are using on their machine, they may need to interact with different types of command-line shells, such as **PowerShell** on **Windows**, __GNU bash__ on **Linux**, and __zsh__ on **Mac %OS X**, etc.
 
-The shells are known as providing capabilities to allow user to run commands/programs on operating systems, and allow users to create scripts to chain commands as needed to complete complicated tasks, and then repeat the same work later by simply run the script solely. Along with the flexibility and great power come with the shells, there is also a steep learning curve for new users to master all the knowledge needed to achieve what they want to do, from learning the different commands provided by the shell(s), to mastering the usage of each command, including various parameters, unique parameter values, combinations of the parameters, as well as how to write scripts in correct syntax. Besides, both the shell input and output are usually presented in plain text in the shell console, which implies that users must have knowledge beforehand to understand the restricted output in plain text. There is no way for user to interact with the result data after it's outputted in the shell console in plain text, unless user re-runs the command and stores the result into a variable in a shell supported way, then user may manipulate the variable to digest more.
+The shells are known as providing capabilities to allow user to run commands/programs on operating systems, and allow users to create scripts to chain commands as needed to complete complicated tasks, and then repeat the same work later by simply run the script solely. Along with the flexibility and great power come with the shells and scripts, there is also a steep learning curve for new users to master all the knowledge needed to achieve what they want to do, from learning the different commands provided by the shell(s), to mastering the usage of each command, including various parameters, unique parameter values, combinations of the parameters, as well as writing shell scripts in correct syntax. Besides, both the shell input and output are usually presented in plain text in the shell console, which means that users must have knowledge beforehand to understand the constraint output in plain text. There is no way for user to interact with the result data after it's outputted in the shell console in plain text, unless user re-runs the command and stores the result into a variable in a shell supported way, then user may manipulate the variable to digest more.
 
-LSB is a cross-platform tool designed with the goal to reduce the pain - it chains multiple sequences of shell commands to complete a complicated task, with user interactions allowed in the middle through GUI, provides a way to store and reuse the views later for the same tasks. It can display the data output from command(s) at each step in a manipulatable way, user can interact with the data to create the input for the next step (the next sequence of commands), and so on, step by step, till the workflow reaches its end. By reusing the LSB views, it can greatly ease the user's life by avoiding remembering all the shell commands needed, their parameters used, and error-prone parameter combinations. Each LSB view provides funtionality similiar to a script file but offers richer capabilities such as,
-- Data visualizaion through various views like list view, tree view, chart view and many other data view controls.
-- Interaction with the intermediate data, select different data entry to continue the workflow with different logic and actions.
-- Multiple input controls for users to input values in different types, from integer, string, to files, etc.
+LSB is a cross-platform tool designed with the goal to reduce the pain decribed above - it chains multiple sequences of shell scripts and commands to complete a complicated task, allows user to interact with data in the middle through GUI, provides a way to store and reuse the same processes (named LSB views) later for the same tasks. It can display the data output from command(s) at each step in a manipulatable way, user can interact with the data to create the input for the next step (the next sequence of commands), and so on, step by step, till the workflow reaches its end and user completes a difficult task. By reusing the LSB views, it can greatly ease the user's work by avoiding remembering all the shell commands needed, their parameters used, and error-prone parameter combinations, as well as repetitively executing same commands again and again. Each LSB view provides funtionality similiar to a script file but offers much richer capabilities such as,
+- Data visualizaion through various view controls like list view, tree view, chart view and many others.
+- Interaction with the intermediate data, select different data entries to continue the workflow with different logic and actions.
+- Multiple input controls available for users to input values in various data types, from integer, string, to files, etc.
 - Layout capability to arrange the input controls and data view controls through simple XML configuration.
 - Embedded support for data connectivity to SQL databases, Web APIs, etc. with configuration defined in the view file.
 - Lua language intergation in LSB for data generation and task execution.
-- Extensibility to support any shell type that the host %OS supports for running shell scripts to implement functionalities.
-- Ability to mix multiple script snippets in the same type or different types (e.g., Lua, PowerShell, bash, zsh) in the same view to complete tasks.
+- Extensibility to support any shell type that the host operating system supports for running shell scripts to implement desired functionalities.
+- Ability to mix multiple script snippets in the same type or different types (e.g., Lua, PowerShell, bash, zsh) in the same view to complete complicated tasks.
 
-With these capabilities, LSB can help to address the user's pain points,
-- It reduces the effort required for users to learn various script languages and commands. End users only need to learn how to use LSB views to complete tasks, without needing to know the underlying commands and scripts, as the GUI views are more intuitive than their command line counterparts. For developers, LSB views can be implemented using their preferred shells/languages, and they can also mix different shells within a single view to create the most effective workflow.
+By providing these capabilities, the LSB can help to address the user's pain points,
+- It reduces the effort required for end users to learn various script languages and commands. End users only need to learn how to use the LSB views to complete tasks, without needing to know the underlying commands and scripts, as the GUI views are more intuitive than their command line counterparts. For developers, LSB views can be implemented using their preferred shells/languages, and they can also mix different shells within a single LSB view to create the most effective workflow.
 - It significantly enhances the experience on how the end users can interact with the intermediate data generated from a set of commands,
   - Allow users to view the data in well-organized formats like list view, tree view, etc.
   - Enable data visualization in various graph types, including but not limited to bar charts, pie charts, histograms, and heat maps.
-  - Allow users to select data entries as input for subsequent workflow steps.
-- The Lua language embedded within LSB ensures cross-platform compatibility. By utilizing only Lua scripts within a LSB view, this view can operate seamlessly across all platforms, including Windows, Linux, and Mac OS X.
+  - Allow users to select data entries (using mouse) as input for subsequent workflow steps.
+- The Lua language embedded within LSB ensures cross-platform compatibility. By utilizing only Lua scripts within a LSB view, the view can operate seamlessly across all platforms, including Windows, Linux, and Mac OS X.
 - Uploading a LSB view to the LSB repository makes it accessible to all LSB users, allowing any user to reuse the views created by others effortlessly. This is also an easy way for the view developers to pushlish their work, and get acknowledged by other developers and users.
 */
 
@@ -60,7 +60,7 @@ With these capabilities, LSB can help to address the user's pain points,
 /*!
 \defgroup section_ui The LSB UI
 
-The LSB application features a multiple window MDI (Multiple Document Interface). Initially, it launches with just the main window. When an user opens a LSB view file, it appears in its own separate window. If the user opens the same view file again, a new window is created for that new instance. Regardless of whether the view file is the same or different, each view instance always has its own dedicated window.
+The LSB application features a multiple window MDI (Multiple Document Interface). It launches with the main window only, which contains the menu bar and the toolbar. When user opens a LSB view file through menu item or toolbar button, the opened LSB view appears in its own separate window. If the user opens the same view file again, a new window is created for that new instance. Regardless of whether the LSB view file is the same or different, each view instance always has its own dedicated window.
 
 ## 1. Main window
 
@@ -409,17 +409,21 @@ enum class DefaultPathType
 {
   None,                         //!< User to specify the path directly in the node content
   SystemConfig,                 //!< Path for the system configuration
-  UserConfig,                   //!< Path for the user configuration
   GlobalData,                   //!< Path for the global data folder
   TemporaryFolder,              //!< Path for the temporarily files
   ApplicationData,              //!< Path for application specific data folder
   ApplicationDocuments,         //!< Path for application documents folder
   ApplicationResources,         //!< Path for application resources folder
-  Plugins,                      //!< Path for plugins folder
-  SharedLibraries,              //!< Path for shared libraries folder
-  UserDocuments,                //!< Path for user's documents folder
-  UserData,                     //!< Path for user's data folder
-  UserLocalData,                //!< Path for user's local data folder
+  Plugins,                      //!< Path for application plugins folder
+  UserCache,                    //!< Path for the user's cache folder
+  UserConfig,                   //!< Path for the user's configuration folder
+  UserData,                     //!< Path for the user's data folder
+  UserDesktop,                  //!< Path for the user's desktop folder
+  UserDocuments,                //!< Path for the user's documents folder
+  UserLocalData,                //!< Path for the user's local data folder
+  UserMusic,                    //!< Path for the user's music folder
+  UserPicture,                  //!< Path for the user's picture folder
+  UserVideos,                   //!< Path for the user's video folder
 };
 
 //! \brief This is the enumeration type for the view parameter direction.
@@ -519,7 +523,7 @@ enum class FontWeight
 };
 
 //! \brief This is the enumeration type for HextView to configure the type of data returned from data source.
-enum class HexVuewDataType
+enum class HexViewDataType
 {
   Data,        //!< The HexView uses data returned from data source directly
   File         //!< The hexView uses data returned from data source as file name

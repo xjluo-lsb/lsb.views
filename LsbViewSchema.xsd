@@ -1296,6 +1296,7 @@ in the LSB view files. It also defines the file structure of the view files usin
       <xs:element name="styles" type="FileReferences" minOccurs="0" maxOccurs="1" />
       <xs:element name="scripts" type="FileReferences" minOccurs="0" maxOccurs="1" />
       <xs:element name="body" type="FileReference" minOccurs="0" maxOccurs="1" />
+      <xs:element name="scriptForChange" type="xs:string" minOccurs="0" maxOccurs="1" />
 
       <xs:element name="highlights" minOccurs="0" maxOccurs="1">
         <xs:complexType>
