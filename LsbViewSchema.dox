@@ -1754,21 +1754,20 @@ class ViewLauncher : public ComponentElements, public ComponentAttributes
 */
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//! \brief LsbView is the unit that is supported in LSB to implement different functionalities to meet different business requirements.
+//! \brief LsbView is the unit that is supported in the LSB to implement different functionalities to meet various business requirements.
 /*!
-In each of the LSB view file, LsbView is the root node that defines all the controls to be used within the view, together with the corresponding scripts (Lua, bash,
-PowerShell or any other user defined scripts) and parameter flows to implement the specific business logic to achieve the goal.
+In each of the LSB view file, LsbView is the root node that defines all the controls to be used within the LSB view, together with the corresponding scripts (Lua, bash, PowerShell or any other user defined scripts) and parameter flows to implement the specific business logic to achieve the goal.
 
 The LsbView node contains following nodes,
  - [Optional] The description node contains a long string that describes the purpose, usage or any other view related information.
  - [Mandatory] The version node in type of Version defines the version number of the view.
  - [Optional] The modules node contains a list of module nodes. Each of the node contains a string that defines the path to a module that is referenced in the view.
- - [Optional] The value of this os node should be values in type of OS and separated by semi-colon. The values indicate the view supports which Operatings Systems.
- - [Optional] This about node in type of About contains the definition of the about information of this view.
- - [Mandatory] The view node in type of ChoiceOfView is the root node of all the view controls used in the LSB view. Typically it starts with one of the layouts.
+ - [Optional] The value of this os node should be values in type of OS and separated by semi-colon. The values indicate which Operatings Systems are supported by the LSB view. 
+ - [Optional] This about node in type of About contains the definition of the about information of this LSB view.
+ - [Mandatory] The view node in type of ChoiceOfView is the root node of all the view controls used in the LSB view. Typically it starts with one of the layout controls, SplitLayout, TabLayout and TableLayout.
  - [Optional] The procedures node contains a list of procedure nodes in type of Procedure which define the script procedures/functions.
- - [Optional] The launchers node contains a list of launcher nodes in type of ViewLauncher that are used to launch another LSB view from current view.
- - [Optional] The dataFlow node in type of DataFlow defines how an output parameter in a souce view is connected with an input parameter in a target view.
+ - [Optional] The launchers node contains a list of launcher nodes in type of ViewLauncher that are used to launch another LSB view from current LSB view.
+ - [Optional] The dataFlow node in type of DataFlow defines how an output parameter in a source view control is connected with an input parameter in a target view control.
 
 The LsbView node contains following attributes,
 */
@@ -1785,24 +1784,26 @@ class LsbView
 /*!
 \defgroup section_create_view How to Create a LSB View
 
-## Write a LSB view
+## LSB view file
 
-The recommended editor for composing LSB view file, in XML format, is the Microsoft [Visual Studio](https://visualstudio.microsoft.com/). With the provided schema definition for the LSB view files, the Visual Studio can provide rich hints on the potential nodes, attribute names, even values when user types in new text. This is the only editor that I'm aware of that comes with this feature, other editors (including Visual Studio Code) support syntax highlighting, but no hints at equivalent level.
+The LSB view files use `.lsbv` as the file extension. It's basically an XML file that contains a set of predefined XML nodes to implement GUI using LSB provided controls and implement business logic using embedded Lua scripts and other shell scripts. The predefined nodes can be found in the schema definition file [LsbViewSchema.xsd](https://github.com/xjluo-lsb/lsb.views/blob/main/LsbViewSchema.xsd). The schema file also comes in the views folder for the DefaultViews repository. Besides the view controls, this schema file has all enumeration types, data types and data structures defined to be used in the LSB views.
 
-The [LsbViewSchema.xsd](https://github.com/xjluo-lsb/lsb.views/blob/main/LsbViewSchema.xsd) comes in the views folder is the schema definition for the LSB view files. This schema file has all data types and data structures for view controls and values defined. In Visual Studio, it reads all these schema information and provides hinting in the editor. If your editor does not support schema based hinting, please read the type documents along with this page, you will get all the necessary information needed to create a LSB view file.
+The recommended editor for composing LSB view file is the Microsoft [Visual Studio](https://visualstudio.microsoft.com/). With the provided schema file LsbViewSchema.xsd properly added into the LSB view file, the Visual Studio can provide rich hints on the potential node names, attribute names, even values when user updates the view file. This is the only editor that I'm aware of that comes with this feature, other editors (including Visual Studio Code) support syntax highlighting, but not hints in a way close to Visual Studio. If your favorite editor does support hinting on the XML node/attribute/value, that's great. If you editor does not support the schema based hinting, no worry, please read the type documents here along with this page, you will get the necessary information to create an LSB view file properly.
 
-The LSB view files all contain same structure descibed as below, the detailed schema introduction can be found at LsbView. Please refer to the sample views come in the DefaultViews view repository to understand the file format better.
+## Write an LSB view
 
-The file comes with root node named %LsbView, which has attributes named name, author, createTime and lastChangeTime. The node contains following child nodes, you may or may not need all of them to be presented in a LSB view file. The order of these nodes is not significant.
+The LSB view files all contain the same structure descibed below, the detailed schema introduction can be found at the LsbView page. Meanwhile, please refer to the sample views come in the DefaultViews view repository to understand the file format better.
+
+Every LSB view file requires a root node named LsbView, which has attributes named name, author, createTime and lastChangeTime. The node contains following child nodes, some of them are mandatory and others are optional. The order of these nodes is not significant.
 - **description** is a node contains long description for the LSB view.
 - **version** is a node describing the version of the LSB view.
 - **modules** contains a list of modules that are automatically referenced in the Lua shell for the LSB view.
 - **os** defines which Operating Systems are supported by this LSB view.
 - **about** defines the about information for the view.
-- **view** is the actual root view control for the LSB view. In most cases, this should be a layout control, such as SplitLayout, TabLayout, etc., which could contain multiple child views for input or data view, or another layout control to host even more child views.
-- **procedures** contains a list of procedures that contains separated shell scripts if the LSB view needs them.
+- **view** is the actual root view control for the LSB view. In most cases, this should be a layout control, such as SplitLayout, TabLayout, etc., which could contain multiple child views for input or data view, or another layout control to create more complicated UI and host more child views.
+- **procedures** contains a list of procedures that provides separated shell scripts for various functionalitues if the LSB view needs them.
 - **launchers** contains a list of launchers that are used to launch another LSB view from current view.
-- **dataFlow** is the node that defines all the input parameter and output parameter mappings to get the view controls well connected.
+- **dataFlow** is the node that defines all the input parameter and output parameter mappings to get the view controls connected with operations.
 
 Here's a sample view that hosts a simple text view for editing plain text,
 
@@ -1819,7 +1820,7 @@ Here's a sample view that hosts a simple text view for editing plain text,
   createTime="2024-10-24T00:00:00Z"
   lastChangeTime="2024-10-24T00:00:00.000Z">
 
-  <description>A simplest view that demostrates the TextView control.</description>
+  <description>A simplest view that demonstrates the TextView control.</description>
   <version major="0" minor="1" build="0" revision="0" />
 
   <view>
@@ -1837,34 +1838,165 @@ return [[This is the default text for the view.]]
 
 \endcode
 
-You may save this code snipper into a XML file and the follow the instructions in the next section to test and debug the view.
+You may save this code snipper into an lsbv file, put it into your own load view repository and then open it in the LSB application, the UI will look like the screenshot below,
+
+**TODO: update the screenshot for the sample view**
+
+In the textView control, you may type in more text, modify or delete the existing default text "This is the default text for the view.", because the textView control has the readOnly attribute set to false.
 
 ## Parameter mapping
 
-As mentioned above, the **dataFlow** node is used to define the parameter mappings inside a view, typically connects an output parameter from a view control to an input parameter in another view control.
+The previous example simply shows one single text view control and does not need to send any values with any other view controls, thus it didn't show the use of the **dataFlow** node. Here we are going to use a more complicated view as example to explain the usage of the **dataFlow** node. Read the code below and save the code snippet into a new lsbv file in your test repository.
+
+\code{.xml}
+
+<?xml version="1.0"?>
+ 
+<LsbView xmlns="https://github.com/xjluo-lsb/lsb.views"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="https://github.com/xjluo-lsb/lsb.views ..\LsbViewSchema.xsd"
+         
+  name="Parameter demo"
+  author="Kevin Luo"
+  createTime="2025-03-14T00:00:00Z"
+  lastChangeTime="2023-03-14T00:00:00.000Z">
+ 
+  <description>A sample view that demonstrates how to send parameters from one view control to another.</description>
+  <version major="0" minor="1" build="0" revision="0" />
+ 
+  <view>
+    <!-- The split layout put the two child views side by side, one in left and one in right, and the left list view has fixed size -->
+    <splitLayout id="ea0f1237-2d35-460d-b5c0-108c5d4a8dcd" orientation="Horizontal" fixedView="Left" size="320">
+      <left>
+        <!-- Please be noted that we set the loadDataAt to Creating so the Lua script will be executed at the list view creating time,
+             and the data will also be loaded into the list view at the creating time -->
+        <listView id="0c96fd3d-36a4-4b6c-a04f-5094eeb8c619" loadDataAt="Creating">
+          <caption visible="true">Web site list</caption>
+          <input />
+          <output>
+            <!-- We are going to send out the value in the Name column when a row is selected in the list view -->
+            <param id="96e9164c-867e-4ca5-9bd1-ddaa2ec4b175" name="Name" />
+            <!-- We are going to send out the value in the URL column when a row is selected in the list view -->
+            <param id="8e9d8168-86f4-47df-9a5d-f9b9190d1aaf" name="URL" />
+          </output>
+          <data showProgress="false">
+            <!-- We use Lua script below to build an array that contains a list objects for the data, with Name attribute for the Web
+                 site name and URL attribute for the Web site URL. -->
+            <script type="Lua">
+<![CDATA[
+return {
+  { Name = "Bing", URL = "https://www.bing.com" },
+  { Name = "Google", URL = "https://www.google.com" },
+  { Name = "OpenAI", URL = "https://chat.openai.com" }
+}
+]]>
+            </script>
+          </data>
+          <columns>
+            <column name="Name" width="80" />
+            <column name="URL" width="200" />
+          </columns>
+        </listView>
+      </left>
+      <right>
+        <!-- Here we configure the WebView to use the data returned from Lua script as page URL through the contentType attribute -->
+        <webView id="57caee6b-80d0-482e-982c-f4faf8361f82" contentType="Url">
+          <caption visible="true">Visiting {Name} ...</caption>
+          <input>
+            <!-- The WebView takes the Name input parameter and uses it in the caption -->
+            <param id="e5fc9d94-636b-42b8-8b74-457beefacd7c" name="Name" />
+            <!-- The WebView takes the URL input parameter and uses it in the Lua script -->
+            <param id="343cc934-2122-4d42-8689-369a733c4032" name="URL" />
+          </input>
+          <data showProgress="false">
+            <!-- The Lua script simply returns the URL passed in and WebView will automatically navigate to the returned URL. -->
+            <script type="Lua">
+<![CDATA[return "{URL}"]]>
+            </script>
+          </data>
+        </webView>
+      </right>
+    </splitLayout>
+  </view>
+ 
+  <dataFlow>
+    <!-- Send the Web site name from the ListView to the WebView -->
+    <mapping source="96e9164c-867e-4ca5-9bd1-ddaa2ec4b175">
+      <target>e5fc9d94-636b-42b8-8b74-457beefacd7c</target>
+    </mapping>
+    <!-- Send the Web site URL from the ListView to the WebView -->
+    <mapping source="8e9d8168-86f4-47df-9a5d-f9b9190d1aaf">
+      <target>343cc934-2122-4d42-8689-369a733c4032</target>
+    </mapping>
+  </dataFlow>
+</LsbView>
+
+\endcode
+
+After you open the view in the LSB application, it should look like screenshot below,
+
+**TODO: screenshot for sample view**
+
+When you click on a Web site in the list view, the Web view will have the page loaded and the caption updated simultaneously. Meanwhile, you will see following messages in the **Logs** page,
+
+**TODO: screenshot for message logs**
+
+Now let's look back at the **dataFlow** section in the LSB view file, it would become easy to understand,
+<ul>
+<li>The parameter with ID `96e9164c-867e-4ca5-9bd1-ddaa2ec4b175` is the output parameter from the list view for the Web site name, and it associated with the input parameter with ID `e5fc9d94-636b-42b8-8b74-457beefacd7c` on the Web View. This is defined in the first mapping in the **dataFlow** section. In the screenshot, value "" was sent out from the list view and passed into the web view for updating the caption.</li>
+<li>The parameter with ID `8e9d8168-86f4-47df-9a5d-f9b9190d1aaf` is the output parameter from the list view for the Web site URL, and it's associated with the input parameter with ID `343cc934-2122-4d42-8689-369a733c4032` on the Web view. This is defined in the second mapping in the **dataFlow** section. In the screenshot, value "" was sent out from the list view and passed into the web view for loading page content from the URL.</li>
+</ul>
+
 */
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*!
-\defgroup section_debug_view How to Test/Debug a LSB View
+\defgroup section_debug_view How to Test / Debug an LSB View
 
-When you are creating a new LSB view, you definitely want to test it before you release it to other users. Here are the steps on how you can test a LSB view locally through the LSB application.
+## Testing an LSB view
+
+An LSB view should be tested before it's released to other users. The LSB application provides multiple features that can help the view creators to test and debug the LSB views, such as local view repository, message logging, etc. Here are the steps on how a view creator can test an LSB view locally through the LSB application.
 
 <ol>
-<li>Create a folder for the view to be created/tested.</li>
-<li>Create or put the view to be tested in the folder.</li>
-<li>Launch LSB and open the settings dialog, create a new view repository points to this folder.</li>
-<li>Open the view to be tested in LSB, now you can see the view content.</li>
-<li>In the logs tab in the view window, you can find how the parameters are populated and how parameters are passed between different view controls in the LSB view.</li>
+<li>If you haven't had a local view repository created for testing views, then follow the steps below. Otherwise go directly to step 2.
+  <ul>
+    <li>Create a folder locally for all the views to be created/tested.</li>
+    <li>Launch the LSB application and open the settings dialog, create a new view repository points to this folder.</li>
+    <li>No remote GIT URL is needed, this makes it a local view repository. Please be sure to have it enabled so the views in this repository will show up in the **"Open a view"** dialog.</li>
+  </ul>
+</li>
+<li>Create or put the LSB view to be tested in this local view repository folder.</li>
+<li>Open the view to be tested in the LSB application, now you can see the view content.</li>
+<li>In the **Logs** page in the view window, you can find how the parameters are populated and how parameters are passed between different view controls in the LSB view.</li>
 <li>In the Lua tab in the view window, you can find all the Lua scripts executed within the view to implement the functionalities, such as parameter check, data generation, etc.</li>
+<li>If there are other shell scripts used in the LSB view, there should be more pages available in the LSB view window, each for a different shell type. All the executed shell scripts and the result output to console will all show up there.</li>
 </ol>
+
+One of the most typical issues is that one user action on the UI doesn't trigger the next step operation. For example, in the previous Parameter Demo sample view, when user select a Web site row in the list view, it didn't trigger the refresh in the Web view. When this happens, there are a few things to check,
+<ul>
+  <li>Is the output parameter value sent out? If the output parameter name in the list view control is different from the column name or attribute name in data, then there won't be any output parameter message. This could be verified in the parameter change list in the **Logs** page.</li>
+  <li>Is the parameter mapping set correctly? If the output parameter has sent out the new value, the next step is to check if the corresponding input parameter in the other control received this change. If there is no event logged in the parameter change list in the **Logs** page, then please check if the parameter mapping was configured properly.</li>
+  <li>If it's confirmed that the input parameter received the value change, but the UI still doesn't respond correctly. The next thing to check is the parameter condition for the view control. The condition test result should be logged in the message list. If input parameter changes are detected but the values do not match the condition, the content would not be refreshed.</li>
+</ul>
+
+## Module References
+
+Even though the LSB view provides the **Lua** page and other shell pages to show the embedded Lua scripts and shell scripts executed in the LSB view, are difficult to debug directly inside the LSB view. The recommended way for writing embbeded scripts is to write large pieces of scripts in separated script files and add them through the module references. By putting the scripts into dedicated files, it's relative easier to use the tools come with the script language to test and debug. After the script files are tested, the scripts embedded in the LSB view only makes simple calls to the functions defined in the script files.
+
 */
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*!
 \defgroup section_faq Frequently Asked Questions
 
-This page is under construction.
+<ul>
+<li>**How to configure the default view repository?**<br/>
+The default view repository comes with the application and uses **DefaultViews** as the repository name. It's not configurable through the **Settings** dialog.</li>
+<li>**Can I open multiple view instances for the same LSB view?**<br/>
+Yes, you can open the same LSB view as many times as you want. Each instance of the same LSB view will have its own window. The different LSB view instances do not share any data in between for safety reason.</li>
+<li>**How many LSB views can I open with the LSB application?**<br/>
+There is no limitation on how many LSB view instances you can open, as long as the computer's memory allows it.</li>
+</ul>
 
 */
 
