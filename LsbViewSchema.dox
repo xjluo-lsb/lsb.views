@@ -75,11 +75,11 @@ Here's how the main window looks like,
 \image html lsb-menu-file.png
 
 <ul>
-<li>**Open view ...** - This menu item launches the open view dialog for user to select a view file and open as LSB view.</li>
-<li>**Open recent view** - Select a previously opened view file from the sub-menu and open as LSB view.</li>
+<li>**Open view ...** - This menu item launches the open view dialog for user to select a view file and open it as LSB view.</li>
+<li>**Open recent view** - Select a previously opened view file from the sub-menu and open it as LSB view.</li>
 <li>**Close all views** - This will close all the currently opened views.</li>
 <li>**Manage view history ...** - This menu item launches the view file history management window to configure how the view files are ordered in the opened view history.</li>
-<li>**Exit** - This closes all the LSB view windows and exits the LSB application.</li>
+<li>**Exit** - This closes all the opened LSB view windows and exits the LSB application.</li>
 </ul>
 
 #### 1.1.2 The **Windows** menu
@@ -96,7 +96,7 @@ Here's how the main window looks like,
 \image html lsb-menu-option.png
 
 <ul>
-<li>**Settings ...** - This is the only menu item in this menu. It launches the LSB settings dialog for user to change configurations for the LSB application, from generic settings to shell configurations and view repository configurations.</li>
+<li>**Settings ...** - This is the only menu item in this menu. It launches the LSB settings dialog for user to change configurations for the LSB application, from generic settings to shell configurations to view repository configurations.</li>
 </ul>
 
 #### 1.1.4 The **Help** menu
@@ -110,15 +110,15 @@ Here's how the main window looks like,
 
 ### 1.2 Toolbar Buttons
 
-In the main window, there is also a toolbar that contains a set of buttons for the functionalities. The funtionalities provided by these buttons are already available through the menu items in the main menu.
+In the main window, there is also a toolbar that contains a set of buttons for the frequently used functionalities. The funtionalities provided by these buttons are already available through the menu items in the main menu.
 
 \image html lsb-main-window.png
 
 <ul>
-<li>**Open view** - This button has the same functionality as the "Open view ..." menu item under **File** menu. Clicking the button will launch the open view dialog to select and open LSB view. Besides, the little triangle next to it triggers a drop down menu that shows the same view history as the **Open recent view** does.</li>
-<li>**Close all views** - This button is same as the **Close all views** menu item under **File** menu, it closes all currently open LSB views.</li>
-<li>**Manage history** - This is another entry to the view file history management window.</li>
-<li>**View** - This button will launch the "Select view" dialog for user to select a view from a view list which contains all currently opened LSB views and make the selected view active. There is also a button with little triangle next to it which triggers a drop down menu that contains menu items mapped to all currently open views. Select a menu item here will bring the corresponding LSB view into front and make it active.</li>
+<li>**Open view** - This button has the same functionality as the "Open view ..." menu item under **File** menu. Clicking on the button will launch the open view dialog to select view file and open LSB view. Besides, the little triangle next to it triggers a drop down menu that shows the same view history as the **Open recent view** does.</li>
+<li>**Close all views** - This button is same as the **Close all views** menu item under **File** menu, it closes all currently opened LSB views.</li>
+<li>**Manage history** - This is another entry similar to the **Manage view history ...** under the **File** menu to open the view file history management window.</li>
+<li>**View** - This button will launch the **Select view** dialog for user to select a view from a list of currently opened LSB views and make the selected view active. There is also a button with little triangle next to it which triggers a drop down menu that contains menu items mapped to all currently open views. Select a menu item here will bring the corresponding LSB view into front and make it active.</li>
 <li>**Log window** - This button brings the global logging window into front.</li>
 <li>**Settings** - This button launches the settings dialog for the LSB application.</li>
 <li>**Help page** - This button shows the help window for the LSB application.</li>
