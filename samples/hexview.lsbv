@@ -14,7 +14,7 @@
 This sample view demostrates the HexView control - it is a control provided by the LSB to display any content in the hexadecimal
 format. This view supports,
 <ul>
-<li>Open any file to be display in hexadecimal.
+<li>Open any file to be displayed in hexadecimal.
 <li>Demonstrates two different ways to load the content into HexView,
   <ol>
     <li>Load file in Lua code, convert the content into hexadecimal string and send to the HexView control.
