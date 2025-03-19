@@ -212,8 +212,6 @@ This is the general setting category for the LSB application. The settings inclu
 
 \image html lsb-settings-general.png
 
-**TODO: update the screenshot for the general settings**
-
 <ul>
 <li>**Aggregation time window for multiple input parameter changes** - This defines the length of a time window in milliseconds. For an LSB view control, there might be multiple input parameters defined on it, and some of these parameters could have their values changed simultaneously (or within a very short time frame). If this time window length is set to 0 millisecond, every parameter value change will trigger data load and content refresh for the view control, which is usually not the expected behavior, they should be consolidated into one data load and content refresh. By setting this time window to a short duration, all parameter value changes occurred within this time window will be recognized as one change, and will be triggering one single data load and content refresh. Please note that this time window is a moving window. For instance, if the time window length is set to `D` and the first input parameter value change happens at `T0`, and a second parameter change happens at `T1` (where `T1 - T0 <= D`), then these two input parameter changes will be recognized as one action, and the actual data load/content refresh will be triggered at `T1 + D`. If there is a third parameter value changes at `T2` where `T2 - T1 <= D`, then the data load/content refresh will be deferred again to `T2 + D`, until no parameter value change happens within the `D` duration after the last parameter value change. In general, if `n` parameters have their values changed around the same time (with the time gap between each adjacent two parameters being less than `D`), the actual data load/content refresh will happen at `Tn + D`.
 <li>**Default view size** - This setting defines the default window size for an LSB view. When a LSB view is opened, it will be set to this size by initially.</li>
@@ -1824,7 +1822,7 @@ Here's a sample view that hosts a simple text view for editing plain text,
   <version major="0" minor="1" build="0" revision="0" />
 
   <view>
-    <textView id="6d627fac-651b-4815-b0fa-4d584f0bc45e" multiline="false" readOnly="false">
+    <textView id="6d627fac-651b-4815-b0fa-4d584f0bc45e" multiline="false" readOnly="false" loadDataAt="Creating">
       <data showProgress="false">
         <script type="lua">
 <![CDATA[
@@ -1834,13 +1832,15 @@ return [[This is the default text for the view.]]
       </data>
     </textView>
   </view>
+
+  <dataFlow />
 </LsbView>
 
 \endcode
 
 You may save this code snipper into an lsbv file, put it into your own load view repository and then open it in the LSB application, the UI will look like the screenshot below,
 
-**TODO: update the screenshot for the sample view**
+\image html lsb-sampleview-textview.png
 
 In the textView control, you may type in more text, modify or delete the existing default text "This is the default text for the view.", because the textView control has the readOnly attribute set to false.
 
@@ -1935,11 +1935,11 @@ return {
 
 After you open the view in the LSB application, it should look like screenshot below,
 
-**TODO: screenshot for sample view**
+\image html lsb-sampleview-parameters-1.png
 
 When you click on a Web site in the list view, the Web view will have the page loaded and the caption updated simultaneously. Meanwhile, you will see following messages in the **Logs** page,
 
-**TODO: screenshot for message logs**
+\image html lsb-sampleview-parameters-2.png
 
 Now let's look back at the **dataFlow** section in the LSB view file, it would become easy to understand,
 <ul>
