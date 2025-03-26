@@ -1354,6 +1354,17 @@ in the LSB view files. It also defines the file structure of the view files usin
     -->
   </xs:complexType>
 
+  <xs:complexType name="OptionPath">
+    <xs:annotation>
+      <xs:documentation>
+        The is the schema for the paths for option values in JSON data.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="data" type="xs:string" use="required" />
+    <xs:attribute name="group" type="xs:string" use="optional" />
+    <xs:attribute name="value" type="xs:string" use="required" />
+  </xs:complexType>
+
   <xs:complexType name="ComboBox">
     <xs:annotation>
       <xs:documentation>
@@ -1364,6 +1375,7 @@ in the LSB view files. It also defines the file structure of the view files usin
       <xs:group ref="ViewElements" />
       <xs:element name="prompt" type="Prompt" minOccurs="0" maxOccurs="1" />
       <xs:element name="options" type="OptionList" minOccurs="0" maxOccurs="1" />
+      <xs:element name="paths" type="OptionPath" minOccurs="0" maxOccurs="1" />
     </xs:sequence>
     <xs:attributeGroup ref="ViewAttributes" />
     <xs:attribute name="selectOnly" type="xs:boolean" use="optional" default="false" />

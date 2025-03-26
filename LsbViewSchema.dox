@@ -1140,6 +1140,14 @@ class OptionList
 {
 };
 
+//! \brief This node defines the paths used for extracting option values from complicated JSON object returned from data source, to be used in the ComboBox. The paths uses / (slash) as delimeter between layers of objects, single . (dot) means the data item itself, not extracting any member or element from it.
+class OptionPath
+{
+  public string data;       //!< [Mandatory] This is the path to the array that contains the option values
+  public string group;      //!< [Optional] This is the path to the data for option group within the array element.
+  public string value;      //!< This is the path to the data for the option value within the array element.
+};
+
 //! \brief This is the OS type that defines which operating system that the LSB view supports.
 /*!
 The value could be one of the values below, or a combination of them separated by semi-colon.
@@ -1660,6 +1668,7 @@ The ComboBox node contains following child nodes,
  - All the nodes defined in ViewElements.
  - [Optional] The prompt node in type of Prompt defines the prompt for the ComboBox input.
  - [Optional] The options node in type of OptionList defines the preset values that the end user can select one value from them.
+ - [Optional] The paths node in type of OptionPath is the configuration for extracting option values from data returned by data source for the ComboBox.
 
 The ComboBox node contains following attributes,
  - All the attributes defined in ViewAttributes.
