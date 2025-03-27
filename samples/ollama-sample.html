@@ -1,0 +1,71 @@
+<h2 style="background-color: #629805; padding: 10px; color: antiquewhite;">Ask Ollama</h2>
+<div id="content"></div>
+
+<style>
+    .question {
+        font-family: sans-serif;
+        border: solid 1px #808080;
+        border-radius: 5px;
+        background-color: #ffd2a7;
+        padding: 9px;
+        margin-bottom: 5px;
+        text-align: right;
+    }
+
+    .answer {
+        font-family: monospace;
+        border-radius: 5px;
+        background-color: #f8f4f2;
+        padding: 9px;
+        margin-bottom: 15px;
+    }
+</style>
+
+<script type="text/javascript">
+    let rootContainer = document.getElementById("content");
+    let activeOllamaResult = null;
+
+    async function sendOllamaRequest(url, model, question) {
+        var answer = "";
+
+        const response = await fetch(url, {
+            method: "POST",
+            body: JSON.stringify({ model: model, prompt: question })
+        });
+        const reader = response.body.getReader();
+        while (true) {
+            const { done, value } = await reader.read();
+            if (done) {
+                // Do something with last chunk of data then exit reader
+                return;
+            }
+            else {
+                // Otherwise do something here to process current chunk
+                const jsonString = new TextDecoder().decode(value);
+                const jsonObject = JSON.parse(jsonString);
+                answer += jsonObject.response;
+                if (activeOllamaResult) {
+                    activeOllamaResult.innerHTML = answer;
+                }
+            }
+        }
+    }
+
+    function askQuestion(server, host, model, question) {
+        var questionElement = document.createElement('div');
+        questionElement.className = 'question';
+        questionElement.innerHTML = question;
+        rootContainer.appendChild(questionElement);
+
+        activeOllamaResult = document.createElement('div');
+        activeOllamaResult.className = 'answer';
+        rootContainer.appendChild(activeOllamaResult);
+
+        sendOllamaRequest("http://" + server + ":" + host + "/api/generate", model, question);
+    }
+
+    function clearChatHistory() {
+        rootContainer.innerHTML = "";
+    }
+
+</script>

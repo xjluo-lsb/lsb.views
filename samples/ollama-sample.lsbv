@@ -1,0 +1,223 @@
+<?xml version="1.0"?>
+
+<LsbView xmlns="https://github.com/xjluo-lsb/lsb.views"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="https://github.com/xjluo-lsb/lsb.views ..\LsbViewSchema.xsd"
+
+  name="Ollama view sample"
+  author="Kevin Luo"
+  createTime="2025-02-17T15:11:56z"
+  lastChangeTime="2025-02-17T15:11:56z">
+
+  <description>
+<![CDATA[
+This sample view demonstrates how to use the <a href="https://ollama.com/">Ollama</a> running on local machine to implement a simple query UI for the mostly
+used Large Language Models supported on Ollama.<br/>
+You must have the Ollama installed and running on your machine. The ollama path must have been added into the system path variable so the ollama command is
+accessible from any location. Besides, please follow instructions at the <a href="https://objectgraph.com/blog/ollama-cors/">page</a> to set the environment
+variable <b>OLLAMA_ORIGINS</b> to <b>*</b> to allow Ollama accepting requests coming from LSB views.
+]]>
+  </description>
+  <version major="0" minor="0" build="1" revision="0" />
+    
+  <view>
+    <splitLayout
+      id="183a4284-3b93-458a-a2d8-4b9d715c9028"
+      orientation="Horizontal"
+      fixedView="Left"
+      size="280">
+      <caption visible="false">Parameters for Ollama</caption>
+      <input />
+      <output />
+      <left>
+        <tableLayout id="8ae62127-20f9-475b-8146-796017380232">
+          <rows>
+            <row height="240" sizeType="absolute"/>
+            <row height="52" sizeType="absolute"/>
+            <row height="100" sizeType="percentage"/>
+          </rows>
+          <columns>
+            <column width="100" sizeType="percentage"/>
+          </columns>
+          <cells>
+            <cell row="0" col="0">
+              <propertyInput id="35141e3f-344f-4519-8894-d8a85dcf4b65" trimSpace="Both">
+                <caption visible="true">Ollama parameters</caption>
+                <input />
+                <output>
+                  <param id="7a7270d8-85be-4147-af41-d3e87608f222" name="host" />
+                  <param id="0edf04c9-9a07-4954-bc3d-6fa52c0c0659" name="port"/>
+                </output>
+                <properties>
+                  <property name="host" label="Host name" category="Server" type="String" description="This is the host name of the Ollama server" default="localhost" />
+                  <property name="port" label="Service port" category="Server" type="UnsignedInteger" description="This is the port of the Ollama service" default="11434" />
+                </properties>
+              </propertyInput>
+            </cell>
+            <cell row="1" col="0">
+              <comboBox id="d01fa64e-4b3b-4771-ad4a-196ef9624c82" selectOnly="true" sorted="true">
+                <caption visible="true">Ollama models</caption>
+                <input>
+                  <param id="88e643c2-cfe8-441e-87ef-7e4c123ed7d9" name="server"/>
+                  <param id="728fd8ad-a19e-4bd6-a502-f5f00475b57d" name="port"/>
+                </input>
+                <output>
+                  <param id="27860633-0cb7-4ff9-86eb-2ec7346502e5" name="*"/>
+                </output>
+                <condition><![CDATA[return (not server.IsWhiteSpace) and port.IsPositive]]></condition>
+                <data showProgress="false">
+                  <json method="Get" path="">
+                    <url>http://{server}:{port}/api/tags</url>
+                  </json>
+                </data>
+                <prompt exclusive="false">Select model:</prompt>
+                <paths data="models" group="details/family" value="name" />
+              </comboBox>
+            </cell>
+            <cell row="2" col="0">
+              <textView id="b90701aa-1ee7-4d9f-a30e-9f2383be2478" readOnly="true" multiline="true">
+                <caption visible="true">Ollama model information</caption>
+                <input>
+                  <param id="109e1250-fff6-4dfd-a0e8-45b31937579f" name="server"/>
+                  <param id="df6e9645-2114-4c60-b7c7-983e7b3ed2f9" name="port"/>
+                  <param id="e9092ee9-5a69-4cb7-b86a-06b818e54381" name="model"/>
+                </input>
+                <condition><![CDATA[return (not server.IsWhiteSpace) and port.IsPositive and (not model.IsEmpty)]]></condition>
+                <data showProgress="true">
+                  <json method="Post" path="" contentType="text/json">
+                    <url>http://{server}:{port}/api/show</url>
+                    <payload><![CDATA[{ "model": "{model}" }']]></payload>
+                  </json>
+                </data>
+              </textView>
+            </cell>
+          </cells>
+        </tableLayout>        
+      </left>
+      <right>
+        <tableLayout id="9918da92-cf14-4235-a2a4-a3948df54298">
+          <caption visible="false"></caption>
+          <rows>
+            <row sizeType="percentage" height="100" />
+            <row sizeType="absolute" height="32" />
+          </rows>
+          <columns>
+            <column sizeType="percentage" width="100" />
+            <column sizeType="absolute" width="80" />
+            <column sizeType="absolute" width="80" />
+          </columns>
+          <cells>
+            <cell row="0" col="0" rowSpan="1" colSpan="3">
+              <webView id="aecd4e76-6424-4eb0-a9bd-9ebd00aacab7" contentType="Files" enableDevTools="true">
+                <caption visible="true">Ollama answers</caption>
+                <input>
+                  <param id="c27d41c3-0907-4c60-8cd5-a8e9051e6c3c" name="server"/>
+                  <param id="113cc395-6a20-4520-a42c-ebbb494fe647" name="port"/>
+                  <param id="62dbe06d-bb7a-4669-a8a2-a7fe8ce9ce90" name="model"/>
+                  <param id="9b3161a1-ff97-48fd-a153-409f48a6f186" name="question"/>
+                  <param id="ecf359d1-4a70-41e1-8fa1-985f57632942" name="sendAt"/>
+                  <param id="8b0785fa-2bda-4282-b46f-49afd468686e" name="clear"/>
+                </input>
+                <condition><![CDATA[return sendAt.IsTrigger or clear.IsTrigger]]></condition>
+                <body path="View">ollama-sample.html</body>
+                <scriptForChange>
+<![CDATA[
+if ("{clear}" == "") { askQuestion("{server}", "{port}", "{model}", "{question}"); }
+else { clearChatHistory(); }
+]]>
+                </scriptForChange>
+              </webView>
+            </cell>
+            <cell row="1" col="0">
+              <textInput id="e2767ab5-66ff-4263-9880-8346637700ba" multiline="false" whenToNotify="TextChange">
+                <output>
+                  <param id="d8379c72-af2c-4ccd-898d-13f5ce998a9c" name="*"/>
+                </output>
+                <prompt exclusive="false" visible="true">Question: </prompt>
+              </textInput>
+            </cell>
+            <cell row="1" col="1">
+              <button id="e9663b59-ac0c-4958-b6aa-cea75cae0149" label="Send" description="Send the question to Ollama" dock="None">
+                <input>
+                  <param id="1720554b-1c3d-40f0-8bc0-856534225b80" name="model"/>
+                  <param id="6876fac1-aa0a-4760-9d9e-d2999625bf74" name="question"/>
+                </input>
+                <output>
+                  <param id="e56932d0-ee3d-4dee-9a96-21c977a700d2" name="sendAt"/>
+                  <param id="e8b5cea6-b317-4cf0-b19f-9a37fb9786be" name="clear"/>
+                </output>
+                <condition><![CDATA[return (not model.IsEmpty) and (not question.IsEmpty)]]></condition>
+                <data showProgress="false">
+                  <script type="lua">
+                    <![CDATA[return { sendAt = os.date('%Y%m%d-%H%M%S'), clear = "" }]]>
+                  </script>
+                </data>
+              </button>
+            </cell>
+            <cell row="1" col="2">
+              <button id="3849d246-b994-49c4-b824-72aca02f685f" label="Clear" description="Clear the chat history" dock="None">
+                <input />
+                <output>
+                  <param id="14b23366-9e11-4176-a317-e1520a7c0dd4" name="sendAt"/>
+                  <param id="c0eb0442-ac3b-4f3d-8504-64f0df6688d5" name="clear"/>
+                </output>
+                <data showProgress="false">
+                  <script type="lua">
+                    <![CDATA[return { sendAt = "", clear = os.date('%Y%m%d-%H%M%S') }]]>
+                  </script>
+                </data>
+              </button>
+            </cell>
+          </cells>
+        </tableLayout>
+      </right>
+    </splitLayout>
+  </view>
+
+  <dataFlow>
+    <!-- Host from the propertyInput -->
+    <mapping source="7a7270d8-85be-4147-af41-d3e87608f222">
+      <target>88e643c2-cfe8-441e-87ef-7e4c123ed7d9</target> <!-- To the combobox -->
+      <target>109e1250-fff6-4dfd-a0e8-45b31937579f</target> <!-- To the TextView -->
+      <target>c27d41c3-0907-4c60-8cd5-a8e9051e6c3c</target> <!-- To the WebView -->
+    </mapping>
+    <!-- Port from the propertyInput -->
+    <mapping source="0edf04c9-9a07-4954-bc3d-6fa52c0c0659">
+      <target>728fd8ad-a19e-4bd6-a502-f5f00475b57d</target> <!-- To the combobox -->
+      <target>df6e9645-2114-4c60-b7c7-983e7b3ed2f9</target> <!-- To the TextView -->
+      <target>113cc395-6a20-4520-a42c-ebbb494fe647</target> <!-- To the WebView -->
+    </mapping>
+    
+    <!-- Model from the ComboBox -->
+    <mapping source="27860633-0cb7-4ff9-86eb-2ec7346502e5">
+      <target>e9092ee9-5a69-4cb7-b86a-06b818e54381</target> <!-- To the TextView -->
+      <target>1720554b-1c3d-40f0-8bc0-856534225b80</target> <!-- To the Send button -->
+      <target>62dbe06d-bb7a-4669-a8a2-a7fe8ce9ce90</target> <!-- To the WebView -->
+    </mapping>
+    
+    <!-- Question from the TextInput -->
+    <mapping source="d8379c72-af2c-4ccd-898d-13f5ce998a9c">
+      <target>6876fac1-aa0a-4760-9d9e-d2999625bf74</target> <!-- To the Send button -->
+      <target>9b3161a1-ff97-48fd-a153-409f48a6f186</target> <!-- To the WebView -->
+    </mapping>
+    
+    <!-- SendAt from the Send button -->
+    <mapping source="e56932d0-ee3d-4dee-9a96-21c977a700d2">
+      <target>ecf359d1-4a70-41e1-8fa1-985f57632942</target> <!-- To the WebView -->
+    </mapping>
+    <!-- Clear from the Send button -->
+    <mapping source="e8b5cea6-b317-4cf0-b19f-9a37fb9786be">
+      <target>8b0785fa-2bda-4282-b46f-49afd468686e</target> <!-- To the WebView -->
+    </mapping>
+    
+    <!-- SendAt from the Clear button -->
+    <mapping source="14b23366-9e11-4176-a317-e1520a7c0dd4">
+      <target>ecf359d1-4a70-41e1-8fa1-985f57632942</target> <!-- To the WebView -->
+    </mapping>
+    <!-- Clear from the Clear button -->
+    <mapping source="c0eb0442-ac3b-4f3d-8504-64f0df6688d5">
+      <target>8b0785fa-2bda-4282-b46f-49afd468686e</target> <!-- To the WebView -->
+    </mapping>
+  </dataFlow>
+
+</LsbView>
