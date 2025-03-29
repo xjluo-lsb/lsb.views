@@ -208,6 +208,7 @@ And another loooooooooooooooong line with more words in one single line.
                   <buttonGroup id="42ce8def-625a-44a3-bea6-b76b564b429f" buttonsPerRow="3">
                     <caption visible="true">Caption for button group</caption>
                     <buttons>
+                      <!-- This button sends out some data when it's clicked -->
                       <button id="55c97ca2-f63b-49fb-ac12-9ad37355cdca" label="Button A" description="This is description for button A.">
                         <output>
                           <param name="name" id="49D81987-5DEF-4F6B-A279-2D1BC05F6851" />
@@ -226,16 +227,31 @@ return {
                       </button>
                       <button id="d6b447d1-b331-43ff-b2ae-c171f18c6904" label="Button B">
                         <data showProgress="false">
-                          <script type="pwsh">
-<![CDATA[]]>
+                          <script type="lua">
+                            <![CDATA[lsb.showMessage("Button B is pressed, shows informational message.")]]>
                           </script>
                         </data>
                       </button>
                       <button id="ad34c3ae-e331-4ab6-b360-9134ab2c4491" label="Button C">
+                        <data showProgress="false">
+                          <script type="lua">
+                            <![CDATA[lsb.showWarning("Button C is pressed, shows warning message.")]]>
+                          </script>
+                        </data>
                       </button>
                       <button id="9f1eb558-677a-4894-98d7-a89fb5c2a803" label="Button D">
+                        <data showProgress="false">
+                          <script type="lua">
+                            <![CDATA[lsb.showError("Button D is pressed, shows error message.")]]>
+                          </script>
+                        </data>
                       </button>
                       <button id="95d9abda-75fa-4650-bc9e-c1c62b5341fc" label="Button E">
+                        <data showProgress="false">
+                          <script type="lua">
+                            <![CDATA[lsb.showMessage("This message is shown when the button E is pressed.")]]>
+                          </script>
+                        </data>
                       </button>
                     </buttons>
                   </buttonGroup>
