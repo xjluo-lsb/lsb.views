@@ -20,6 +20,7 @@ This is the documentation for the Leave Script Behind (aka LSB) application. It 
   - LsbView
 - Create your own LSB view
   - \ref section_create_view
+  - \ref section_param_naming
   - \ref section_debug_view
 - \ref section_faq
 */
@@ -1956,6 +1957,31 @@ Now let's look back at the **dataFlow** section in the LSB view file, it would b
 <li>The parameter with ID `8e9d8168-86f4-47df-9a5d-f9b9190d1aaf` is the output parameter from the list view for the Web site URL, and it's associated with the input parameter with ID `343cc934-2122-4d42-8689-369a733c4032` on the Web view. This is defined in the second mapping in the **dataFlow** section. In the screenshot, value "" was sent out from the list view and passed into the web view for loading page content from the URL.</li>
 </ul>
 
+*/
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*!
+\defgroup section_param_naming Parameter Naming
+
+In the previous section, we explained how the parametering mapping is defined in the LSB view definition and how it works. If you look into the parameter definition, there is a **name** property in both input parameters and output parameters. Though the attribute names are same, the meanings for the attribute are a bit different.
+
+## Name in Input Parameters
+The name in the input parameters are only used inside the component that has the input parameters defined. There are a few places to use the value of the input parameters, e.g. the parameter check condition (in Lua script), the scripts defined in the DataSources, or content in the view control (such as content in the TextView control). With this said, the names for the input parameters do not need to be same as the corresponding output parameters, even though we see a lot of input parameters have the same names as their corresponding output parameters, it eases the understanding parameter mapping, but it's not necessary.
+
+To use the input parameter values passed in, in any of the parameter check condition, script in data source or the content for view control, the placeholders for the input parameters must be in the form of **{name}**. All these placeholders will be automatically substituded by the real value before the parameter check condition or script in data source is evaluated, and the content is used.
+
+## Name in Output Parameters
+The name in the output parameters have different meaning compared to the name in the input parameters. It's used to extract values from the evaluated result from data sources for the components. Typically, the LSB expects that the data sources to return data as JSON objects, and it uses the output parameter name as the member name in the JSON object to get value. In this way, the data source could return a complicated JSON object and support outputting multiple values through multiple output parameters with different names.
+
+There are a few special names can be used for output parameters,
+<ul>
+<li><b>*</b> - if there is only one output parameter defined for a component and it's expected to return the whole value from the data source as the parameter value, then the output paramter name must be set to <b>*</b>, which means everything. More specifically, in view controls like ComboBox and TextInput, they only support this <b>*</b> as parameter name as the data from the control is a string and that's the value needs to be sent out.</li>
+<li><b>#</b> - in the ListView and FileListView control, when user selects an item and the selected item index should be sent out, then the output parameter should use <b>#</b> as the paramter name which means the index of the selected item.</li>
+<li><b>%__name__</b> - in the TreeView and FileTreeView control, this specific name is used for returning the name value of currently selected tree node.</li>
+<li><b>%__path__</b> - in the TreeView and FileTreeView control, this specific name is used for returning the path in the tree for the currently selected tree node.</li>
+<li>In the PropertyInput control, the output parameter name must be same as the name of the property to send its value out.</li>
+<li>In the WebView control, the output parameter name must be same as the name defined in the data sent out from the JavaScript code inside the WebView content.</li>
+</ul>
 */
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
