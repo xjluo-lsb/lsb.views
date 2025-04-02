@@ -56,7 +56,7 @@ data using code copied and modified from the <a href="https://observablehq.com/@
                   <param id="bdf10ef6-ed3c-437a-9868-2e73b4545cbc" name="colorScheme"/>
                 </output>
                 <properties>
-                  <property name="threshold" label="Size threshold" category="Treemap" type="UnsignedInteger" description="This is size threshold for the tree map. Any folder has size smallers than this threshold won't be shown." default="1024" />
+                  <property name="threshold" label="Size threshold (KB)" category="Treemap" type="UnsignedInteger" description="This is size threshold for the tree map. Any folder has size smallers than this threshold won't be shown." default="1024" />
                   <property name="colorScheme" label="Color scheme" category="Treemap" type="Enumeration" description="The color scheme for the tree map" default="schemePastel1">
                     <options>
                       <option>schemeCategory10</option>
@@ -103,7 +103,7 @@ data using code copied and modified from the <a href="https://observablehq.com/@
           <top>
             <webView id="1a0cc862-dc53-4d73-b919-a9016e66055c" contentType="Content" enableDevTools="true" loadDataAt="Default">
               <!-- Modified from D3 example at https://observablehq.com/@d3/treemap/2 -->
-              <caption visible="true">Folders have size larger than {threshold} MB</caption>
+              <caption visible="true">Folders have size larger than {threshold} KB</caption>
               <input>
                 <param id="43d3be30-e814-4be9-934b-420b8beadfa1" name="threshold"/>
                 <param id="99d09bad-e860-4314-acf2-614fea64cd3a" name="colorScheme"/>
