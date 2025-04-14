@@ -115,23 +115,31 @@ variable <b>OLLAMA_ORIGINS</b> to <b>*</b> to allow Ollama accepting requests co
                   <param id="113cc395-6a20-4520-a42c-ebbb494fe647" name="port"/>
                   <param id="62dbe06d-bb7a-4669-a8a2-a7fe8ce9ce90" name="model"/>
                   <param id="9b3161a1-ff97-48fd-a153-409f48a6f186" name="question"/>
-                  <param id="ecf359d1-4a70-41e1-8fa1-985f57632942" name="sendAt"/>
                   <param id="8b0785fa-2bda-4282-b46f-49afd468686e" name="clear"/>
                 </input>
-                <condition><![CDATA[return sendAt.IsTrigger or clear.IsTrigger]]></condition>
+                <condition><![CDATA[return (question.IsTrigger and (not question.IsEmpty)) or (clear.IsTrigger and clear.IsTrue)]]></condition>
                 <body path="View">ollama-sample.html</body>
                 <scriptForChange>
 <![CDATA[
-if ("{clear}" == "") { askQuestion("{server}", "{port}", "{model}", "{question}"); }
-else { clearChatHistory(); }
+// There are a few different cases to think about,
+// 1. When the clear button is clicked, the question is always empty and clear has value true
+// 2. When the send button is clicked, the question is not empty and the clear has value false
+// 3. If enter key is pressed in the text input, we expect the question to be sent to the WebView. There could be different values in clear,
+//    - If send or clear button were not clicked prior to the enter key pressed, then clear contains empty value
+//    - If send button was clicked prior to the enter key pressed, the clear contains value true
+//    - If clear button was clicked prior to the enter key pressed, the clear contains value false
+// With all these said, we can only use item one to determine if chat history should be cleared, and leave other cases to send question instead.
+if ("{question}" == "" && "{clear}" == "true") { clearChatHistory(); }
+else { askQuestion("{server}", "{port}", "{model}", "{question}"); }
 ]]>
                 </scriptForChange>
               </webView>
             </cell>
             <cell row="1" col="0">
-              <textInput id="e2767ab5-66ff-4263-9880-8346637700ba" multiline="false" whenToNotify="TextChange">
+              <textInput id="e2767ab5-66ff-4263-9880-8346637700ba" multiline="false">
                 <output>
-                  <param id="d8379c72-af2c-4ccd-898d-13f5ce998a9c" name="*"/>
+                  <param id="d8379c72-af2c-4ccd-898d-13f5ce998a9c" name="$"/>
+                  <param id="af9c7579-5a2c-4d1e-bab4-b4702a6d00ce" name="?"/>
                 </output>
                 <prompt exclusive="false" visible="true">Question: </prompt>
               </textInput>
@@ -143,13 +151,13 @@ else { clearChatHistory(); }
                   <param id="6876fac1-aa0a-4760-9d9e-d2999625bf74" name="question"/>
                 </input>
                 <output>
-                  <param id="e56932d0-ee3d-4dee-9a96-21c977a700d2" name="sendAt"/>
+                  <param id="3843948f-da4d-4a04-8903-63b7fa44a105" name="question"/>
                   <param id="e8b5cea6-b317-4cf0-b19f-9a37fb9786be" name="clear"/>
                 </output>
                 <condition><![CDATA[return (not model.IsEmpty) and (not question.IsEmpty)]]></condition>
                 <data showProgress="false">
                   <script type="lua">
-                    <![CDATA[return { sendAt = os.date('%Y%m%d-%H%M%S'), clear = "" }]]>
+                    <![CDATA[return { question = "{question}", clear = false }]]>
                   </script>
                 </data>
               </button>
@@ -158,12 +166,12 @@ else { clearChatHistory(); }
               <button id="3849d246-b994-49c4-b824-72aca02f685f" label="Clear" description="Clear the chat history" dock="None">
                 <input />
                 <output>
-                  <param id="14b23366-9e11-4176-a317-e1520a7c0dd4" name="sendAt"/>
+                  <param id="14b23366-9e11-4176-a317-e1520a7c0dd4" name="question"/>
                   <param id="c0eb0442-ac3b-4f3d-8504-64f0df6688d5" name="clear"/>
                 </output>
                 <data showProgress="false">
                   <script type="lua">
-                    <![CDATA[return { sendAt = "", clear = os.date('%Y%m%d-%H%M%S') }]]>
+                    <![CDATA[return { question = "", clear = true }]]>
                   </script>
                 </data>
               </button>
@@ -195,26 +203,29 @@ else { clearChatHistory(); }
       <target>62dbe06d-bb7a-4669-a8a2-a7fe8ce9ce90</target> <!-- To the WebView -->
     </mapping>
     
-    <!-- Question from the TextInput -->
+    <!-- Question from the TextInput when enter key is pressed, this is sent to WebView directly -->
     <mapping source="d8379c72-af2c-4ccd-898d-13f5ce998a9c">
-      <target>6876fac1-aa0a-4760-9d9e-d2999625bf74</target> <!-- To the Send button -->
       <target>9b3161a1-ff97-48fd-a153-409f48a6f186</target> <!-- To the WebView -->
     </mapping>
-    
-    <!-- SendAt from the Send button -->
-    <mapping source="e56932d0-ee3d-4dee-9a96-21c977a700d2">
-      <target>ecf359d1-4a70-41e1-8fa1-985f57632942</target> <!-- To the WebView -->
+    <!-- Question from the TextInput when content is changed, it's sent to send button only -->
+    <mapping source="af9c7579-5a2c-4d1e-bab4-b4702a6d00ce">
+      <target>6876fac1-aa0a-4760-9d9e-d2999625bf74</target> <!-- To the Send button -->
     </mapping>
-    <!-- Clear from the Send button -->
+    
+    <!-- The question from the Send button -->
+    <mapping source="3843948f-da4d-4a04-8903-63b7fa44a105">
+      <target>9b3161a1-ff97-48fd-a153-409f48a6f186</target> <!-- To the WebView -->
+    </mapping>
+    <!-- The clear flag from the Send button -->
     <mapping source="e8b5cea6-b317-4cf0-b19f-9a37fb9786be">
       <target>8b0785fa-2bda-4282-b46f-49afd468686e</target> <!-- To the WebView -->
     </mapping>
-    
-    <!-- SendAt from the Clear button -->
+
+    <!-- The question from the Clear button -->
     <mapping source="14b23366-9e11-4176-a317-e1520a7c0dd4">
-      <target>ecf359d1-4a70-41e1-8fa1-985f57632942</target> <!-- To the WebView -->
+      <target>9b3161a1-ff97-48fd-a153-409f48a6f186</target> <!-- To the WebView -->
     </mapping>
-    <!-- Clear from the Clear button -->
+    <!-- THe clear flag from the Clear button -->
     <mapping source="c0eb0442-ac3b-4f3d-8504-64f0df6688d5">
       <target>8b0785fa-2bda-4282-b46f-49afd468686e</target> <!-- To the WebView -->
     </mapping>

@@ -2,22 +2,27 @@
 <div id="content"></div>
 
 <style>
-    .question {
+    .question-wrapper {
+        margin-bottom: 5px;
+        padding: 10px;
+        text-align: right;
+    }
+
+    .question-text {
         font-family: sans-serif;
         border: solid 1px #808080;
-        border-radius: 5px;
-        background-color: #ffd2a7;
+        border-radius: 15px;
+        background-color: #58d68d;
         padding: 9px;
-        margin-bottom: 5px;
-        text-align: right;
+        max-width: 66%;
     }
 
     .answer {
         font-family: monospace;
-        border-radius: 5px;
-        background-color: #f8f4f2;
+        border-radius: 10px;
+        background-color: #aed6f1;
         padding: 9px;
-        margin-bottom: 15px;
+        margin-bottom: 20px;
     }
 </style>
 
@@ -46,16 +51,23 @@
                 answer += jsonObject.response;
                 if (activeOllamaResult) {
                     activeOllamaResult.innerHTML = answer;
+                    if (document.body.scrollHeight > window.innerHeight) {
+                        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+                    }
                 }
             }
         }
     }
 
     function askQuestion(server, host, model, question) {
-        var questionElement = document.createElement('div');
-        questionElement.className = 'question';
-        questionElement.innerHTML = question;
-        rootContainer.appendChild(questionElement);
+        var questionWrapper = document.createElement('div');
+        questionWrapper.className = 'question-wrapper';
+        rootContainer.appendChild(questionWrapper);
+
+        var questionText = document.createElement('span');
+        questionText.className = 'question-text';
+        questionText.innerHTML = question;
+        questionWrapper.appendChild(questionText);
 
         activeOllamaResult = document.createElement('div');
         activeOllamaResult.className = 'answer';

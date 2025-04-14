@@ -848,17 +848,6 @@ enum class TrimSpace
   Both      //!< Both left and right spaces in string will be trimmed.
 };
 
-//! \brief This is the enumeration type for when to send out text change event from the TextInput control.
-/*!
-The supported values are,
-*/
-enum class WhenToNotify
-{
-  Enter,        //!< The text control sends text change event when enter key is pressed in the TextInput control.
-  TextChange,   //!< The text control sends text change event when the text content is changed.
-  Both          //!< The text control sends text change event on both cases - text content is changed or enter key is pressed.
-};
-
 /*!
 @}
 */
@@ -1687,6 +1676,11 @@ class ComboBox : public ViewElements, public ViewAttributes
 /*!
 The TextInput supports both single line and multiple line text edit control that allows end user to type in text as value and send to other view controls through output parameter associated with it. It's typically used as input control for one single value. To create input for multiple values or a complicated data structure, please refer to the PropertyInput control. The value inputted through TextInput is a string. View author can convert the the string value into any other data types as they need in the script(s).
 
+When the value is changed or enter key is pressed in the TextInput, there are 3 specific parameter names can be used to send out the current value in the TextInput,
+- __$__ if enter key is pressed in the TextInput, the output parameter with this name will be updated.
+- __?__ if text value in the TextInput is changed, the output parameter with this name will be updated.
+- __*__ whenever there is text value change, or enter key is pressed, this parameter will be updated.
+
 The TextInput node contains following child nodes,
  - All the nodes defined in ViewElements.
  - [Optional] The prompt node in type of Prompt defines the prompt for the TextInput control.
@@ -1701,7 +1695,6 @@ class TextInput : public ViewElements, public ViewAttributes
     public string defaultValue;         //!< [Optional] This attribute defines the default value for the TextInput control. The default value is empty string.
 	public TrimSpace trimSpace;         //!< [Optional] This attribute controls if the user selected/typed in value should have space(s) trimmed before it's sent to other view controls. The default value is None.
 	public bool multiline;              //!< [Optional] This boolean attribute controls if the TextInput supports single line edit control or multiple line edit control. The default value is false, which means it implements as single line edit control.
-	public WhenToNotify whenToNotify;   //!< [Optional] This attribute in type of WhenToNotify defines when to trigger the output parameter to send out the new value to other controls when the end user types in to the control. The default value is Enter, which means when the Enter key is pressed in the TextInput, the new value is sent out.
 };
 
 //! \brief The PropertyInput is an input control that supports editing multiple variables or complicated structure(s) in one single control.

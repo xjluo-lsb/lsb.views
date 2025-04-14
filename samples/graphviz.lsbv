@@ -98,13 +98,13 @@ Please be reminded to configure the path properly in the system pointing to the 
         <cell row="1" col="0" rowSpan="1" colSpan="4">
           <splitLayout id="bbb3e408-e77f-4bba-89a3-1ad3f0a2515c" ratio="0.5" fixedView="None" orientation="Horizontal">
             <left>
-              <textInput id="016fa52f-7ff2-44b6-af53-b262176ef5da" trimSpace="None" multiline="true" whenToNotify="TextChange">
+              <textInput id="016fa52f-7ff2-44b6-af53-b262176ef5da" trimSpace="None" multiline="true">
                 <caption visible="true">Editor for GraphViz document</caption>
                 <input>
                   <param id="bf64d7e8-b88f-4eba-adaf-12b9e3b907aa" name="content"/>
                 </input>
                 <output>
-                  <param id="034e0e46-4695-47bf-aa2a-209e844584b0" name="*"/>
+                  <param id="034e0e46-4695-47bf-aa2a-209e844584b0" name="?"/>
                 </output>
                 <data showProgress="false">
                   <script type="lua">

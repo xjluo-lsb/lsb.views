@@ -274,19 +274,6 @@ in the LSB view files. It also defines the file structure of the view files usin
     </xs:restriction>
   </xs:simpleType>
 
-  <xs:simpleType name="WhenToNotify" final="restriction">
-    <xs:annotation>
-      <xs:documentation>
-        This is the enumeration type for when to notify text change in TextInput control
-      </xs:documentation>
-    </xs:annotation>
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="Enter" />
-      <xs:enumeration value="TextChange" />
-      <xs:enumeration value="Both" />
-    </xs:restriction>
-  </xs:simpleType>
-
   <xs:simpleType name="WhenToExecute" final="restriction">
     <xs:annotation>
       <xs:documentation>
@@ -1399,7 +1386,6 @@ in the LSB view files. It also defines the file structure of the view files usin
     <xs:attribute name="defaultValue" type="xs:string" use="optional" default="" />
     <xs:attribute name="trimSpace" type="TrimSpace" use="optional" default="None" />
     <xs:attribute name="multiline" type="xs:boolean" use="optional" default="false" />
-    <xs:attribute name="whenToNotify" type="WhenToNotify" use="optional" default="Enter" />
   </xs:complexType>
 
   <xs:complexType name="Button">
