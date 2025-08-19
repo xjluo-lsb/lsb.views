@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+
+<LsbView xmlns="https://github.com/xjluo-lsb/lsb.views"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="https://github.com/xjluo-lsb/lsb.views ..\LsbViewSchema.xsd"
+         
+  name="Web Data Source Demo"
+  author="Kevin Luo"
+  createTime="2025-08-16T00:00:00Z"
+  lastChangeTime="2025-08-16T00:00:00.000Z">
+
+  <description>
+<![CDATA[
+This sample view demostrates the JSON data source and CSV data source. It download the data from the specified
+URLs and then render the data in ListView and ChartView controls
+</ul>
+]]>
+  </description>
+  <version major="0" minor="1" build="0" revision="0" />
+
+  <view>
+    <tabLayout id="efee9aa7-88e8-4ac4-9c8e-1c4a55867b2b" tabPosition="Top">
+      <pages>
+        <page title="Original JSON data">
+          <listView id="3ff9a2df-aad4-4017-9f7d-519558db24df" multiSelect="false" sortable="true" loadDataAt="Creating">
+            <data>
+              <json>
+                <url>http://localhost:5124/states/json</url>
+              </json>
+            </data>
+            <columns>
+              <column name="Name" width="100"/>
+              <column name="Capital" width="100"/>
+              <column name="Population" width="80" align="Right"/>
+              <column name="Area" width="60" align="Right"/>
+              <column name="Highest/Location" displayName="Highest" width="100"/>
+              <column name="Highest/Elevation" displayName="Elevation" width="60" align="Right"/>
+            </columns>
+          </listView>
+        </page>
+        <page title="Original CSV data">
+          <listView id="305788c0-609d-49da-916d-0fa4a5352c60" multiSelect="false" sortable="true" loadDataAt="Creating">
+            <data>
+              <csv delimeter="," schemaType="Header">
+                <url>http://localhost:5124/sales/csv</url>
+              </csv>
+            </data>
+            <columns>
+              <column name="County" width="100"/>
+              <column name="City" width="100"/>
+              <column name="State" width="50"/>
+              <column name="PostalCode" width="60" align="Right"/>
+              <column name="Year" width="50" align="Right"/>
+              <column name="Make" width="80"/>
+              <column name="Model" width="80"/>
+            </columns>
+          </listView>
+        </page>
+        <page title="Population Distribution">
+          <chartView id="648a02c3-7c63-48ab-a138-5b959c801607" chartType="ColumnChart">
+            <data>
+              <json>
+                <url>http://localhost:5124/states/json</url>
+              </json>
+            </data>
+            <xAxis name="Name" isDateTime="false"/>
+          </chartView>
+        </page>
+      </pages>
+    </tabLayout>
+  </view>
+
+  <dataFlow>
+  </dataFlow>
+  
+</LsbView>

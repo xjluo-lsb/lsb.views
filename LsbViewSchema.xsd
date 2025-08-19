@@ -405,6 +405,19 @@ in the LSB view files. It also defines the file structure of the view files usin
     </xs:restriction>
   </xs:simpleType>
 
+  <xs:simpleType name="CsvSchemaType" final="restriction">
+    <xs:annotation>
+      <xs:documentation>
+        This is the schema type for CSV data
+      </xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="None" />
+      <xs:enumeration value="Header" />
+      <xs:enumeration value="External" />
+    </xs:restriction>
+  </xs:simpleType>
+
   <!-- Following types are non-structure types derived from primitive types -->
 
   <!-- UUID type definition -->
@@ -631,11 +644,11 @@ in the LSB view files. It also defines the file structure of the view files usin
         This is to define the configuration for downloading data from remote URL through HTTP Web request.
       </xs:documentation>
     </xs:annotation>
-    <xs:all>
+    <xs:sequence>
       <xs:element name="url" type="xs:string" minOccurs="1" maxOccurs="1" />
       <!-- Payload is only used for post requests -->
       <xs:element name="payload" type="xs:string" minOccurs="0" maxOccurs="1" />
-    </xs:all>
+    </xs:sequence>
     <xs:attribute name="method" type="HttpMethod" use="optional" default="Get" />
     <xs:attribute name="contentType" type="xs:string" use="optional" />
   </xs:complexType>
@@ -648,7 +661,16 @@ in the LSB view files. It also defines the file structure of the view files usin
     </xs:annotation>
     <xs:complexContent>
       <xs:extension base="WebData">
-        <xs:attribute name="delimeter" type="xs:string" use="optional" />
+        <xs:sequence>
+          <xs:element name="column" minOccurs="0" maxOccurs="unbounded">
+            <xs:complexType>
+              <xs:attribute name="name" type="xs:string" use="required" />
+              <xs:attribute name="type" type="xs:string" use="required" />
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+        <xs:attribute name="delimeter" type="xs:string" use="optional" default="," />
+        <xs:attribute name="schemaType" type="CsvSchemaType" use="optional" default="None" />
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
