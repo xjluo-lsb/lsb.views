@@ -1,0 +1,6 @@
+@CsvJson_HostAddress = http://localhost:5124
+
+GET {{CsvJson_HostAddress}}/states/json
+Accept: application/json
+
+###
