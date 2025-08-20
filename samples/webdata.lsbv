@@ -11,8 +11,11 @@
 
   <description>
 <![CDATA[
-This sample view demostrates the JSON data source and CSV data source. It download the data from the specified
-URLs and then render the data in ListView and ChartView controls
+<p>This sample view demostrates the JSON data source and CSV data source. It download the data from the specified
+URLs and then render the data in ListView and ChartView controls.</p>
+<p>Please have .NET Core SDK 9.0+ installed and run the sample .NET core based web service under the service/CsvJson
+folder in the view enlistment with following command in console,</p>
+<p><b>dotnet run</b></p>
 </ul>
 ]]>
   </description>
@@ -68,6 +71,21 @@ URLs and then render the data in ListView and ChartView controls
               <color lineColor="#FF7F50" borderColor="#FFFFFF" fillColor="rgba(255,127,80,0.38)" />
               <color lineColor="#7FFFD4" borderColor="#FFFFFF" fillColor="rgba(127,255,212,0.45)" />
               <color lineColor="#A9A9A9" borderColor="#FFFFFF" fillColor="rgba(169,169,169,0.6)" />
+            </colors>
+          </chartView>
+        </page>
+        <page title="Area">
+          <chartView id="1e197616-8e07-40c0-93de-78fafb3f5a3d" chartType="BarChart" loadDataAt="Creating">
+            <data>
+              <json>
+                <url>http://localhost:5124/states/area</url>
+              </json>
+            </data>
+            <xAxis name="Name" isDateTime="false"/>
+            <colors>
+              <color lineColor="#A9A9A9" borderColor="#FFFFFF" fillColor="rgba(169,169,169,0.6)" />
+              <color lineColor="#7FFFD4" borderColor="#FFFFFF" fillColor="rgba(127,255,212,0.45)" />
+              <color lineColor="#FF7F50" borderColor="#FFFFFF" fillColor="rgba(255,127,80,0.38)" />
             </colors>
           </chartView>
         </page>
