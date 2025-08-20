@@ -56,14 +56,19 @@ URLs and then render the data in ListView and ChartView controls
             </columns>
           </listView>
         </page>
-        <page title="Population Distribution">
-          <chartView id="648a02c3-7c63-48ab-a138-5b959c801607" chartType="ColumnChart">
+        <page title="Population">
+          <chartView id="648a02c3-7c63-48ab-a138-5b959c801607" chartType="BarChart" loadDataAt="Creating">
             <data>
               <json>
-                <url>http://localhost:5124/states/json</url>
+                <url>http://localhost:5124/states/population</url>
               </json>
             </data>
             <xAxis name="Name" isDateTime="false"/>
+            <colors>
+              <color lineColor="#FF7F50" borderColor="#FFFFFF" fillColor="rgba(255,127,80,0.38)" />
+              <color lineColor="#7FFFD4" borderColor="#FFFFFF" fillColor="rgba(127,255,212,0.45)" />
+              <color lineColor="#A9A9A9" borderColor="#FFFFFF" fillColor="rgba(169,169,169,0.6)" />
+            </colors>
           </chartView>
         </page>
       </pages>
