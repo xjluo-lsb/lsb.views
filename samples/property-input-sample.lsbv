@@ -1,0 +1,350 @@
+<?xml version="1.0"?>
+
+<LsbView xmlns="https://github.com/xjluo-lsb/lsb.views"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="https://github.com/xjluo-lsb/lsb.views ..\LsbViewSchema.xsd"
+
+  name="PropertyInput view sample"
+  author="Kevin Luo"
+  createTime="2023-09-09T01:23:45z"
+  lastChangeTime="2025-12-26T21:11:00+0800">
+
+  <description>
+<![CDATA[
+<p>This sample view demonstrates how to use the PropertyInput control to implement combined inputs for multiple values in various
+data types. Besides, this view also uses the SplitLayout to manage the control layout in the view, both horizontal and vertical
+layouts are presented.</p>
+<p>For the values inputted in the PropertyInput control, they are passed to other controls to show how the values are propogated
+across controls. For example, the value typed in the field "Select a folder" will be sent to the FileList control to show all
+the files and sub-folders under the selected folder. All values inputted in the PropertyInput control are sent to a TextView to
+show how the value changes trigger the content update in the TextView.</p>
+]]>
+  </description>
+  <version major="0" minor="1" build="0" revision="0" />
+    
+  <view>
+    <!-- The main SplitLayout that hosts PropertyInput in the left and another SplitLayout in the right. -->
+    <splitLayout
+      id="f535783a-d8ae-47db-99d1-ca9669a297ec"
+      orientation="Horizontal"
+      fixedView="Left"
+      size="280">
+      <!-- No matter how the caption is set, it's not displayed for all layout controls, including Splitlayout. -->
+      <caption visible="false">View caption here</caption>
+      <!-- No input/output is needed for layout controls. -->
+      <input />
+      <output />
+      <!-- This Splitlayout has horizontal layout, thus it has left and right child nodes. -->
+      <left>
+        <propertyInput id="44412b0e-a9ef-47ff-a915-bb9f063912fb">
+          <caption visible="true">This is an example of PropertyInput</caption>
+          <input />
+          <output>
+            <param id="00fd2ade-289a-4ed8-a99f-3cd4209542bd" name="boolean" />
+            <param id="a3b62129-da16-451a-89c8-08d51b04ebb9" name="float" />
+            <param id="3a06bfd0-dac5-4bbd-8435-bb1b508dd978" name="integer" />
+            <param id="ea4fa0b2-6e1f-4d35-9f96-c47b63d912d6" name="unsignedInteger" />
+            <param id="87470081-1148-4d44-95a9-7fcb1962df03" name="simpleFile" />
+            <param id="6477b5ce-96af-4594-ac6b-c981864b2664" name="imageFile" />
+            <param id="7f8bbfc4-e0e2-4a95-8186-e28caac1526f" name="folder" />
+            <param id="63bcd735-0a08-4818-bba7-416cb7c4d3d9" name="flags" />
+            <param id="7a7270d8-85be-4147-af41-d3e87608f222" name="stringValue" />
+            <param id="ff93ffba-8c12-47f9-bb11-b5dfc6be6d3e" name="password" />
+            <param id="cc5f86aa-5975-490d-b60d-80a62180c7bf" name="arrayString" />
+            <param id="c29e4e23-d825-4cda-a72d-6b112562ba5b" name="longString" />
+            <param id="0d52da01-453a-492a-a4ea-86e4049ea716" name="enumeration" />
+            <param id="fed3d396-af6f-46de-b025-9e4433e30b53" name="multiChoice" />
+            <param id="8e8c45e7-f5e3-44ad-9694-922bae3cdc9a" name="date" />
+            <param id="1869409a-6656-473e-a5fe-79fb6ad3ca77" name="font" />
+            <param id="b4d8aea2-ba14-4234-ad75-93e91b10784a" name="cursor" />
+            <param id="a97f3b73-9967-4629-ad27-5f66ac059d52" name="color" />
+            <param id="84471a7a-cad3-4abc-9359-2be70a8aeaf5" name="systemColor" />
+          </output>
+          <properties>
+            <!--
+              All the data types supported by PropertyInput are,
+                Boolean for boolean flag,
+                Flags for bit flags,
+                Float for float value,
+                Integer for inteter value,
+                UnsignedInteger for unsigned integer value,
+                String for string value,
+                Password for password value,
+                ArrayString for array of strings,
+                LongString for long string that contains multiple lines or strings,
+                Enumeration for enumeration values, a list of possible values for the enumeration should be provided,
+                MultiChoice for one or more options can be selected at the same time,
+                Date for date time value,
+                Font for font setting value,
+                Cursor for cursor setting value,
+                Color for color setting value,
+                SystemColor for system color setting value,
+                File to select an existing file,
+                ImageFile to select an existing image file,
+                Folder to select a folder
+            -->
+            <property name="boolean" label="Example of boolean" category="Primitives" type="Boolean" description="This is the description for the boolean property" />
+            <property name="float" label="Example of float" category="Primitives" type="Float" description="This is the description for the float property" default="1.0" />
+            <property name="integer" label="Example of integer" category="Primitives" type="Integer" description="This is the description for the integer property" default="-150" />
+            <property name="unsignedInteger" label="Example of unsigned integer" category="Primitives" type="UnsignedInteger" description="This is the description for the unsigned integer property" default="100"/>
+
+            <property name="simpleFile" label="Example of file" category="Files" type="File" description="This is the description for the file property" />
+            <property name="imageFile" label="Example of image file" category="Files" type="ImageFile" description="This is the description for the image file property" />
+
+            <property name="folder" label="Example of folder" category="Folder" type="Folder" description="This is description for the folder property" />
+
+            <property name="flags" label="Example of flags" category="Property demo" type="Flags" description="This is description for the flags property">
+              <options>
+                <option>Default flag value (0x0000)</option>
+                <option>The first flag value (0x0001)</option>
+                <option>The seconds flag value (0x0002)</option>
+                <option>The third flag value (0x0004)</option>
+                <option>The forth flag value (0x0008)</option>
+                <option>The fifth flag value (0x0010)</option>
+              </options>
+            </property>
+            <property name="stringValue" label="Example of string" category="Property demo" type="String" description="This is description for string property" defaultValue="default value here" />
+            <property name="password" label="Example of password" category="Property demo" type="Password" description="This is description for password property" default="password"/>
+            <property name="arrayString" label="Example of array string" category="Property demo" type="ArrayString" description="This is description for ArrayString property" />
+            <property name="longString" label="Example of long string" category="Property demo" type="LongString" description="This is description for LongString property" />
+            <property name="enumeration" label="Example of enumeration" category="Property demo" type="Enumeration" description="This is description for Enumeration property">
+              <options>
+                <option>Enumeration value 1</option>
+                <option>Enumeration value 2</option>
+                <option>Enumeration value 3</option>
+              </options>
+            </property>
+            <property name="multiChoice" label="Example of multi-choice" category="Property demo" type="MultiChoice" description="This is description for MultiChoice property" default="Choice 2">
+              <options>
+                <option>Choice 1</option>
+                <option>Choice 2</option>
+                <option>Choice 3</option>
+              </options>
+            </property>
+            <property name="date" label="Example of date" category="Property demo" type="Date" description="This is description for date property" />
+            <property name="font" label="Example of font" category="Property demo" type="Font" description="This is description for font property" />
+            <property name="cursor" label="Example of cursor" category="Property demo" type="Cursor" description="This is description for cursor property" />
+            <property name="color" label="Example of color" category="Property demo" type="Color" description="This is description for color property" />
+            <property name="systemColor" label="Example of system color" category="Property demo" type="SystemColor" description="This is description for SystemColor property" />
+          </properties>
+        </propertyInput>
+      </left>
+      <right>
+        <!-- This is the SplitLayout control for the right panel inside the root Splitlayout, it splits the content in vertical layout -->
+        <splitLayout
+          id="e9a47037-a1d5-44a2-9a26-e68fda9abf3a"
+          orientation="Vertical"
+          fixedView="None"
+          ratio="0.4">
+          <!-- This Splitlayout has vertical layout, thus it has top and bottom child nodes. -->
+          <top>
+            <!--
+              This is a file list control to show the files and folders under the folder selected by user in the PropertyInput.
+              The FileListView has following columns defined,
+                * name - Name of the file or folder
+                * size - The file size
+                * permission - The permissions set on the file
+                * access - The last access time on the file
+                * modify - The last modified time on the file
+                * create - The file creation time
+            -->
+            <fileList id="a1f7ce3a-7c5e-4765-95e6-147049163135" loadDataAt="Default" multiSelect="true" filter="true" status="true" files="true" dirs="true">
+              <caption visible="true">This is a FileList to show files and folders under the selected folder: {path}</caption>
+              <input>
+                <param id="837825a3-9853-4318-8211-b0c4b50e5967" name="path" />
+              </input>
+              <output>
+                <param id="23e7cb0e-7411-45dd-9a78-dc510253b9a9" name="name" activation="Default" />
+                <param id="b00e4090-142e-4ff8-9b3c-39bbcb8ebbb4" name="size" />
+                <param id="2bfcf265-52cf-4356-a90a-244f727da546" name="create" />
+                <param id="1a8bde48-cda4-4b84-b716-88c1d4daca91" name="modify" />
+              </output>
+              <data showProgress="false">
+                <script type="lua">
+                  <![CDATA[return [[{path}]]]]>
+                </script>
+              </data>
+              <contextMenu copy="true" refresh="true">
+                <menuItem text="Hello world!">
+                  <data>
+                    <script type="lua">
+<![CDATA[
+lsb.showMessage("Hello world!")
+]]>                      
+                    </script>
+                  </data>
+                </menuItem>
+              </contextMenu>
+              <rowStyles />
+            </fileList>
+          </top>
+          <bottom>
+            <textView id="77962981-c306-460a-a878-dec857d11bf3" loadDataAt="Default" readOnly="false">
+              <caption visible="true">This is a TextView to show values from PropertyInput and FileList</caption>
+              <input>
+                <param id="338d370c-f931-45fe-9ada-149533926841" name="boolean" />
+                <param id="034aacce-ab2c-4152-b229-2c8a523e4f73" name="float" />
+                <param id="251531e3-915d-4947-bb75-5e125c9ca5f4" name="integer" />
+                <param id="df76fd6c-45ee-4aa2-a15f-e21c2004e314" name="unsignedInteger" />
+                <param id="b448e0c8-924e-4b15-b1ad-4efff6735357" name="simpleFile" />
+                <param id="7c30ad26-117e-4648-b607-be9c384b824d" name="imageFile" />
+                <param id="86a8f3ba-c536-49a1-8ef4-caeb8b6e8d4c" name="folder" />
+                <param id="423a2be3-515b-4756-8753-93073f0b255c" name="flags" />
+                <param id="a1cfcb16-b339-4408-9a9c-a51cfe80b394" name="stringValue" />
+                <param id="6426f34d-2f6f-4582-be38-11ee34a21d9c" name="password" />
+                <param id="43a66bfd-00a2-494c-9c73-159ad4e5fe8f" name="arrayString" />
+                <param id="8a2cb744-f5ad-4cbd-b098-c12f071d504c" name="longString" />
+                <param id="f543d7a7-427f-48ed-8c7f-ffe36fc75034" name="enumeration" />
+                <param id="18ac33da-1d3b-4854-a6b4-1db54435d81b" name="multiChoice" />
+                <param id="6aa763a7-4efb-434e-836f-9a300de859d0" name="date" />
+                <param id="5e796e5e-937a-46dd-b9b1-d2df69abe012" name="font" />
+                <param id="60ac3530-eb34-404e-9807-5b975aeb49b1" name="cursor" />
+                <param id="e919fb4b-d232-454d-ae9d-7fccd5764dbc" name="color" />
+                <param id="727d6e8d-5ec5-4296-8bc5-bbb091fef0f1" name="systemColor" />
+
+                <param id="c7e0ca0f-78e5-48ca-8be5-2c962bc97ef5" name="FileName" />
+                <param id="b22ce0cc-620e-49c9-b681-2ce1b893a411" name="FileLength" />
+                <param id="49e30475-b26d-47a8-a5bd-fcd4c96ece6f" name="CreationTime" />
+                <param id="de01c845-2f83-448b-955e-2d9bac26cbc3" name="LastWriteTime" />
+              </input>
+              <output />
+              <font faceName="Courier" pointSize="11" />
+              <content>
+                <![CDATA[Values from the PropertyInput
+=============================
+Boolean input value:          {boolean}
+Float input value:            {float}
+Integer input value:          {integer}
+Unsigned integer input value: {unsignedInteger}
+File input value:             {simpleFile}
+Image file input value:       {imageFile}
+Folder input value:           {folder}
+Flags input value:            {flags}
+String input value:           {stringValue}
+Password input value:         {password}
+ArrayString input value:      {arrayString}
+LongString input value:       {longString}
+Enumeration input value:      {enumeration}
+MultiChoice input value:      {multiChoice}
+Date input value:             {date}
+Font input value:             {font}
+Cursor input value:           {cursor}
+Color input value:            {color}
+SystemColor input value:      {systemColor}
+
+Values from the FileList
+========================
+The selected file is {FileName}, it has size {FileLength}.
+The file was created at {CreationTime} and was last modified at {LastWriteTime}.
+]]>
+              </content>
+            </textView>
+          </bottom>
+        </splitLayout>
+      </right>
+    </splitLayout>
+  </view>
+
+  <procedures />
+  <launchers />
+  
+  <dataFlow>
+    <!-- boolean -->
+    <mapping source="00fd2ade-289a-4ed8-a99f-3cd4209542bd">
+      <target>338d370c-f931-45fe-9ada-149533926841</target>
+    </mapping>
+    <!-- float -->
+    <mapping source="a3b62129-da16-451a-89c8-08d51b04ebb9">
+      <target>034aacce-ab2c-4152-b229-2c8a523e4f73</target>
+    </mapping>
+    <!-- integer -->
+    <mapping source="3a06bfd0-dac5-4bbd-8435-bb1b508dd978">
+      <target>251531e3-915d-4947-bb75-5e125c9ca5f4</target>
+    </mapping>
+    <!-- unsigned integer -->
+    <mapping source="ea4fa0b2-6e1f-4d35-9f96-c47b63d912d6">
+      <target>df76fd6c-45ee-4aa2-a15f-e21c2004e314</target>
+    </mapping>
+    <!-- file -->
+    <mapping source="87470081-1148-4d44-95a9-7fcb1962df03">
+      <target>b448e0c8-924e-4b15-b1ad-4efff6735357</target>
+    </mapping>
+    <!-- image file -->
+    <mapping source="6477b5ce-96af-4594-ac6b-c981864b2664">
+      <target>7c30ad26-117e-4648-b607-be9c384b824d</target>
+    </mapping>
+    <!-- folder -->
+    <mapping source="7f8bbfc4-e0e2-4a95-8186-e28caac1526f">
+      <!-- to TextView -->
+      <target>86a8f3ba-c536-49a1-8ef4-caeb8b6e8d4c</target>
+      <!-- to FileListView -->
+      <target>837825a3-9853-4318-8211-b0c4b50e5967</target>
+    </mapping>
+    <!-- flags -->
+    <mapping source="63bcd735-0a08-4818-bba7-416cb7c4d3d9">
+      <target>423a2be3-515b-4756-8753-93073f0b255c</target>
+    </mapping>
+    <!-- string -->
+    <mapping source="7a7270d8-85be-4147-af41-d3e87608f222">
+      <target>a1cfcb16-b339-4408-9a9c-a51cfe80b394</target>
+    </mapping>
+    <!-- password -->
+    <mapping source="ff93ffba-8c12-47f9-bb11-b5dfc6be6d3e">
+      <target>6426f34d-2f6f-4582-be38-11ee34a21d9c</target>
+    </mapping>
+    <!-- array string -->
+    <mapping source="cc5f86aa-5975-490d-b60d-80a62180c7bf">
+      <target>43a66bfd-00a2-494c-9c73-159ad4e5fe8f</target>
+    </mapping>
+    <!-- long string -->
+    <mapping source="c29e4e23-d825-4cda-a72d-6b112562ba5b">
+      <target>8a2cb744-f5ad-4cbd-b098-c12f071d504c</target>
+    </mapping>
+    <!-- enumeration -->
+    <mapping source="0d52da01-453a-492a-a4ea-86e4049ea716">
+      <target>f543d7a7-427f-48ed-8c7f-ffe36fc75034</target>
+    </mapping>
+    <!-- multi-choice -->
+    <mapping source="fed3d396-af6f-46de-b025-9e4433e30b53">
+      <target>18ac33da-1d3b-4854-a6b4-1db54435d81b</target>
+    </mapping>
+    <!-- date -->
+    <mapping source="8e8c45e7-f5e3-44ad-9694-922bae3cdc9a">
+      <target>6aa763a7-4efb-434e-836f-9a300de859d0</target>
+    </mapping>
+    <!-- font -->
+    <mapping source="1869409a-6656-473e-a5fe-79fb6ad3ca77">
+      <target>5e796e5e-937a-46dd-b9b1-d2df69abe012</target>
+    </mapping>
+    <!-- cursor -->
+    <mapping source="b4d8aea2-ba14-4234-ad75-93e91b10784a">
+      <target>60ac3530-eb34-404e-9807-5b975aeb49b1</target>
+    </mapping>
+    <!-- color -->
+    <mapping source="a97f3b73-9967-4629-ad27-5f66ac059d52">
+      <target>e919fb4b-d232-454d-ae9d-7fccd5764dbc</target>
+    </mapping>
+    <!-- system color -->
+    <mapping source="84471a7a-cad3-4abc-9359-2be70a8aeaf5">
+      <target>727d6e8d-5ec5-4296-8bc5-bbb091fef0f1</target>
+    </mapping>
+
+    <!-- File name -->
+    <mapping source="23e7cb0e-7411-45dd-9a78-dc510253b9a9">
+      <target>c7e0ca0f-78e5-48ca-8be5-2c962bc97ef5</target>
+    </mapping>
+    <!-- File length -->
+    <mapping source="b00e4090-142e-4ff8-9b3c-39bbcb8ebbb4">
+      <target>b22ce0cc-620e-49c9-b681-2ce1b893a411</target>
+    </mapping>
+    <!-- File create time -->
+    <mapping source="2bfcf265-52cf-4356-a90a-244f727da546">
+      <target>49e30475-b26d-47a8-a5bd-fcd4c96ece6f</target>
+    </mapping>
+    <!-- File last write time -->
+    <mapping source="1a8bde48-cda4-4b84-b716-88c1d4daca91">
+      <target>de01c845-2f83-448b-955e-2d9bac26cbc3</target>
+    </mapping>
+  </dataFlow>
+
+</LsbView>
