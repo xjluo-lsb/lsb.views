@@ -11,9 +11,9 @@
 
   <description>
 <![CDATA[
-This is a sample view that demonstrates how to use the Chart.js library to visualize data. Credit to the contributors of the
-Chart.js library. Please visit <a href="https://www.chartjs.org/">https://www.chartjs.org/</a> to find more details about the 
-library.
+<p>This is a sample view that demonstrates how to use the Chart.js library to visualize data. Credit to the contributors of
+the Chart.js library. Please visit <a href="https://www.chartjs.org/">https://www.chartjs.org/</a> to find more details about
+the library.</p>
 ]]>
   </description>
   <version major="0" minor="0" build="1" revision="0" />

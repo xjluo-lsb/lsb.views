@@ -1,3 +1,5 @@
+-- This is the Lua script file that contains the functions to be used by the chartview-sample view
+
 -- Function to generate datasets monthly
 function generateThreeDatasetsMonthly()
   return {

@@ -1,3 +1,7 @@
+// This is the file contains JavaScript functions for the chartjs-sample view
+
+//! \brief Creates the data and bar chart for the first graph in the view
+//! @param The counts for each year from 2010 to 2016, set in the PropertyInput control
 function createBarChart(d2010, d2011, d2012, d2013, d2014, d2015, d2016)
 {
   const ctx = document.getElementById('container');
@@ -27,6 +31,11 @@ function createBarChart(d2010, d2011, d2012, d2013, d2014, d2015, d2016)
   });
 }
 
+//! \brief Creates the data and bubble chart for the second graph in the view
+//! @param xrange The x value range
+//! @param yrange The y value range
+//! @param rrange The radius value range
+//! @param count  Count of the bubble data points
 function createBubbleChart(xrange, yrange, rrange, count)
 {
   const ctx = document.getElementById('container');

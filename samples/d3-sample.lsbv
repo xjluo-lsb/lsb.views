@@ -11,13 +11,13 @@
 
   <description>
 <![CDATA[
-This is a sample view that demonstrates how to use the <a href="https://d3js.org/">D3</a> library to visualize data. It contains
-three examples copied and modified from the <a href="https://d3js.org/">D3</a> samples. Please refer to the links below to find
-the original examples on <a href="https://d3js.org/">D3</a>.
+<p>This is a sample view that demonstrates how to use the <a href="https://d3js.org/">D3</a> library to visualize data. It
+contains three examples copied and modified from the <a href="https://d3js.org/">D3</a> samples. Please refer to the links
+below to find the original examples on <a href="https://d3js.org/">D3</a>.</p>
 <ul>
-<li>The Scatterplot is modified from D3 example at <a href="https://observablehq.com/@d3/scatterplot-tour">Scatterplot tour</a>
-<li>The Disjoint force-directed graph is modified from D3 example at <a href="https://observablehq.com/@d3/disjoint-force-directed-graph/2">Disjoint force-directed graph</a>
-<li>The Zoomable circle packing is modified from D3 example at <a href="https://observablehq.com/@d3/zoomable-circle-packing">Zoomable circle packing</a>
+  <li>The Scatterplot is modified from D3 example at <a href="https://observablehq.com/@d3/scatterplot-tour">Scatterplot tour</a>
+  <li>The Disjoint force-directed graph is modified from D3 example at <a href="https://observablehq.com/@d3/disjoint-force-directed-graph/2">Disjoint force-directed graph</a>
+  <li>The Zoomable circle packing is modified from D3 example at <a href="https://observablehq.com/@d3/zoomable-circle-packing">Zoomable circle packing</a>
 </ul>
 ]]>
   </description>

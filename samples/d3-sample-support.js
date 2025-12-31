@@ -1,5 +1,8 @@
+// This is the JavaScript file that contains the functions to be used by the d3-sample view.
+
 var simulation = null;
 
+// Function to generate data for the force simulation graph
 function GenerateDataForForceSimularion(parentBase, parentCount, childBase, childCount, extraCount)
 {
     function getSourceIndex()
