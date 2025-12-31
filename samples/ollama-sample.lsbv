@@ -11,11 +11,12 @@
 
   <description>
 <![CDATA[
-This sample view demonstrates how to use the <a href="https://ollama.com/">Ollama</a> running on local machine to implement a simple query UI for the mostly
-used Large Language Models supported on Ollama.<br/>
-You must have the Ollama installed and running on your machine. The ollama path must have been added into the system path variable so the ollama command is
-accessible from any location. Besides, please follow instructions at the <a href="https://objectgraph.com/blog/ollama-cors/">page</a> to set the environment
-variable <b>OLLAMA_ORIGINS</b> to <b>*</b> to allow Ollama accepting requests coming from LSB views.
+<p>This sample view demonstrates how to use the <a href="https://ollama.com/">Ollama</a> running on local machine to implement
+a simple query UI for the mostly used Large Language Models supported on Ollama.</p>
+<p>You must have the Ollama installed and running on your machine. The ollama path must have been added into the system path
+variable so the ollama command is accessible from any location. Besides, please follow instructions at the
+<a href="https://objectgraph.com/blog/ollama-cors/">page</a> to set the environment variable <b>OLLAMA_ORIGINS</b> to <b>*</b>
+to allow Ollama accepting requests coming from LSB views.</p>
 ]]>
   </description>
   <version major="0" minor="0" build="1" revision="0" />
@@ -86,7 +87,7 @@ variable <b>OLLAMA_ORIGINS</b> to <b>*</b> to allow Ollama accepting requests co
                 <data showProgress="true">
                   <json method="Post" path="" contentType="text/json">
                     <url>http://{server}:{port}/api/show</url>
-                    <payload><![CDATA[{ "model": "{model}" }']]></payload>
+                    <payload><![CDATA[{ "model": "{model}" }]]></payload>
                   </json>
                 </data>
               </textView>

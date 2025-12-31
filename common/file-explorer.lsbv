@@ -7,31 +7,35 @@
   name="File Explorer View"
   author="Kevin Luo"
   createTime="2021-10-17T10:36:00z"
-  lastChangeTime="2024-12-31T21:26:45z">
+  lastChangeTime="2025-12-30T22:00:00+0800">
 
   <description>
 <![CDATA[
-This sample view demonstrates the FileTree and FileList controls provided in LSB to compose a view with functionality
-similar to the file managers (such as File Explorer on Windows, Finder on Mac OS X, GNOME Files on Fedora, etc).</br>
-Besides, this view also demonstrates the context menu configuration on the FileList and how to call into function
-lsb.showMessage in the Lua script to show message from the context menu. Double click on a plain text files listed in the
-FileList will show the content in the TextView.<br/>
-This view uses Lua scripts only for the functionality implementation, thus it supports all operating systems.
+<p>This sample view demonstrates how to use the FileTree and FileList controls provided in LSB to compose a view with
+functionality similar to the file manager apps (such as File Explorer on Windows, Finder on Mac OS X, GNOME Files on
+Fedora, etc).</p>
+<p>Besides, this view also demonstrates the context menu configuration on the FileList and how to call into function
+lsb.showMessage in the Lua script to show message from the context menu. Double click on a plain text files listed in
+the FileList will show the content in the TextView.</p>
+<p>This view uses Lua scripts only for the functionality implementation, thus it supports all operating systems.</p>
 ]]>
   </description>
-  <version major="0" minor="0" build="1" revision="0" />
+  <version major="0" minor="0" build="9" revision="0" />
   <os>Any</os>
 
   <view>
     <splitLayout id="f535783a-d8ae-47db-99d1-ca9669a297ec" orientation="Horizontal" fixedView="Left" size="240">
       <left>
+        <!-- Left side of the view is a FileTreeView that shows the folder tree -->
         <fileTree id="00aa9ad2-15d4-4368-b2cd-12afb389ee55" loadDataAt="Creating">
           <caption visible="true">Folders</caption>
           <input />
           <output>
+            <!-- The only parameter that sends out value is the currently selected folder's path -->
             <param id="a02b668e-3550-4421-8e1d-9a4cdd740ac5" name="__path__" activation="Default"/>
           </output>
           <data showProgress="false">
+            <!-- Nothing to be done in the Lua script -->
             <script type="lua">
 <![CDATA[]]>
             </script>
@@ -42,24 +46,26 @@ This view uses Lua scripts only for the functionality implementation, thus it su
       <right>
         <splitLayout id="e9a47037-a1d5-44a2-9a26-e68fda9abf3a" orientation="Vertical" fixedView="None" ratio="0.42">
           <top>
+            <!-- Top of right side is a list view shows all child folders and files under the selected folder -->
             <fileList id="a1f7ce3a-7c5e-4765-95e6-147049163135" multiSelect="true" filter="true" status="true">
               <caption visible="true">Files under {path}</caption>
               <input>
                 <param id="837825a3-9853-4318-8211-b0c4b50e5967" name="path"/>
               </input>
               <output>
+                <!-- When user double clicks an item in the file list, the file will be sent to TextView to show content -->
                 <param id="ba4d8c36-fae9-469b-a24c-45c9c1e402ed" name="name" activation="DoubleClick"/>
               </output>
               <data showProgress="false">
                 <script type="lua">
-<![CDATA[return [[{path}]]]]>
+<![CDATA[ return [[{path}]] ]]>
                 </script>
               </data>
               <contextMenu copy="true" refresh="true">
                 <menuItem text="Hello world!">
                   <data showProgress="false">
                     <script type="lua">
-<![CDATA[lsb.showMessage("Hello world!")]]>
+<![CDATA[ lsb.showMessage("Hello world!") ]]>
                     </script>
                   </data>
                 </menuItem>
@@ -68,6 +74,7 @@ This view uses Lua scripts only for the functionality implementation, thus it su
             </fileList>
           </top>
           <bottom>
+            <!-- This TextView is used to show the content of the selected file -->
             <textView id="77962981-c306-460a-a878-dec857d11bf3" readOnly="false">
               <caption visible="true">Content of {path}/{name}</caption>
               <input>
@@ -76,9 +83,7 @@ This view uses Lua scripts only for the functionality implementation, thus it su
               </input>
               <output />
               <condition>
-<![CDATA[
-return (not name.IsEmpty) and (not path.IsEmpty) and name.IsTrigger
-]]>
+<![CDATA[ return (not name.IsEmpty) and (not path.IsEmpty) and name.IsTrigger ]]>
               </condition>
               <data showProgress="false">
                 <script type="lua">
@@ -95,7 +100,7 @@ return content
 ]]>
                 </script>
               </data>
-              <font faceName="Courier New" pointSize="11"/>
+              <font faceName="Courier New" pointSize="12"/>
             </textView>
           </bottom>
         </splitLayout>
@@ -104,10 +109,12 @@ return content
   </view>
 
   <dataFlow>
+    <!-- The folder selected in the FileTree is sent to both FileList view and TextView -->
     <mapping source="a02b668e-3550-4421-8e1d-9a4cdd740ac5">
       <target>837825a3-9853-4318-8211-b0c4b50e5967</target>
       <target>a1cfcb16-b339-4408-9a9c-a51cfe80b394</target>
     </mapping>
+    <!-- The file selected in the FileList is also sent to the TextView -->
     <mapping source="ba4d8c36-fae9-469b-a24c-45c9c1e402ed">
       <target>cdf69587-9c8e-4b55-ba0d-df65b19f4330</target>
     </mapping>

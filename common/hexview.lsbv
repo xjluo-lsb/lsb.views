@@ -11,16 +11,16 @@
 
   <description>
 <![CDATA[
-This sample view demostrates the HexView control - it is a control provided by the LSB to display any content in the hexadecimal
-format. This view supports,
+<p>This sample view demonstrates the HexView control - it is a control provided by the LSB to display content in the
+hexadecimal format. This view supports,</p>
 <ul>
-<li>Open any file to be displayed in hexadecimal.
-<li>Demonstrates two different ways to load the content into HexView,
-  <ol>
-    <li>Load file in Lua code, convert the content into hexadecimal string and send to the HexView control.
-    <li>Send the file path to the HexView control and load the content directly in HexView.
-  </ol>
-</li>
+  <li>Open any file to be displayed in hexadecimal format.
+  <li>Demonstrates two different ways to load the content into HexView,
+    <ol>
+      <li>Load file in Lua code, convert the content into hexadecimal string and send to the HexView control.
+      <li>Send the file path to the HexView control and load the content directly inside HexView.
+    </ol>
+  </li>
 </ul>
 ]]>
   </description>
@@ -41,8 +41,8 @@ format. This view supports,
       </rows>
       <!-- The view has two columns -->
       <columns>
-        <!-- In the first row, the two columns are used by the open button and text view for file name respectively. In the second
-        row, both columns will be taken by the HexView control. -->
+        <!-- In the first row, the two columns are used by the open button and text view for file name respectively.
+             In the second row, both columns will be taken by the HexView control. -->
         <column width="80" sizeType="absolute"/>
         <column width="100" sizeType="percentage"/>
       </columns>
@@ -63,7 +63,7 @@ format. This view supports,
             </data>
           </button>
         </cell>
-        <!-- The second cell in the first row is a text view control to display the open file path, value sent from the button. -->
+        <!-- The second cell in the first row is a text view control to display the open file path, value sent in from the button. -->
         <cell row="0" col="1">
           <textView id="6d627fac-651b-4815-b0fa-4d584f0bc45e" multiline="false" readOnly="true">
             <!-- There is only one input parameter for accepting the currently open file path. -->
@@ -88,14 +88,14 @@ format. This view supports,
                   <input>
                     <param id="d46fd80d-807a-4b95-9611-459f47c3949b" name="filePath"/>
                   </input>
-                  <!-- Continue to use lua script to load the file content. The HexView control accepts input as hexadecimal string. Thus
-            the code loads the file content and converts it into a hexadecimal string. -->
+                  <!-- Continue to use lua script to load the file content. The HexView control accepts input as hexadecimal
+                       string. Thus the code loads the file content and converts it into a hexadecimal string. -->
                   <data showProgress="false">
                     <script type="lua">
 <![CDATA[ return loadFileContentAsHexString([[{filePath}]]) ]]>
                     </script>
                   </data>
-                  <!-- Here are the highlight settings. Functionality is patially implemented now. -->
+                  <!-- Here are the highlight settings. -->
                   <highlights>
                     <highlight name="test1" foreground="#FFFFFF" background="#2222CC" border="#00FFFF" />
                     <highlight name="test2" foreground="#FFFF00" background="#CC2222" border="#CCCC22" />
@@ -109,8 +109,9 @@ format. This view supports,
                   <input>
                     <param id="aa74b5dd-13d6-4a20-9175-293107da94a0" name="filePath"/>
                   </input>
-                  <!-- Continue to use lua script to load the file content. The HexView control accepts input as hexadecimal string. Thus
-            the code loads the file content and converts it into a hexadecimal string. -->
+                  <!-- As the data type is set to File, HexView knows the data returned from the script is file path. It will
+                       automatically load the file content into the control. There is nothing need to be done in the script,
+                       simply return whatever file path was passed in. -->
                   <data showProgress="false">
                     <script type="lua">
 <![CDATA[ return [[{filePath}]] ]]>
@@ -126,10 +127,10 @@ format. This view supports,
   </view>
 
   <dataFlow>
-    <!-- The open button sends out the opened file path to both the text view control and hex view control. -->
+    <!-- The open button sends out the opened file path to both the text view control and the two hex view controls. -->
     <mapping source="5937c1f6-1e33-4fed-8375-673b5566737b">
       <target>e7322b5f-87ea-4ec6-9ff0-a90959dcb2cd</target>
-	    <target>d46fd80d-807a-4b95-9611-459f47c3949b</target>
+	  <target>d46fd80d-807a-4b95-9611-459f47c3949b</target>
       <target>aa74b5dd-13d6-4a20-9175-293107da94a0</target>
     </mapping>
   </dataFlow>

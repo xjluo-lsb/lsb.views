@@ -1,3 +1,6 @@
+//! \brief This function can be recognized as constructor of the Node class
+//! @param name Name of the node
+//! @param path Path to the folder for the node
 function Node(name, path)
 {
     this.name = name;
@@ -8,6 +11,9 @@ function Node(name, path)
     this.hidden = undefined;        // This is for hidden children (that does not meet size filter)
 }
 
+//! \brief This method tries to find or creates the node specified by paths
+//! @param paths Name of each folder in the path, from top to leaf
+//! @return The found or the created node
 Node.prototype.getOrCreateChild = function(paths)
 {
     if (paths == null || paths.length == 0)
@@ -38,11 +44,15 @@ Node.prototype.getOrCreateChild = function(paths)
     return activeNode.getOrCreateChild(paths.slice(1));
 };
 
+//! \brief Set the size for the node
+//! @param size The size of the node. It could be either integer or string, which will be always stored as integer.
 Node.prototype.setSize = function(size)
 {
     this.size = (typeof size == 'number') ? size : parseInt(size);
 };
 
+//! \brief Filter the tree from current node based on the threshold to see if it should be visible or not in the treemap
+//! @param threshold This is the threshold on size to determine if current node and it's child nodes shoule be visible
 Node.prototype.filter = function(threshold)
 {
     var childrenVisible = false;
@@ -95,6 +105,9 @@ Node.prototype.filter = function(threshold)
     }
 };
 
+//! \brief Function to build a tree presentation from the input data in form of array
+//! @param arrayData Data for all nodes in the form of array
+//! @param rootIndex The index of the root node in the array data
 Node.buildTree = function(arrayData, rootIndex)
 {
     var treeRoot = null;
@@ -140,8 +153,12 @@ Node.buildTree = function(arrayData, rootIndex)
     return treeRoot;
 };
 
+//! Default count to 1, this is used to generated ID
 Node._count = 1;
 
+//! \brief Static function to generate ID for node with specified name
+//! @param name Unique name part to be included in the ID
+//! @return The generated ID
 Node.getId = function(name)
 {
     var id = "O-" + (name == null ? "" : name + "-") + Node._count;
@@ -156,6 +173,10 @@ Node.getId = function(name)
     return result;
 };
 
+//! \brief Function to get colour for node with specified index. When the index is greater than available colour count, then
+//! duplicated colour could be used and returned.
+//! @param index Index of colour to be retrieved
+//! @return The found colour value
 function getColor(index)
 {
     var schemes = [
@@ -165,6 +186,9 @@ function getColor(index)
     return (index >= 0 && index < schemes.length) ? schemes[index] : schemes[0];
 }
 
+//! \brief Function to render the treemap with specified scheme
+//! @param tree        The tree data
+//! @param schemeIndex Index of the scheme to be used
 function renderTreemap(tree, schemeIndex)
 {
     const container = d3.select('#container');
@@ -226,6 +250,9 @@ function renderTreemap(tree, schemeIndex)
 
 var tree = null;
 
+//! \brief Render the treemap safely. Error cases are handled automatically.
+//! @param threshold   Threshold on size to select noded in the treemap
+//! @param schemeIndex Index of the color scheme to be used
 function safeRender(threshold, schemeIndex)
 {
     var messageText = document.getElementById("message");

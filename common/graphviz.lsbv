@@ -11,15 +11,15 @@
 
   <description>
 <![CDATA[
-This sample view demostrates how to use LSB to create a <a href="https://graphviz.org/">Graphviz</a> file editor. It provides
-following functionalities,
+<p>This sample view demonstrates how to use LSB to create a <a href="https://graphviz.org/">Graphviz</a> file editor. It provides
+following functionalities,</p>
 <ul>
-<li>Clicking on the New button to create a default Graphviz file with two nodes.
-<li>Clicking on the Open button to open an existing Graphviz and load the content for modification.
-<li>Clicking on the Save button to save the current content into user selected file.
-<li>The view automatically converts the Graphviz content into SVG for preview.
+  <li>Click on the "New" button to create a default Graphviz file with two nodes.
+  <li>Click on the "Open" button to open an existing Graphviz file and load the content for modification.
+  <li>Click on the "Save" button to save the current content into user selected file.
+  <li>The view automatically converts the Graphviz content into SVG and show the preview.
 </ul>
-Please be reminded to configure the path properly in the system pointing to the folder contains the Graphviz dot tool.
+<p>Please be reminded to configure the system's PATH environment variable properly to have the folder contains the Graphviz dot tool included.</p>
 ]]>
   </description>
   <version major="0" minor="9" build="0" revision="0" />
@@ -44,25 +44,25 @@ Please be reminded to configure the path properly in the system pointing to the 
         <cell row="0" col="0">
           <button id="0b644835-43af-46fd-9025-963991fcde31" label="New">
             <output>
-              <param id="23907bcf-3a6b-4aca-b772-a4d666b9611e" name="fileName"/>
-              <param id="d9fc6386-804f-44ed-a646-87abb3f790b7" name="content"/>
+              <param id="23907bcf-3a6b-4aca-b772-a4d666b9611e" name="filePath"/>
+              <param id="d9fc6386-804f-44ed-a646-87abb3f790b7" name="fileContent"/>
             </output>
             <data showProgress="false">
               <script type="lua">
-<![CDATA[return createDefaultContent()]]>
+<![CDATA[ return createDefaultContent() ]]>
               </script>
             </data>
           </button>
         </cell>
         <cell row="0" col="1">
-            <button id="a1755647-74ab-4007-b82c-c675ab4b2782" label="Open">
+          <button id="a1755647-74ab-4007-b82c-c675ab4b2782" label="Open">
             <output>
               <param id="e9f78f4d-d27e-4e31-9424-4d9d867edd24" name="filePath"/>
               <param id="d6be94e1-b541-4579-b625-ee93101ab233" name="fileContent"/>
             </output>
             <data showProgress="false">
               <script type="lua">
-<![CDATA[return openGraphvizFile()]]>
+<![CDATA[ return openGraphvizFile() ]]>
               </script>
             </data>
           </button>
@@ -70,11 +70,11 @@ Please be reminded to configure the path properly in the system pointing to the 
         <cell row="0" col="2">
           <textView id="8c48b147-066f-42a4-a056-2ca9c1822780" multiline="false" readOnly="true">
             <input>
-              <param id="2bc53506-b2f7-48f8-a034-ba24292799b5" name="fileName"/>
+              <param id="2bc53506-b2f7-48f8-a034-ba24292799b5" name="filePath"/>
             </input>
             <data showProgress="false">
               <script type="lua">
-<![CDATA[return [[{fileName}]]]]>
+<![CDATA[ return [[{filePath}]] ]]>
               </script>
             </data>
           </textView>
@@ -85,12 +85,13 @@ Please be reminded to configure the path properly in the system pointing to the 
               <param id="c5fe276a-6124-4e0a-b79d-719e89720e5d" name="content"/>
             </input>
             <output />
+            <!-- The button is only enabled when the content parameter is not empty -->
             <condition>
-<![CDATA[return not content.IsEmpty]]>
+<![CDATA[ return not content.IsEmpty ]]>
               </condition>
             <data showProgress="false">
               <script type="lua">
-<![CDATA[saveGraphvizFile([[{content}]])]]>
+<![CDATA[ saveGraphvizFile([[{content}]]) ]]>
               </script>
             </data>
           </button>
@@ -108,9 +109,7 @@ Please be reminded to configure the path properly in the system pointing to the 
                 </output>
                 <data showProgress="false">
                   <script type="lua">
-<![CDATA[
-return [[{content}]]
-]]>
+<![CDATA[ return [[{content}]] ]]>
                   </script>
                 </data>
               </textInput>
@@ -123,9 +122,7 @@ return [[{content}]]
                 </input>
                 <data showProgress="false">
                   <script type="lua">
-<![CDATA[
-return "file://{fileName}"
-]]>
+<![CDATA[ return [[file://{fileName}]] ]]>
                   </script>
                 </data>
               </webView>
@@ -146,7 +143,7 @@ return "file://{fileName}"
       </output>
       <data showProgress="false">
         <script type="lua">
-<![CDATA[return graphvizToSvg([[{source}]])]]>
+<![CDATA[ return graphvizToSvg([[{source}]]) ]]>
         </script>
       </data>
     </procedure>
@@ -182,4 +179,3 @@ return "file://{fileName}"
   </dataFlow>
   
 </LsbView>
- 
