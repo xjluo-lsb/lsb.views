@@ -20,9 +20,9 @@
   <li>String input in the PropertyInput is sent to the ListView as the content for the caption.
   <li>Demonstrates the context menu definition in the ListView.
 <li>Uses external Web site page as the help page.
-<li>Data controls used in the view: ListView / TextView / TreeView / ChartView / TreeListView / WebView
-<li>Input controls used in the view: TextInput / ComboBox / PropertyInput / ButtonGroup
-<li>Layout controls used in the view: SplitLayout / TableLayout / TabLayout
+<li>Data view controls used in the view: ChartView / ListView / TextView / TreeView / TreeListView / WebView
+<li>Input controls used in the view: TextInput / ComboBox / PropertyInput / Button
+<li>Layout controls used in the view: SplitLayout / TableLayout / TabLayout / ButtonGroup
 </ul>
 ]]>
   </description>
@@ -55,21 +55,21 @@
             <propertyInput id="3ebd2027-cae2-4845-b131-653103399c70" trimSpace="Both" loadDataAt="Creating">
               <caption visible="true">Sample of PropertyInput</caption>
               <output>
-                <param name="Caption string for listview" id="ce4a990f-497c-4af6-9912-9f5c2dcc91e1" activation="Default"/>
-                <param name="Boolean" id="d69190c7-33dd-4143-8282-94a231280421" activation="Default"/>
-                <param name="LongString" id="342a71fc-a372-43ea-a66f-d2c89d7b827d" activation="Default"/>
+                <param name="StringValue" id="ce4a990f-497c-4af6-9912-9f5c2dcc91e1" activation="Default"/>
+                <param name="BooleanValue" id="d69190c7-33dd-4143-8282-94a231280421" activation="Default"/>
+                <param name="LongStringValue" id="342a71fc-a372-43ea-a66f-d2c89d7b827d" activation="Default"/>
               </output>
               <!-- Call the PowerShell method defined in the script reference to create the property definitions -->
               <data showProgress="false">
                 <script type="pwsh">
-<![CDATA[return CreateSamplePropertySettings]]>
+<![CDATA[ return CreateSamplePropertySettings ]]>
                 </script>
               </data>
               <properties>
-                <!-- Following property definitions would be overridden by the property definition returned from data source -->
-                <property name="string" type="String" category="Test" description="This is sample input for string value" />
-                <property name="boolean" type="Boolean" category="Test" description="This is sample input for boolean value" />
-                <property name="longString" type="LongString" category="Test" default="This is sample input for long string value" />
+                <!-- Following property definitions would be overridden by the property definitions returned from data source -->
+                <property name="string" type="String" category="Test" description="This is sample definition for string property" />
+                <property name="boolean" type="Boolean" category="Test" description="This is sample definition for boolean property" />
+                <property name="longString" type="LongString" category="Test" default="This is sample definition for long string property" />
               </properties>
             </propertyInput>
           </top>
@@ -81,11 +81,13 @@
               <input>
                 <param name="StringValue" id="1e5af902-c3b1-4514-9ede-d52f6562262f" />
               </input>
-              <output />
+              <output>
+                <param name="value" id="595fb0b4-92d8-4c35-8eaa-d3aeac55a92b" />
+              </output>
               <!-- Call the Lua method defined in the script reference to create the data for the ListView -->
               <data showProgress="false">
                 <script type="lua">
-<![CDATA[return createSampleDataForListView()]]>
+<![CDATA[ return createSampleDataForListView() ]]>
                 </script>
               </data>
               <!-- Define the context menu for the ListView, copy menu items and refresh menu item can be enabled with attributes,
@@ -94,14 +96,14 @@
                 <menuItem text="Menu item 1">
                   <data>
                     <script type="lua">
-<![CDATA[return "Text from menu item 1"]]>
+<![CDATA[ lsb.showMessage("Message from menu item 1") ]]>
                     </script>
                   </data>
                 </menuItem>
                 <menuItem text="Menu item 2">
                   <data>
                     <script type="lua">
-<![CDATA[return "Text from menu item 2"]]>
+<![CDATA[ lsb.showMessage("Text from menu item 2") ]]>
                     </script>
                   </data>
                 </menuItem>
@@ -110,7 +112,7 @@
                   <menuItem text="Menu item 1-1">
                     <data>
                       <script type="lua">
-<![CDATA[return "Text from menu item 1-1"]]>
+<![CDATA[ lsb.showMessage("Text from menu item 1-1") ]]>
                       </script>
                     </data>
                   </menuItem>
@@ -118,7 +120,7 @@
                   <menuItem text="Menu item 1-2">
                     <data>
                       <script type="lua">
-<![CDATA[return "Text from menu item 1-2"]]>
+<![CDATA[ lsb.showMessage("Text from menu item 1-2") ]]>
                       </script>
                     </data>
                   </menuItem>
@@ -134,7 +136,7 @@
                 multipleSelectionPrompt="there are %%ITEM_COUNT%% items selected in the list" />
               <columns>
                 <column name="Name" width="120" visible="true" />
-                <column name="value" width="260" visible="true" />
+                <column name="Value" width="260" visible="true" />
               </columns>
               <rowStyles>
               </rowStyles>
@@ -160,6 +162,10 @@
                   <textInput id="865b1288-2f04-4d81-bbfa-67a362cbbb8b" multiline="false">
                     <caption visible="true">Caption for TextInput</caption>
                     <prompt visible="true">Prompt for TextInput:</prompt>
+                    <output>
+                      <param id="532a5ea7-64e5-4f7d-82cd-593d4dac6611" name="?" />
+                      <param id="d3d16004-4331-49c8-8054-ca2f7ddf8856" name="$" />
+                    </output>
                   </textInput>
                 </cell>
                 <cell row="0" col="1">
@@ -196,6 +202,10 @@ And another loooooooooooooooong line with more words in one single line.
                 <cell row="1" col="1">
                   <treeView id="0bdf3139-12fe-4a54-b5e2-6a780a75befa" childProperty="child" labelProperty="name" loadDataAt="Creating">
                     <caption visible="true">Caption for TreeView</caption>
+                    <output>
+                      <param id="f137c09e-546d-4ee8-86e3-e1acaf745852" name="name" />
+                      <param id="24fc8035-b223-4511-a5a8-f8870173f19d" name="__path__" />
+                    </output>
                     <data showProgress="false">
                       <script type="lua">
 <![CDATA[return createSampleDataForTreeView()]]>

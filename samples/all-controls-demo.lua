@@ -1,4 +1,4 @@
--- Function to create sample data for list view
+-- \brief Function to create sample data for list view
 function createSampleDataForListView()
     return {
         { Name = "String value", Value = "This is a single line string value" },
@@ -10,7 +10,7 @@ A second line here.]] }
     }
 end
 
--- Function to create sample data for tree view
+-- \brief Function to create sample data for tree view
 function createSampleDataForTreeView()
     return {
         name = "Parent item",
@@ -29,7 +29,7 @@ function createSampleDataForTreeView()
     }
 end
 
--- Function to create sample data for tree list view
+-- \brief Function to create sample data for tree list view
 function createSampleDataForTreeListView()
     return
     {
@@ -54,7 +54,7 @@ function createSampleDataForTreeListView()
     }
 end
 
--- Function to create sample data for chart view
+-- \brief Function to create sample data for chart view
 function createSamepleDataForColumnChart()
     return {
         labels = { "January", "February", "March", "April", "May", "June", "July" },

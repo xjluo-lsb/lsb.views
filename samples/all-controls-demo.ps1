@@ -13,9 +13,9 @@ function CreateSamplePropertySettings()
         (New-Object PSObject -Property @{ Name = "RemotingProtocolVersion"; Type = "String"; Category = "Versions"; Description = "PS remoting protocol version of the PowerShell"; Default = $version.PSRemotingProtocolVersion.ToString(); }),
         (New-Object PSObject -Property @{ Name = "SerializationVersion"; Type = "String"; Category = "Versions"; Description = "Serialization version of the PowerShell"; Default = $version.SerializationVersion.ToString(); }),
         (New-Object PSObject -Property @{ Name = "Edition"; Type = "String"; Category = "Versions"; Description = "Edition of the PowerShell"; Default = $version.PSEdition }),
-        (New-Object PSObject -Property @{ Name = "Caption string for listview"; Type = "String"; Category = "Others"; Description = "String input" }),
-        (New-Object PSObject -Property @{ Name = "Boolean"; Type = "Boolean"; Category = "Others"; Description = "Boolean input" }),
-        (New-Object PSObject -Property @{ Name = "LongString"; Type = "LongString"; Category = "Others"; Description = "Long string input" })
+        (New-Object PSObject -Property @{ Label = "Caption for listview"; Name = "StringValue"; Type = "String"; Category = "Others"; Description = "A string property created from PowerShell script" }),
+        (New-Object PSObject -Property @{ Label = "Boolean from code"; Name = "BooleanValue"; Type = "Boolean"; Category = "Others"; Description = "A booleab property created from PowerShell script" }),
+        (New-Object PSObject -Property @{ Label = "LongString from code"; Name = "LongStringValue"; Type = "LongString"; Category = "Others"; Description = "A long string property created from PowerShell script" })
     )
 }
 
