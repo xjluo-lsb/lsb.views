@@ -4,16 +4,17 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="https://github.com/xjluo-lsb/lsb.views ..\LsbViewSchema.xsd"
 
-  name="A sample view using TableLayout"
+  name="TableLayout sample"
   author="Kevin Luo"
   createTime="2021-09-09T01:23:45z"
   lastChangeTime="2023-09-10T10:14:45z">
 
   <description>
 <![CDATA[
-This sample view demonstrates how to use the TableLayout to manage the control layout in a view, and it also shows how to use
-the ButtonGroup to simplify the definition of multiple buttons and manage the layout of a set of buttons. Besides, the "Button
-to launch view" button provides an example on how to use the Launcher component to launch another LSB view from a LSB view.
+<p>This sample view demonstrates how to use the TableLayout to manage the control layout in a view, and it also shows how to
+use the ButtonGroup to simplify the definition of multiple buttons and manage the layout for multiple buttons. Besides, the
+"Button to launch view" button provides an example on how to use the Launcher component in one LSB view to launch another LSB
+view instance (which could be either the same LSB view or a different LSB view, no limit at all).
 ]]>
   </description>
   <version major="0" minor="0" build="1" revision="0" />
@@ -23,7 +24,7 @@ to launch view" button provides an example on how to use the Launcher component 
       <rows>
         <row sizeType="absolute" height="300"/>
         <row sizeType="percentage" height="100"/>
-        <row sizeType="absolute" height="80"/>
+        <row sizeType="absolute" height="100"/>
       </rows>
       <columns>
         <column sizeType="absolute" width="400"/>
@@ -32,7 +33,7 @@ to launch view" button provides an example on how to use the Launcher component 
       <cells>
         <cell row="0" col="0" rowSpan="2" colSpan="1">
           <propertyInput id="44412b0e-a9ef-47ff-a915-bb9f063912fb">
-            <caption visible="true">Sample property grid</caption>
+            <caption visible="true">PropertyInput sample</caption>
             <properties>
               <property name="String" label="String value" type="String" category="Primitives" description="This is a sample description for help information" default="something here" />
               <property name="Integer" label="Integer value" type="Integer" category="Primitives" description="This is help information for sample integer input" default="150" />
@@ -57,10 +58,7 @@ to launch view" button provides an example on how to use the Launcher component 
               <button id="5f99e1d2-7567-4165-a025-7051bad3dafd" label="Second button" description="This is the second button in the button group, and it executes some lua script on click">
                 <data showProgress="false">
                   <script type="lua">
-<![CDATA[
-print "Output from second button"
-return 0
-]]>
+<![CDATA[ lsb.showMessage("Output from second button") ]]>
                   </script>
                 </data>
               </button>
@@ -73,7 +71,7 @@ return 0
         </cell>
         <cell row="0" col="1">
           <listView id="a1f7ce3a-7c5e-4765-95e6-147049163135" sortable="true" multiSelect="false" loadDataAt="Creating">
-            <caption visible="true">ListView</caption>
+            <caption visible="true">ListView sample</caption>
             <data showProgress="false">
               <script type="lua">
 <![CDATA[
@@ -119,7 +117,7 @@ return 2
         </cell>
         <cell row="1" col="1" rowSpan="2" colSpan="1">
           <textView id="77962981-c306-460a-a878-dec857d11bf3" readOnly="false">
-            <caption visible="true">TextView</caption>
+            <caption visible="true">TextView sample</caption>
             <content>
 <![CDATA[
 Sample content for TextView

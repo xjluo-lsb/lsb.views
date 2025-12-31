@@ -4,19 +4,19 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="https://github.com/xjluo-lsb/lsb.views ..\LsbViewSchema.xsd"
 
-  name="Demonstrate TreeListView and WebView (show page with URL)"
+  name="Demonstrate the TreeListView and WebView"
   author="Kevin Luo"
   createTime="2023-11-26T00:55:28z"
-  lastChangeTime="2023-11-26T00:55:28z">
+  lastChangeTime="2026-01-01T00:22:28z">
 
   <description>
 <![CDATA[
-This sample view demonstrates how to use Lua script to generate the initial configuration - a set of search engines in a tree
-hierachy - and display it in a TreeListView control. When user clicks on any of the items in the TreeListView, the corresponding
-URL is sent to the WebView to display the content at the URL.
+<p>This sample view demonstrates how to use Lua script to generate the initial configuration - a set of search engines in a tree
+hierachy - and display in a TreeListView control. When user clicks on any of the items in the TreeListView, the corresponding
+URL is sent to the WebView to display the content at the URL.</p>
 ]]>
   </description>
-  <version major="0" minor="0" build="1" revision="0" />
+  <version major="0" minor="0" build="2" revision="0" />
 
   <view>
     <!-- There are two controls in the view, the TreeListView to display the web site list and the WebView for displaying the web
@@ -50,14 +50,23 @@ return
         }
     },
     { Name = "Yahoo", URL = "https://www.yahoo.com", children = {} },
-    { Name = "BaiDu", URL = "https://www.baidu.com", children = {} }
+    { Name = "BaiDu", URL = "https://www.baidu.com", children = {} },
+    { Name = "Ask AI", URL = "", children =
+        {
+            { Name = "Microsoft Copilot", URL = "https://copilot.microsoft.com" },
+            { Name = "Google Gemini", URL = "https://gemini.google.com" },
+            { Name = "xAI Grok", URL = "https://grok.com" },
+            { Name = "Alibaba Qwen", URL = "https://chat.qwen.ai" },
+            { Name = "DeepSeek", URL = "https://chat.deepseek.com" }
+        }
+    }
 }
 ]]>
             </script>
           </data>
           <!-- The columns to show in the TreeListView must be predefined with the name for data and width for column width -->
           <columns>
-            <column name="Name" width="120"/>
+            <column name="Name" width="160"/>
             <column name="URL" width="260"/>
           </columns>
         </treeListView>
