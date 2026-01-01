@@ -17,6 +17,9 @@ a simple query UI for the mostly used Large Language Models supported on Ollama.
 variable so the ollama command is accessible from any location. Besides, please follow instructions at the
 <a href="https://objectgraph.com/blog/ollama-cors/">page</a> to set the environment variable <b>OLLAMA_ORIGINS</b> to <b>*</b>
 to allow Ollama accepting requests coming from LSB views.</p>
+<p>On Linux/macOS, one quick way to get Ollama running is using following command,<br/>
+<pre>export OLLAMA_ORIGINS="*" && ollama serve</pre>
+</p>
 ]]>
   </description>
   <version major="0" minor="0" build="1" revision="0" />
