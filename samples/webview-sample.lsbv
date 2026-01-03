@@ -112,7 +112,7 @@ StringValue = ]] .. StringValue .. [[;
         <splitLayout id="c38801db-d578-4489-a20d-cfda47ff13d1" orientation="Horizontal" size="220" fixedView="Left">
           <left>
             <propertyInput id="b65a5d02-0c87-47b5-8023-e1174d9bb1cf">
-              <caption visible="true">Value inputs for Web view built from files</caption>
+              <caption visible="true">Value inputs for WebView built from files</caption>
               <output>
                 <param id="d9d0a3b8-5db7-40e0-a08c-9145acf17e71" name="textContent"/>
                 <param id="a0f49afd-9983-4614-985a-662f55d431b3" name="intValue"/>
@@ -127,7 +127,7 @@ StringValue = ]] .. StringValue .. [[;
           </left>
           <right>
             <webView id="d5ee4af8-1282-4d23-8ded-70d4a43cc91c" contentType="Files">
-              <caption visible="true">Web view built from files</caption>
+              <caption visible="true">WebView with content built from files</caption>
               <input>
                 <param id="ae2d1d7a-c267-4d6b-9373-5869853673f1" name="textValue"/>
                 <param id="ca8ceed6-1563-4eb3-a2fc-6b2f931dc90b" name="intValue"/>

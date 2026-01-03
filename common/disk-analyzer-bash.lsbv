@@ -11,11 +11,12 @@
 
   <description>
 <![CDATA[
-This is a sample view that demonstrates how to use the <a href="https://d3js.org/d3-hierarchy/treemap">Treemap</a> in the
+<p>This is a sample view that demonstrates how to use the <a href="https://d3js.org/d3-hierarchy/treemap">Treemap</a> in the
 <a href="">D3</a> library to visualize the disk usage of selected folder. This is a bash version that uses
 <a href="https://en.wikipedia.org/wiki/Du_%28Unix%29">du</a> to collect the disk space usage data for folders. The data is then
 processed and converted into JSON data using <a href="https://jqlang.github.io/jq/">jq</a>. And then the view renders the JSON 
-data using code copied and modified from the <a href="https://observablehq.com/@d3/treemap/2">Treemap</a> example.
+data using code copied and modified from the <a href="https://observablehq.com/@d3/treemap/2">Treemap</a> example.</p>
+<p>You may need to install the <b>uuid-runtime</b> package to have the <b>uuidgen</b> tool ready for the script.</p>
 ]]>
   </description>
   <version major="0" minor="0" build="1" revision="0" />
