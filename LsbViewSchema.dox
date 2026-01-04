@@ -97,7 +97,7 @@ Here's the main window of the LSB application,
 
 <ul>
 <li>**Views** - A sub‑menu listing all currently open LSB views. Choosing an item brings that view’s window to the front and makes it the active view.</li>
-<li>**Global log window** - A toggle that shows or hides the **“Global logging”** window. If the window is not currently visible, selecting this option displays it and brings it forward. If it is already visible, selecting the option hides it without closing it. The **“Global logging”** window records view open/close events as well as other application‑level activity.</li>
+<li>**Global log window** - A toggle that shows or hides the **“Global logging”** window. If the window is not currently visible, selecting this option displays it and brings it forward. If it is already visible, selecting the option hides it without closing it. The **“Global logging”** window records view open/close events as well as other application‑level activities.</li>
 </ul>
 
 #### 1.1.3 The **Option** menu
@@ -105,7 +105,7 @@ Here's the main window of the LSB application,
 \image html lsb-menu-option.png
 
 <ul>
-<li>**Settings ...** - This is currently the sole item in the **“Option”** menu. Selecting it opens the LSB **“Settings”** dialog, where the user can adjust all application‑level configurations, including **General** settings, **Shells** configuration, and **Views** repository settings.</li>
+<li>**Settings ...** - This is currently the sole item in the **“Option”** menu. Selecting it opens the LSB **“Settings”** dialog, where the user can adjust all application‑level configurations, including **General** settings, **Colors & Fonts** configurations, **Shells** settings, and **Views** repository configurations.</li>
 </ul>
 
 #### 1.1.4 The **Help** menu
@@ -114,97 +114,100 @@ Here's the main window of the LSB application,
 
 <ul>
 <li>**Help ...** - Opens the **“LSB Help”** window, which displays the help documentation for the LSB application, including the page currently being viewed.</li>
+<li>**License ...** - Opens the **License** page, which describes the license used for the application, how business users can use the application for comercial purpose.</li>
 <li>**%About ...** - Opens the **“About LSB”** dialog, which provides information about the application and credits the SDK libraries and other resources used in its development.</li>
 </ul>
 
 ### 1.2 Toolbar Buttons
 
-In the main window, there is a toolbar that contains a set of buttons for quick access to certain functionalities. The funtionalities provided by these buttons are also available through the menu items in the main menu.
+The main window includes a toolbar that provides quick access to several key functions. All of these functions are also available through the main menu. On macOS, where the application menu appears in the system’s global menu bar, the toolbar becomes the only visible element in the application’s main window.
 
 \image html lsb-main-window.png
 
 <ul>
-<li>**Open view** - This button has the same functionality as the **"Open view ..."** menu item under the **"File"** menu. Clicking on the button will launch the **"Open a view"** dialog to select and open an LSB view. Besides, the little triangle next to the button triggers a drop-down menu that shows the same view history as the **"Open recent view"** sub-menu does. Selecting an item in the drop-down menu will open the corresponding LSB view file directly.</li>
-<li>**Close all views** - This button is same as the **"Close all views"** menu item under the **"File"** menu, it closes all currently opened LSB views.</li>
-<li>**Manage history** - This is another entry to launch the **"Manage opened view history"** dialog for manipulating how the items in the **Open recent view** sub-menu are ordered.</li>
-<li>**View** - This button is only enabled if there is at least one LSB view opened. It will launch the **"Select view"** dialog for user to select a view from a view list which contains all currently opened LSB views and make the selected view active. There is also a button with little triangle next to it which triggers a drop-down menu that contains menu items mapped to all currently opened LSB views. Select a menu item there will bring the corresponding opened LSB view into front and make it active.</li>
-<li>**Log window** - This button toggles the **"Global logging"** window. When the **"Global logging"** window is invisible, clicking on the button will show the window and bring it into front.</li>
-<li>**Settings** - This button launches the **"Settings"** dialog for user to make changes in the configuration for the LSB application.</li>
-<li>**Help page** - This button shows the **"LSB Help"** window with the help content for the LSB application.</li>
-<li>**%About LSB** - This button shows the **"About LSB"** dialog with the about information for the LSB application.</li>
+<li>**Open view** – Performs the same action as the **“Open view …”** command in the **File** menu. Clicking it opens the **“Open a view”** dialog for selecting and loading an LSB view. The adjacent triangle opens a drop‑down list showing the same recent‑view history as the **Open recent view** sub‑menu; selecting an entry opens that view immediately.</li>
+<li>**Close all views** – Matches the **“Close all views”** command in the **File** menu and closes all currently open LSB views.</li>
+<li>**View history** – Another way to open the **“Manage opened view history”** dialog, where the ordering of items in the **Open recent view** sub‑menu can be configured.</li>
+<li>**Views** – Enabled only when at least one LSB view is open. It opens the **“Select view”** dialog, allowing the user to choose from all open views and activate the selected one. The accompanying triangle button opens a drop‑down list of all open views; selecting one brings that view to the front.</li>
+<li>**Global logs** – Toggles the visibility of the **“Global logging”** window. If the window is hidden, clicking the button shows it and brings it forward.</li>
+<li>**Settings** – Opens the **“Settings”** dialog, where users can adjust the application’s configuration.</li>
+<li>**Help page** – Displays the **“LSB Help”** window containing the application’s help documentation.</li>
+<li>**About LSB** – Opens the **“About LSB”** dialog, which provides information about the application.
+</ul>
 
 ## 2. LSB View window
 
-An LSB view window typically consists of at least four pages, **View**, **Logs**, **Lua** and **%About**.
+An LSB view window generally includes at least four pages, **View**, **Logs**, **Lua** and **%About**.
 
 ### 2.1 View page
 
-The **View** page displays content that is created based on the configurations in the LSB view file. Various controls, such as input controls and data view controls, are arranged using different layout controls inside a view. In this screenshot from the "Chart view sample," the root control is a TabLayout layout control, which consists of four tabs, "Bar Column", "Data in range", "Pie / Doughnut / Bubble", and "Scatter / Line / Area". Each tab utilizes a TableLayout control to organize four ChartView controls into a 2x2 table, presenting different types of charts respectively.
+The **View** page displays content produced from the XML configuration defined within the LSB view file. A wide range of controls — including both input widgets and data‑presentation components — are arranged throughout the view using various layout managers that determines their structure and positioning. In the **“File Explorer View”** example below, the root layout is a horizontal SplitLayout: the left pane contains a FileTreeView that shows the folder hierachy, while the right pane contains a vertical SplitLayout. Within this vertical SplitLayout, a FileListView at the top lists all files located in the folder currently selected in the FileTreeView, and a TextView at the bottom displays the contents of whichever file is selected in the FileListView. This arrangement provides a complete, interactive file‑browsing experience within a single LSB view.
 
 \image html lsb-view-view.png
 
 ### 2.2 Logs page
 
-The **Logs** page captures local logging, detailing all events raised within the LSB view instance. For example, each view control inside an LSB view performs a condition check (defaulting to empty code though, meaning the condition always returns a true value) to determine if the data source for the view control should be accessed/evaluated and the content of the view control should be updated. The results of these condition checks are logged in the message list in the top. When an output parameter value changes in one view control and then subsequently triggers an input parameter value change in another view control, both events are recorded in the parameter change list in the bottom. This feature can assist the view creators in debugging by verifying whether the correct parameter values are sent out from a view control (through output parameters) and properly transmitted to target view controls(through input parameters).
+The **Logs** page records all local logging activity, providing a detailed account of every event generated within the active LSB view instance. Each control within the view performs a condition check — by default an empty script that always evaluates to true — to decide whether its associated data source should be accessed or refreshed and whether the control’s displayed content should be updated accordingly. The outcomes of these condition checks are displayed in the **Message list** at the top of the page. When a control updates one of its output parameters and that update subsequently triggers a corresponding input parameter change in another control, both of these related events are captured in the **%Parameter change list** shown at the bottom. This logging mechanism helps view creators debug their designs by confirming that output parameters are being emitted with the correct values and that those values are successfully delivered to the intended target controls through their input parameters.
 
 \image html lsb-view-logs.png
 
 ### 2.3 Lua page
 
-The **Lua** page contains Lua code snippets executed within the LSB view instance. Even if no explicit Lua script is used in an LSB view, this page remains there due to implicit functions implemented in Lua in each LSB view. These Lua scripts run from view loading to parameter checking. For instance, it automatically creates an `lsb` object (a table in Lua) in the Lua runspace to share the view path, file, and name, etc. with other Lua code in the view. The check conditions for each view control support Lua language only. The content in this page is read-only and displays the executed Lua code with syntax highlighting.
-
+The **Lua** page displays the Lua code snippets that are executed as part of the active LSB view instance. This page is always present, even when the view does not define any explicit Lua scripts, because every LSB view relies on a set of built‑in Lua functions that operate behind the scenes. These internal Lua routines run throughout the entire lifecycle of the view, from the moment it is loaded to the point where parameter values are evaluated and checked. For example, the system automatically generates an table named **lsb** within the Lua runspace, allowing Lua code to access shared information such as the view’s file path, file name, and view name, etc. All condition checks for view controls are written exclusively in Lua. The Lua page itself is read‑only and presents the executed Lua code with full syntax highlighting for easier inspection and understanding.
+    
 \image html lsb-view-lua.png
 
 ### 2.4 About page
 
-The **%About** page displays information about the LSB view. The content on this page is configurable within the LSB view file. It can be generated from the view file itself or linked directly to a web page available on the Internet.
+The **%About** page presents descriptive information related to the specific LSB view. All content shown on this page is fully configurable within the LSB view file, allowing creators to define exactly what appears there. This information may be produced directly from data embedded in the view file itself, or it can instead be sourced from an external web page that is publicly accessible on the Internet.
 
 \image html lsb-view-about.png
 
 ### 2.5 Other pages
 
-If the view author uses shells like PowerShell, Bash, or Zsh to implement functionalities for the LSB view, new pages will be added for each type of shells used respectively. This per shell page displays the executed shell scripts along with their outputs. Both the view author and end users can use this page to review the executed shell commands and their generated outputs, to ensure the view content is updated as expected.
+If the view author incorporates external shells such as PowerShell, Bash, or Zsh to implement functionalities within an LSB view, the system automatically adds additional pages — one for each shell type used. Each of these shell‑specific pages displays the executed shell scripts together with the full output they produced. Both the view creator and the end user can rely on these pages to review the exact commands that were run and examine their resulting output, helping verify that the view’s content is being refreshed and updated correctly based on the underlying shell logic.
 
 ## 3. Dialogs
-There are a number dialogs employeed in the LSB application to display data and update configurations for the application.
+
+The LSB application makes use of several different dialogs that are employed throughout the interface to present various types of data and to allow users to modify configuration settings for the application. These dialogs serve as dedicated interfaces for viewing information and adjusting options that influence how the application behaves.
 
 ### 3.1 Open a view dialog
 
-The **Open a view** dialog helps user to find, select, and open an LSB view file with the LSB application. It consists of a view list and a preview pane. It automatically searches all configured view repositories to find LSB view files and adds them into the view list. When user selects an LSB view from the view list, the view information is displayed in the preview pane. The view list supports smart filter, see \ref section_smart_filter for more information. The smart filter enables user to quickly locate a view through combination of column based filters. When an LSB view is selected, user may also click on the **"Open the view folder"** button to open the folder that contains the view file using the %OS native file management application, such as the **File Explorer** on Windows, the **Finder** application on Mac %OS X, etc.
+The **Open a view** dialog allows users to locate, choose, and open an LSB view file within the LSB application. The dialog is composed of two main sections: a view list and a preview pane. It automatically scans all configured view repositories, discovers available LSB view files, and populates the view list accordingly. When the user highlights a specific LSB view in the list, detailed information about that view appears in the preview pane. The view list also supports the smart‑filter feature (see \ref section_smart_filter for details), which enables users to quickly narrow down the list by applying combinations of column‑based filters. After selecting a view, the user can additionally click the **“Open the view folder”** button to open the directory containing the view file using the operating system’s native file manager, such as **File Explorer** on Windows or **Finder** on macOS.
 
 \image html lsb-open-view.png
 
 ### 3.2 Manage opened view history
 
-This is the dialog that manages how the view history is displayed in the **"Open recent view"** sub-menu under the **"File"** menu.
+This dialog controls how the view‑opening history is presented in the **“Open recent view”** sub‑menu located under the **“File”** menu.
 
 \image html lsb-manage-history.png
 
 <ul>
 <li>**History count settings**
   <ul>
-    <li>**Maximum item count in menu** - This setting controls how many items will be displayed in the **"Open recent view"** sub-menu under the **"File"** menu. The value should be within the range [1, 9] inclusive, and should be less than the value of **Maximum item count in history file**.</li>
-    <li>**Maximum item count in history file** - This setting controls how many items will have the opened history data stored in the history data file. The value should be within the range [1, 99] inclusive, and should be larger than the value of **Maximum item count in menu**.</li>
+    <li>**Maximum item count in menu** - This option determines how many entries appear in the **“Open recent view”** sub‑menu. The allowed range is from 1 to 9 inclusive, and the value must always remain smaller than the **Maximum item count in history file** setting.</li>
+    <li>**Maximum item count in history file** - This option specifies how many previously opened view entries are saved in the persistent history data file. The valid range is from 1 to 99 inclusive, and the value must be greater than the **Maximum item count in menu** setting.</li>
   </ul>
 </li>
 <li>**How are the view files ordered**
   <ul>
-    <li>**Most recently used time** - When this option is selected, the view files are ordered by most recently used time.</li>
-    <li>**How many times view used** - When this option is selected, the view files are ordered by how many times the view file is opened.</li>
+    <li>**Most recently used time** - When selected, the list of view files is sorted according to the most recent time each view was opened.</li>
+    <li>**How many times view used** - When selected, the list is sorted based on how frequently each view file has been opened.</li>
   </ul>
 </li>
-<li>**View file history** - This is a list of view files opened previously. They are ordered based on the option selected above - by most recently used time or by how many times view used.</li>
+<li>**View file history** - This section displays the complete list of previously opened view files. The ordering of this list depends on the selected sorting option above, meaning it will either follow the most‑recently‑used order or the usage‑count order.</li>
 </ul>
 
 ### 3.3 Select view
 
-This dialog is launched when user clicks on the **View** button in the toolbar in the main window. It shows the full list of currently opened LSB views. If user selects a view from the list and then clicks the **OK** button, the selected view will be brought into front and become an active view.
+The dialog appears when the user clicks the **View** button in the main window’s toolbar. It presents a complete list of all LSB views that are currently open within the application. When the user selects one of the listed views and then confirms the selection by clicking the **OK** button, that view is immediately brought to the front of the interface and becomes the active, focused view.
 
 \image html lsb-view-list.png
 
 ### 3.4 Settings
 
-The LSB **"Settings"** dialog is explained in the next section \ref section_settings.
+The LSB **Settings** dialog is not described in this section; instead, its full explanation is provided in the following section titled **“The LSB Settings.”** That section offers a detailed overview of all configuration options available within the dialog.
 
 */
 
@@ -212,100 +215,100 @@ The LSB **"Settings"** dialog is explained in the next section \ref section_sett
 /*!
 \defgroup section_settings The LSB Settings
 
-The LSB settings dialog allows user to configure various aspects of the LSB application. The settings are organized into four categories: **General**, **Colors & Fonts**, **Shells**, and **Views**. Please refer to the following sections to learn more about each setting and understand how they affect the behavior of the LSB application.
+The LSB **Settings** dialog provides users with the ability to configure a wide range of behaviors and preferences within the LSB application. All available settings are grouped into four major categories — **General**, **Colors & Fonts**, **Shells**, and **Views** — each covering a different aspect of the application’s functionality. The following sections describe these categories in detail, explaining the purpose of each option and illustrating how individual settings influence the overall operation and appearance of the LSB application.
 
 ## General category
 
-This is the general setting category for the LSB application. The settings included in this category are,
+The **General** category contains the core application‑wide settings for the LSB environment. This section provides access to several fundamental configuration options that influence how the LSB application behaves during everyday use. The settings included in this category are as follows, and each one plays a role in shaping the overall user experience.
 
 \image html lsb-settings-general.png
 
 <ul>
-<li>**Aggregation time window for multiple input parameter changes** - This defines the length of a time window in milliseconds. For an LSB view control, there might be multiple input parameters defined on it, and some of these parameters could have their values changed simultaneously (or within a very short time frame). If this time window length is set to 0 millisecond, every parameter value change will trigger data load and content refresh for the view control, which is usually not the expected behavior, they should be consolidated into one data load and content refresh. By setting this time window to a short duration, all parameter value changes occurred within this time window will be recognized as one change, and will be triggering one single data load and content refresh. Please note that this time window is a moving window. For instance, if the time window length is set to `D` and the first input parameter value change happens at `T0`, and a second parameter change happens at `T1` (where `T1 - T0 <= D`), then these two input parameter changes will be recognized as one action, and the actual data load/content refresh will be triggered at `T1 + D`. If there is a third parameter value changes at `T2` where `T2 - T1 <= D`, then the data load/content refresh will be deferred again to `T2 + D`, until no parameter value change happens within the `D` duration after the last parameter value change. In general, if `n` parameters have their values changed around the same time (with the time gap between each adjacent two parameters being less than `D`), the actual data load/content refresh will happen at `Tn + D`.
-<li>**Default view size** - This setting defines the default window size for an LSB view. When a LSB view is opened, it will be set to this size by initially.</li>
-<li>**Select the icon theme for the application** - This setting controls the icon theme for the LSB applciation. It provides all available icon themes in a list and user may select one of them to be the theme for the application. Please be reminded that after a new icon theme is selected, it requires a restart of the LSB application to take effort. Currently the default theme is the smashicons theme.
-<li>**Show the GIT client window during execution for enlistment or refresh** - The LSB application uses GIT to synchronize the default view repository, the help document repository, as well as other user configured view repositories. It calls the `git` command to get the files synced. This setting controls if a console window is shown during the synchronization.</li>
-<li>**Enable proxy server for Web requests at port** - This is an experimental feature. The LSB application has implemented a proxy server to help to route requests from WebView with local content (which typically has origin set to null) to a remote Web endpoint to address the CORS issue. Without the proxy server, the local pages won't be able to see the response from the remote Web endpoint unless the Web server has configures to accept CORS requests, which is not true in most cases.</li>
+<li>**Aggregation time window for multiple input parameter changes** — This setting specifies the duration, in milliseconds, of a time window used to aggregate multiple input‑parameter updates for a single LSB view control. A control may define several input parameters, and in many scenarios multiple parameters may change at nearly the same moment or within a very short interval. If the aggregation window is set to 0 milliseconds, every individual parameter change immediately triggers its own data load and content refresh, which is typically undesirable because these updates should be consolidated into a single operation. By assigning a small non‑zero duration, all parameter changes that occur within that window are treated as a single combined update, resulting in only one data load and one content refresh.
+It is important to note that this window operates as a moving time window. For example, if the window length is D and the first parameter change occurs at `T₀`, and a second change occurs at `T₁` where `(T₁ − T₀) ≤ D`, both changes are merged into one action, and the actual data load/refresh is scheduled for `T₁ + D`. If a third change occurs at `T₂` where `(T₂ − T₁) ≤ D`, the refresh is postponed again to `T₂ + D`. This deferral continues until no further parameter changes occur within `D` milliseconds after the most recent change. In general, if n parameter updates occur close together (each pair separated by less than `D`), the final data load and refresh will occur at `Tₙ + D`.</li>
+<li>**Default view size** — This option defines the initial window dimensions applied when an LSB view is opened. Every newly opened view begins with this default size unless explicitly overridden elsewhere.
+<li>**Select the icon theme for the application** — This setting determines which icon theme the LSB application uses. All available themes are presented in a selectable list, allowing the user to choose the preferred visual style. After selecting a new theme, the application must be restarted for the change to take effect. The current default theme is `default`.</li>
+<li>**Select the language for the application** - This setting sets the laguange to be used for the application UI. There is no other languages currently available for LSB, but some languages will be added soon.</li>
+<li>**Show the GIT client window during execution for enlistment or refresh** — The LSB application relies on Git to synchronize the default view repository, the help‑documentation repository, and any additional user‑configured repositories. During synchronization, the application invokes Git commands to update local files. This setting controls whether a console window is displayed while these Git operations are running.</li>
+<li>**Enable proxy server for Web requests at port** — This experimental feature enables an internal proxy server designed to route WebView requests that originate from local content (which typically has a null origin) to remote web endpoints, thereby mitigating CORS restrictions. Without this proxy, local pages are unable to access responses from remote servers unless those servers explicitly allow CORS requests — something that is uncommon in many environments. Enabling the proxy allows these local‑origin requests to succeed by transparently forwarding them through the proxy server.</li>
 </ul>
 
 ## Color & Fonts category
 
-This category contains the color and font settings for LSB.
+The **Colors & Fonts** category includes all configuration options related to the visual appearance of the LSB application. Within this section, users can adjust the color schemes and font settings that determine how text, controls, and interface elements are rendered throughout the environment, allowing the overall look and readability of LSB to be customized to individual preferences.
 
 \image html lsb-settings-ui.png
 
 <ul>
-<li>**Active view caption** - These settings allow user to configure the colors and font for the caption of active view controls. Users can click on the foreground or background colors to change them, and click on the "Choose..." button to select the font for the active view control. The Preview control will display the final effect of any changes made to these settings.</li>
-<li>**Inactive view caption** - These settings allow user to configure the colors and font for the caption for the inactive view controls. Users can click on the foreground and background colors to change them, and click on the "Choose..." button to select the font for the inactive view control. The Preview control will displau the final effect of any changes made to these settings.</li>
-<li>**Shell window content** - This is the setting for the shell window content. When a shell window is displayed, such as the GIT console window for the view synchronization, it will be displayed with the colors and font configured here. Changes on these settings are displayed in the Preview pane immediately after a change is made.</li>
+<li>**Active view caption** — These settings allow users to customize both the colors and the font used for the captions of active view controls. Users may click the foreground or background color fields to modify them, and use the **“Choose…”** button to select a different font for the active control’s caption. The **Preview** panel immediately reflects any adjustments, allowing users to see the final appearance of their changes in real time.</li>
+<li>**Inactive view caption** — These settings provide similar customization options for the captions of inactive view controls. Users can modify the foreground and background colors, as well as choose a different font by clicking the **“Choose…”** button. As with the active caption settings, the **Preview** panel updates instantly to show the resulting appearance of any changes made.</li>
+<li>**Shell window content** — This setting controls the colors and font used when displaying shell‑related windows, such as the Git console window that appears during view‑repository synchronization. Any modifications to these appearance settings are shown immediately in the **Preview** pane, ensuring users can verify the visual effect before applying the configuration.</li>
 </ul>
 
 ## Shells category
 
-This category allows the user to configure the shells supported in LSB views. This page consists of a shell list and a set of tool buttons that help to manage the shell list.
+The **Shells** category enables users to configure the command‑line environments that can be used within LSB views. This settings page includes a list of all registered shells, along with a set of tool buttons that allow users to add, remove, or modify entries in the shell list. These controls make it easy to manage which shells are available for executing scripts inside LSB views.
 
 \image html lsb-settings-shells.png
 
 <ul>
-<li>**Scan** - This button is used to scan all shells available in the host Operating System. The found shells will be added into the shell list automatically with default settings.</li>
-<li>**Edit** - This button is enabled only if an item in the shell list is selected. Clicking on the button will open the shell setting editor dialog to update the settings for the selected shell. See the **"Edit settings for xxx"** section below on how to customize the settings for a shell.</li>
-<li>**Add** - This button adds a new shell into the shell list by launching the shell setting editor dialog with empty settings for the new shell to be added.</li>
-<li>**Delete** - This button deletes the currently selected shell from the shell list. It's only enabled if a shell item is selected in the shell list.</li>
-<li>**Clear** - This button removes all shells from the shell list.</li>
+<li>**Scan** - This button scans the host operating system for all available shells. Any shells that are detected are automatically added to the shell list using their default configuration settings.</li>
+<li>**Edit** - This button becomes enabled only when a shell entry in the list is selected. Clicking it opens the shell‑setting editor dialog, allowing the user to modify the configuration of the selected shell. For details on customizing shell settings, refer to the **“Edit settings for xxx”** section below.</li>
+<li>**Add** - This button creates a new shell entry in the shell list. It launches the shell‑setting editor dialog with empty fields so the user can define the configuration for the new shell.</li>
+<li>**Delete** - This button removes the currently selected shell from the shell list. It is enabled only when a shell entry is actively selected.</li>
+<li>**Clear** - This button removes all shell entries from the shell list at once.</li>
 </ul>
 
-**Note:** Double click on an item in the shell list has the same effect as clicking the **Edit** button - it launches the shell setting editor dialog for updating the shell settings.
+__Note:__ Double‑clicking any item in the shell list performs the same action as clicking the Edit button; it opens the shell‑setting editor dialog so the user can update that shell’s configuration.
 
 ### Edit settings for xxx
 
-This is the dialog used for creating and editing the settings for a shell to be used within the LSB application. The LSB views can execute shell scripts only if the corresponding shell setting exists, which is typically created using this dialog.
+This dialog is used to create and modify the configuration settings for a shell that will be available within the LSB application. An LSB view can execute shell scripts only when a corresponding shell definition has been configured, and this dialog is the primary interface through which those shell settings are established. In most cases, any shell intended for use in LSB views is first registered and customized through this editor.
 
 \image html lsb-shell-editor.png
 
-Here are the settings user can set for a shell,
+Here are the configuration options that can be defined for a shell:
 <ul>
-<li>**Name** - Name of the shell. This value will be used as the shell type in the shell scripts embedded in the LSB views.</li>
-<li>**Path** - This is the absolute path to the shell executable.</li>
-<li>**Reference / Module list** - This is basically a list of shell script files. These script files will be automatically loaded into the corresponding shell when the shell process is created, the scripts in these files will be executed before any other scripts defined in the LSB view files. Thus the shell scripts defined in the LSB view file can use the variables and functions defined in these references or modules.</li>
-<li>**Placeholders** - These are placeholders to be used in the script wrapper. These placeholders will be replaced by actual values before script execution. They are used to help on the execution of the user specified script in the shell process, and collect data back to the LSB application.
+<li>**Name** — The display name of the shell. This value also serves as the shell type referenced within shell scripts embedded in LSB views.</li>
+<li>**Path** — The absolute filesystem path to the shell’s executable program.</li>
+<li>**Reference / Module list** — A list of shell‑script files that will be automatically loaded when the shell process is created. The contents of these files are executed before any user‑defined scripts in the LSB view, allowing those scripts to rely on variables, helper functions, or utilities defined in the referenced modules.</li>
+<li>**Placeholders** — A set of placeholder tokens used within the script wrapper. Before execution, these placeholders are replaced with actual runtime values. They support the execution of the user‑defined script inside the shell process and help return data back to the LSB application.
   <ul>
-    <li>**Customized user script** - This is the placeholder for the shell script defined in the LSB view file.</li>
-    <li>**Intermediate data file** - This is the placeholder for the full path of an intermediate data file to store the data output from the user scripts defined in the LSB view file. The LSB application will try to load the script generated data from this intermediate data file and use the data in the LSB view.</li>
-    <li>**First half of signature** - This placeholder is for the first half of a randomly generated signature data. See the section \ref section_wrapper_script to understand how these signature is used in the shell script execution.</li>
-    <li>**Second half of signature** - This is placeholder for the second half of the randomly generated signature data. It's used together with the first half of signature data to form the complete signature. See \ref section_wrapper_script for more details.</li>
-    <li>**Path to view file** - This is the placeholder for the full path to the currently opened LSB view file.</li>
+    <li>**Customized user script** — The placeholder representing the user‑defined shell script embedded in the LSB view file.</li>
+    <li>**Intermediate data file** — A placeholder that resolves to the full path of the temporary data file used to store output generated by the user‑defined script. After execution, the LSB application reads this file and uses the extracted data within the view.</li>
+    <li>**First half of signature** — A placeholder for the first portion of a randomly generated signature value. This signature is used during script execution to detect completion and validate output. See \ref section_wrapper_script for more details.</li>
+    <li>**Second half of signature** — A placeholder for the second portion of the signature. Combined with the first half, it forms the complete signature used to mark the end of script execution. See \ref section_wrapper_script for additional explanation.</li>
+    <li>**Path to view file** — A placeholder that resolves to the full path of the currently opened LSB view file.</li>
   </ul>
-</li>
-<li>**User script wrapper** - This is a piece of shell script that wraps the user-defined script in an LSB view to be executed in the shell process. The wrapper script transfers the output data generated from the user-defined script into an intermediate data file, generating and outputting signature data to the shell console to notify the completion of the script execution. It can also have any other helper functions added to assist the user-defined script execution.</li>
-<li>**Script execution timeout** - This is the default timeout setting for the user-defined script execution. Each piece of user-defined script could have its own customized timeout set through the script data source configuration in the LSB view file, see ScriptData. If it's not configured there in the LSB view file along with the user-defined script, then this default timeout setting is used.</li>
-</ul>
+<li>**User script wrapper** — A block of shell script that wraps the user‑defined script before execution. The wrapper is responsible for running the user script, writing its output to the intermediate data file, and emitting the signature data to the shell console to signal completion. Additional helper logic may also be included to support script execution.</li>
+<li>**Script execution timeout** — The default timeout applied to user‑defined script execution. Individual scripts may override this value through their ScriptData configuration in the LSB view file, see ScriptData. If no custom timeout is specified there, this default timeout is used.</li>
 
 ## Views category
 
-This category allows users to configure the view repositories used in LSB. This page consists of a view repository list and a set of tool buttons that help to manage the view repository list.
+The **Views** category allows users to configure the set of view repositories that the LSB application relies on. This settings page includes a list of all registered view repositories, along with a collection of tool buttons that make it easy to add, remove, or modify repository entries. Through these controls, users can manage where LSB searches for view files and how those repositories are organized within the application.
 
 \image html lsb-settings-views.png
 
 <ul>
-<li>**Edit** - This button is enabled only if an LSB view repository is selected in the repository list. Clicking on the button will open the **"Edit view repository settings for xxx"** dialog to update the settings for the LSB view repository. See section below for the details of how to customize the settings for an LSB view repository.</li>
-<li>**Synchronize** - If the currently selected LSB view repository is a GIT repository and the remote GIT repository URL is provided, this button is enabled. Clicking on the button will trigger the synchronization of the view files from the remote GIT repository to the local enlistment.</li>
-<li>**Add** - This button is to add a new LSB view repository into the repository list. It launches the **"Edit view repository settings for xxx"** dialog with empty settings for the new LSB view repository.</li>
-<li>**Delete** - This button deletes the currently selected LSB view repository from the repository list. The button is enabled only if an LSB view repository is selected in the view repository list. </li>
-<li>**Clear** - This button removes all LSB view repositories from the repository list.</li>
+<li>**Edit** — This button becomes available only when an LSB view repository is selected in the repository list. Clicking it opens the **“Edit view repository settings for xxx”** dialog, where the user can modify the configuration of the selected repository. Details on customizing repository settings are provided in the section below.</li>
+<li>**Synchronize** — This button is enabled when the selected LSB view repository is a Git‑based repository and a valid remote Git URL has been configured. Activating the button initiates a synchronization process that updates the local enlistment with the latest view files from the remote Git repository.</li>
+<li>**Add** — This button allows the user to create a new LSB view repository entry. It opens the **“Edit view repository settings for xxx”** dialog with empty fields so the user can define the settings for the new repository.</li>
+<li>**Delete** — This button removes the currently selected LSB view repository from the list. It is enabled only when a repository entry is actively selected.</li>
+<li>**Clear** — This button deletes all entries from the view repository list, effectively resetting the list to an empty state.</li>
 </ul>
 
 ### Edit view repository settings for xxx
 
-When user requests to add a new LSB view repository or edit an existing view repository, this editor dialog is launched for customizing the settings for the LSB view repository.
+When the user chooses to add a new LSB view repository or modify an existing one, the application opens this editor dialog to allow full customization of that repository’s settings. This dialog serves as the central interface for defining how the LSB application locates, accesses, and synchronizes the view files associated with the selected repository.
 
 \image html lsb-view-repository-editor.png
 
 <ul>
-<li>**Name** - Name of the LSB view repository. The value will be shown in the Repository column in the view list in the **"Open a view"** dialog.</li>
-<li>**Local view root** - This is the local path to the root folder of the view repository.</li>
-<li>**GIT repository URL** - If a view repository is synchronized from a remote GIT repository, this is the GIT repository URL. If it's empty, then the view repository becomes a local repository, no synchronization will be executed for it.</li>
-<li>**Refresh interval** - This setting is only applicable if the LSB view repository is synchronized from a remote GIT repository. It controls the frequency of synchronization between the LSB local enlistment and the remote GIT repository. The automatic synchronization only occurs during the launch of the LSB application. Additionally, manual synchronization by clicking the **Synchronize** button in the **Views** configuration page does not adhere to this interval setting; it performs the synchronization immediately when the button is clicked.</li>
-<li>**The repository is enabled to use the views hosted in it** - This is a switch that controls if the LSB views in this view repository should be listed in the **"Open a view"** dialog. When this setting is unchecked, though the view files belong to this view repository sit in the local folder on the user's machine, the LSB view files won't be visible in the view list in the **"Open a view"** dialog.</li>
+<li>**Name** — The display name of the LSB view repository. This value appears in the Repository column of the view list shown in the **“Open a view”** dialog, helping users identify which repository each view originates from.</li>
+<li>**Local view root** — The local filesystem path that points to the root directory of the repository. All LSB view files stored under this folder are treated as part of the repository.</li>
+<li>**GIT repository URL** — If the repository is synchronized from a remote Git source, this field specifies the URL of that remote Git repository. When this value is left empty, the repository is treated as a purely local repository, and no synchronization operations will be performed for it.</li>
+<li>**Refresh interval** — This setting applies only when the repository is linked to a remote Git source. It defines how frequently the LSB application should synchronize the local enlistment with the remote Git repository. Automatic synchronization occurs only during application startup and follows this interval. Manual synchronization — triggered by clicking the **Synchronize** button in the **Views** configuration page — ignores this interval and performs the update immediately.</li>
+<li>**The repository is enabled to use the views hosted in it** — This toggle determines whether the LSB views contained in the repository should appear in the **“Open a view”** dialog. If the option is unchecked, the view files remain on the user’s machine but are intentionally hidden from the view list, effectively disabling the repository without removing it.</li>
 </ul>
 
 */
@@ -314,26 +317,42 @@ When user requests to add a new LSB view repository or edit an existing view rep
 /*!
 \defgroup section_views The LSB View Repositories
 
-The LSB views are managed through view repositories, either locally or remotely. In each of the LSB view repositories, the views can be futher categorized through folders (and sub-folders). The LSB application will recursively find all the view files under the root folder of an LSB view repository and show them in view list in the **"Open a view"** dialog. There could be multiple views with the same name in the same view repository, as long as they are put in different folders, they can co-exist.
+LSB views are organized and accessed through view repositories, which may reside either locally on the user’s machine or remotely in a Git-based source. Within each repository, views can be further organized into folders and sub‑folders to create a structured hierarchy. When the LSB application loads the available views, it recursively scans the entire directory tree under the repository’s root folder and displays all discovered view files in the view list shown in the **“Open a view”** dialog.
+
+Multiple views may share the same file name within a single repository; as long as they are located in different folders, they can coexist without conflict.
 
 ## Default View Repository
 
-The LSB applciation comes with a default view repository that is a GIT repository and available at https://github.com/xjluo-lsb/lsb.views. When the LSB application is launched, if the default view repository is not available, the LSB application will automatically clone the GIT repository and make the views available to user. This view repository will be named as DefaultViews. This view repository is configured automatically and it's not changeable through the view repository configuration page in the **"Settings"** dialog.
+The LSB application includes a built‑in default view repository, which is a Git repository hosted at:
+
+https://github.com/xjluo-lsb/lsb.views
+
+When the LSB application is launched, it checks whether this default repository is already available locally. If it is missing, the application automatically clones the Git repository so that the default views become immediately accessible to the user.
+
+This repository is internally named **DefaultViews**, and its configuration is managed entirely by the application. Because it is a core component of the system, it cannot be modified or removed through the repository‑configuration page in the **Settings** dialog.
 
 ## User Configured View Repositories
 
-Users can configure their own repositories in LSB. As described in the **"View category"** in the **"Settings"** dialog, users can configure a local-only repository by pointing the local view root to a local folder and leaving the GIT repository URL empty. In this case, all views from this repository are available locally and not shared with others.
+Users may define additional view repositories to extend or customize their LSB environment.
 
-Users can also configure a remote view repository by providing both the GIT repository URL and the local view root folder. In this case, all LSB views in the GIT repository will be automatically synchronized to the local folder each time the LSB application is launched. This allows users to easily reuse LSB views created by others or share their own views with others.
+### Local‑Only Repositories
 
-For the community version of the LSB application, users can use the default view repository that synchronizes from the default official repository hosted on GitHub. Additionally, users can add one local repository for creating and managing their own LSB views. However, adding a remote repository or adding more than one local repository is not allowed. For the paid version, there is no limitation on the repository count. Users can add as many repositories as they want, either local or remote, and all the remote repositories will be all automatically synced during the launch of the LSB application.
+A user can configure a repository that exists solely on the local machine by specifying a local folder as the **Local view root** and leaving the **Git repository URL** field empty. In this configuration, all views are stored and accessed locally, and no synchronization with a remote source occurs. These views remain private to the user unless shared manually.
 
-In the view repository setting, user may also temporarily enable/disable a view repository by check/uncheck **"The repository is enabled to use the views hosted in it"**. When there are too many views available through multiple view repositories, this might be helpful to shorten the view list in the **"Open a view"** dialog.
+### Remote Git‑Backed Repositories
+
+Users may also configure a repository that synchronizes with a remote Git source by providing both a **Git repository URL** and a corresponding **Local view root** folder. Whenever the LSB application starts, it automatically synchronizes the local folder with the remote Git repository, ensuring that all LSB views are up to date. This setup allows users to reuse views created by others or distribute their own views across a team or organization.
+
+### Temporarily Enabling or Disabling Repositories
+
+Within the repository settings, users may toggle the option **“The repository is enabled to use the views hosted in it.”** Disabling a repository hides all of its views from the **“Open a view”** dialog without deleting the repository or its files. This feature is particularly useful when many repositories are configured and the view list becomes too long; temporarily disabling some repositories helps reduce clutter and streamline navigation.
 
 ## Sample Views
 
-In the DefaultViews view repository, the LSB application already provides a set of sample views under the samples folder. These views are used to demonstrate what view controls are available in LSB, what a LSB view can do, how parameter values are passed around, etc. They are good samples for learning how to create your own LSB view. Here are a few examples from them,
+In the **DefaultViews** repository, the LSB application includes a collection of sample views located under the `samples` and `common` folders. These sample views illustrate the range of view controls available in LSB, demonstrate how an LSB view behaves in practice, and show how parameter values can be passed, transformed, and consumed across different components. They serve as practical, hands‑on examples for users who want to learn how to design and build their own LSB views.
 
+Below are several representative examples drawn from these sample folders:
+    
 ### all-controls-demo.lsbv
 This view demostrates majority of the controls supported in the LSB. It requires pwsh (PowerShell or PowerShell 7+) to be configured to run the scripts and demostrates following features,
 <ul>
@@ -348,9 +367,9 @@ This view demostrates majority of the controls supported in the LSB. It requires
 </ul>
 
 ### file-explorer.lsbv
-This view illustrates the FileTree and FileList controls provided in LSB to compose a view with functionalities similar to the file managers (such as Windows Explorer on Windows, Finder on Mac OS X, GNOME Files on Fedora, etc).
+This view illustrates the FileTreeView and FileListView controls provided in LSB to compose a view with functionalities similar to the file managers (such as Windows Explorer on Windows, Finder on macOS, GNOME Files on Fedora, etc).
 
-Besides, this view also demonstrates the context menu configuration on the FileList control and how to call into function `lsb.showMessage()` in the Lua script to show message from the context menu. Double click on a plain text files listed in the FileList control will trigger the view to show the content in the TextView control.
+Besides, this view also demonstrates the context menu configuration on the FileListView control and how to call into function `lsb.showMessage()` in the Lua script to show message from the context menu. Double click on a plain text files listed in the FileListView control will trigger the view to show the content in the TextView control.
 
 This view uses Lua scripts only for the functionality implementation, thus it supports all operating systems.
 
@@ -369,7 +388,8 @@ This view illustrates how the HexView control provided by LSB can be used to dis
 <li>Send the file path to the HexView control and load the content directly in HexView.</li>
 </ul>
 
-There are already many example views available in the default view repository. Along with the time, more and more views will be added into this view repository. Please feel free to explore and play these views to learn what they can do as well as using them as sample to learn how to create your own LSB views.
+A substantial collection of example views is already included in the default view repository, and this library will continue to grow over time as additional views are added. Users are encouraged to explore and experiment with these examples to understand the capabilities of LSB views, observe how different controls behave, and study how parameters are passed and processed. These sample views serve not only as demonstrations of what LSB can do, but also as practical reference material for learning how to design and build your own custom LSB views.
+
 */
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1353,8 +1373,8 @@ This page contains the list of all view controls supported in the LSB applicatio
   - TableLayout
 - Data View Controls
   - ChartView
-  - FileList
-  - FileTree
+  - FileListView
+  - FileTreeView
   - HexView
   - ListView
   - TextView
@@ -1474,19 +1494,19 @@ class ChartView : public ViewElements, public ViewAttributes
   public bool showTooltip;          //!< [Optional] This attribute controls if the tooltip should be visible in the chart.
 };
 
-//! \brief This FileList is a data view control that uses a list view to display files and/or folders under the specified path in file system.
+//! \brief This FileListView is a data view control that uses a list view to display files and/or folders under the specified path in file system.
 /*!
-The FileList implements most of the features available in the ListView, including filter, status, copy, etc. Please refer to ListView for more details on these features.
+The FileListView implements most of the features available in the ListView, including filter, status, copy, etc. Please refer to ListView for more details on these features.
 
-The FileList node contains following child nodes,
+The FileListView node contains following child nodes,
  - All the nodes defined in the ViewElements.
  - [Optional] The rowStyles node contains a set of row nodes in type of RowStyle that defines the style for matched rows.
 
-The FileList node contains following attributes,
+The FileListView node contains following attributes,
  - All the attributes defined in the ViewAttributes.
  - Plus following attributes,
 */
-class FileList : public ViewElements, public ViewAttributes
+class FileListView : public ViewElements, public ViewAttributes
 {
   public bool multiSelect;      //!< [Optional] This attribute controls if the file list view supports multiple selections on the items. The default value is false.
   public bool filter;           //!< [Optional] This attribute controls if the filter support is enabled for the file list view. The default value is true.
@@ -1497,20 +1517,20 @@ class FileList : public ViewElements, public ViewAttributes
   public bool dotdot;           //!< [Optional] This attribute controls if . and .. folders are shown in the file list view. The default value is false.
 };
 
-//! \brief This FileTree is a data view control that uses a tree view to display the folder structures under the specified path in file system.
+//! \brief This FileTreeView is a data view control that uses a tree view to display the folder structures under the specified path in file system.
 /*!
-The FileTree implements similar features available in the TreeView. It loads the folder hierachy in file system and populate them into the tree view control. User may expand/collapse a folder or select a folder to trigger further actions in other controls.
+The FileTreeView implements similar features available in the TreeView. It loads the folder hierachy in file system and populate them into the tree view control. User may expand/collapse a folder or select a folder to trigger further actions in other controls.
 
-The FileTree node contains following nodes,
+The FileTreeView node contains following nodes,
  - All the nodes defined in the ViewElements.
 
-The FileTree node contains following attribtues,
+The FileTreeView node contains following attribtues,
  - All the attributes defined in the ViewAttributes.
  - Plus following attributes,
 */
-class FileTree : public ViewElements, public ViewAttributes
+class FileTreeView : public ViewElements, public ViewAttributes
 {
-  public string root;       //!< [Optional] This attribute controls the default path that the FileTree will load data from. Empty value means that it will be loaded from the system root.
+  public string root;       //!< [Optional] This attribute controls the default path that the FileTreeView will load data from. Empty value means that it will be loaded from the system root.
 };
 
 //! \brief This HexView control is a data view control that displays binary data in the hexadecimal format.
@@ -1968,7 +1988,7 @@ In the previous section, we explained how the parametering mapping is defined in
 ## Name in Input Parameters
 The name in the input parameters are only used inside the component that has the input parameters defined. There are a few places to use the value of the input parameters, e.g. the parameter check condition (in Lua script), the scripts defined in the DataSources, or content in the view control (such as content in the TextView control). With this said, the names for the input parameters do not need to be same as the corresponding output parameters, even though we see a lot of input parameters have the same names as their corresponding output parameters, it eases the understanding parameter mapping, but it's not necessary.
 
-To use the input parameter values passed in, in any of the parameter check condition, script in data source or the content for view control, the placeholders for the input parameters must be in the form of **{name}**. All these placeholders will be automatically substituded by the real value before the parameter check condition or script in data source is evaluated, and the content is used.
+To use the input parameter values passed in, in any of the parameter check condition, script in data source or the content for view control, the placeholders for the input parameters must be in the form of \b {name}. All these placeholders will be automatically substituded by the real value before the parameter check condition or script in data source is evaluated, and the content is used.
 
 ## Name in Output Parameters
 The name in the output parameters have different meaning compared to the name in the input parameters. It's used to extract values from the evaluated result from data sources for the components. Typically, the LSB expects that the data sources to return data as JSON objects, and it uses the output parameter name as the member name in the JSON object to get value. In this way, the data source could return a complicated JSON object and support outputting multiple values through multiple output parameters with different names.
@@ -1981,6 +2001,11 @@ There are a few special names can be used for output parameters,
 <li><b>%__path__</b> - in the TreeView and FileTreeView control, this specific name is used for returning the path in the tree for the currently selected tree node.</li>
 <li>In the PropertyInput control, the output parameter name must be same as the name of the property to send its value out.</li>
 <li>In the WebView control, the output parameter name must be same as the name defined in the data sent out from the JavaScript code inside the WebView content.</li>
+<li>The TextInput control has two more special parameters,
+  <ul>
+    <li><b>?</b> - when there is any text change, this specific parameter will have the full content sent out</li>
+    <li><b>$</b> - when the enter is pressed in the single line mode, this parameter sends out the full content. The enter key is not recognized in the multiline mode as it is used for editing content.</li>
+  </ul>
 </ul>
 */
 

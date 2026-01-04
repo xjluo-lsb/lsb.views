@@ -597,6 +597,7 @@ in the LSB view files. It also defines the file structure of the view files usin
       <xs:element name="data" type="ChoiceOfData" minOccurs="0" maxOccurs="1" />
     </xs:sequence>
     <xs:attribute name="text" type="xs:string" use="required" />
+    <xs:attribute namne="applyData" type="xs:boolean" use="optional" default="false" />
   </xs:complexType>
 
   <xs:complexType name="ContextMenuSeparator">
